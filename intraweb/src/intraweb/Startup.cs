@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using intraweb.Models;
 using intraweb.Services;
+using intraweb.ViewModels.Administration;
 
 namespace intraweb
 {
@@ -93,6 +94,8 @@ namespace intraweb
 
             app.UseIdentity();
 
+            AdministrationModelMapping.ConfigureRoomMapping();
+
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
 
             app.UseMvc(routes =>
@@ -105,5 +108,6 @@ namespace intraweb
 
         // Entry point for the application.
         public static void Main(string[] args) => WebApplication.Run<Startup>(args);
+
     }
 }

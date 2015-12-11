@@ -5,6 +5,7 @@ using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
 using intraweb.Models;
+using intraweb.ViewModels.Administration;
 
 namespace intraweb.Controllers
 {
@@ -27,9 +28,9 @@ namespace intraweb.Controllers
         /// </summary>
         /// <returns>All rooms</returns>
         [HttpGet]
-        public IEnumerable<Room> GetRooms()
+        public IEnumerable<RoomViewModel> GetRooms()
         {
-            return _roomRepository.GetAllRooms();
-        }      
+            return AutoMapper.Mapper.Map<IEnumerable<RoomViewModel>(_roomRepository.GetAllRooms());
+        }
     }
 }
