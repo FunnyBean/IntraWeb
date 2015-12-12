@@ -1,9 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
-using Microsoft.Data.Entity;
 using intraweb.Models;
 using intraweb.ViewModels.Administration;
 
@@ -30,7 +26,7 @@ namespace intraweb.Controllers
         [HttpGet]
         public IEnumerable<RoomViewModel> GetRooms()
         {
-            return AutoMapper.Mapper.Map<IEnumerable<RoomViewModel>(_roomRepository.GetAllRooms());
+            return AutoMapper.Mapper.Map<IEnumerable<RoomViewModel>>(_roomRepository.GetAllRooms());
         }
     }
 }
