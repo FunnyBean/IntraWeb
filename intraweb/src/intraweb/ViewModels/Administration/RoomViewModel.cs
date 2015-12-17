@@ -27,7 +27,7 @@ namespace intraweb.ViewModels.Administration
         /// The name.
         /// </value>
         [Required()]
-        [MaxLength(100)]
+        [MaxLength(50)]
         public string Name { get; set; }
 
         /// <summary>

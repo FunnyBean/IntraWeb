@@ -25,6 +25,13 @@ namespace intraweb.Models.Dummies
         /// </returns>
         public Room AddRoom(Room room)
         {
+            if (_rooms.Any(p => p.Name.Equals(room.Name, System.StringComparison.CurrentCultureIgnoreCase)))
+            {
+                throw new System.InvalidProgramException($"Room with name {room.Name}, already exist.");
+            }
+
+            room.Id = _rooms.Max(p => p.Id) + 1;
+
             _rooms.Add(room);
 
             return room;
@@ -92,7 +99,7 @@ namespace intraweb.Models.Dummies
         {
             _rooms.Add(new Room() { Id = 0, Name = "Žltá školiaca", Description = "Pekná veľká" });
             _rooms.Add(new Room() { Id = 1, Name = "Modrá školiaca", Description = "Nádherná" });
-            _rooms.Add(new Room() { Id = 0, Name = "Malá zasadačka", Description = "Nádherná zasadačka" });
+            _rooms.Add(new Room() { Id = 2, Name = "Malá zasadačka", Description = "Nádherná zasadačka" });
         }
     }
 }
