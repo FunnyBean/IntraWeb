@@ -7,7 +7,7 @@ using System;
 
 namespace intraweb.Controllers
 {
-    [Route("api/Rooms")]
+    [Route("api/rooms")]
     public class RoomsController : Controller
     {
         private IRoomRepository _roomRepository;
@@ -89,6 +89,42 @@ namespace intraweb.Controllers
                     return this.Json(new { Message = $"Saving data throw Exception '{ex.Message}'" });
                 }
 
+            }
+        }
+
+        /// <summary>
+        /// Update the room.
+        /// </summary>
+        /// <param name="roomId">Room id for update.</param>
+        /// <param name="roomVm">Room view model, whit new properties.</param>
+        [HttpPut("{roomId}")]
+        public IActionResult Put(int roomId, [FromBody] RoomViewModel roomVm)
+        {
+            if (roomVm == null || roomVm.Id != roomId)
+            {
+                this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                return this.Json(new { Message = "Invalid argument." });
+            }
+
+            var room = _roomRepository.GetRoom(roomId);
+            if (room == null)
+            {
+                this.Response.StatusCode = (int) HttpStatusCode.NoContent;
+                return this.Json(null);
+            }
+
+            room = AutoMapper.Mapper.Map<Room>(roomVm);
+            try
+            {
+                _roomRepository.Edit(room);
+                _roomRepository.Save();
+
+                return this.Json(null);
+            }
+            catch (Exception ex)
+            {
+                this.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                return this.Json(new { Message = $"Saving data throw Exception '{ex.Message}'" });
             }
         }
     }

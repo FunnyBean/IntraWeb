@@ -62,6 +62,9 @@ namespace intraweb.Models.Dummies
         /// <param name="room">The room.</param>
         public void Edit(Room room)
         {
+            var oldRoom = this.GetRoom(room.Id);
+            oldRoom.Name = room.Name;
+            oldRoom.Description = room.Description;
         }
 
         /// <summary>
