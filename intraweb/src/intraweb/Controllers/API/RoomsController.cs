@@ -36,7 +36,7 @@ namespace intraweb.Controllers
         /// Gets room by Id.
         /// </summary>
         /// <param name="roomId">Room Id.</param>
-        /// <returns>Room with specific Id.</returns>
+        /// <returns>Room with specific Id. Null if doesn't exist.</returns>
         [HttpGet("{roomId}", Name = "GetRoom")]
         public IActionResult Get(int roomId)
         {
