@@ -67,20 +67,16 @@ namespace intraweb.Controllers
 
             if (_roomRepository.GetRoom(roomVm.Name) == null)
             {
-                try
-                {
-                    var room = AutoMapper.Mapper.Map<Room>(roomVm);
-                    _roomRepository.AddRoom(room);
-                    _roomRepository.Save();
+                var room = AutoMapper.Mapper.Map<Room>(roomVm);
 
-                    this.Response.StatusCode = (int) HttpStatusCode.Created;
-                    return this.Json(AutoMapper.Mapper.Map<RoomViewModel>(room));
-                }
-                catch (Exception ex)
+                return SaveData(() =>
                 {
-                    this.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
-                    return this.Json(new { Message = $"Saving data throw Exception '{ex.Message}'" });
-                }
+                    _roomRepository.AddRoom(room);
+                },
+                () =>
+                {
+                    return this.Json(AutoMapper.Mapper.Map<RoomViewModel>(room));
+                });
             }
             else
             {
@@ -123,19 +119,46 @@ namespace intraweb.Controllers
             else
             {
                 room = AutoMapper.Mapper.Map<Room>(roomVm);
-                try
+
+                return SaveData(() =>
                 {
                     _roomRepository.Edit(room);
-                    _roomRepository.Save();
+                });
+            }
+        }
 
-                    return this.Json(null);
-                }
-                catch (Exception ex)
-                {
-                    this.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
-                    return this.Json(new { Message = $"Saving data throw Exception '{ex.Message}'" });
-                }
+        /// <summary>
+        /// Deletes the specified room.
+        /// </summary>
+        /// <param name="roomId">The room identifier.</param>
+        [HttpDelete("{roomId}")]
+        public IActionResult Delete(int roomId)
+        {
+            return SaveData(() =>
+            {
+                _roomRepository.Delete(roomId);
+            });
+        }
 
+
+        private IActionResult SaveData(Action beforeAction)
+        {
+            return SaveData(beforeAction, () => this.Json(null));
+        }
+
+        private IActionResult SaveData(Action beforeAction, Func<IActionResult> result)
+        {
+            try
+            {
+                beforeAction();
+                _roomRepository.Save();
+
+                return result();
+            }
+            catch (Exception ex)
+            {
+                this.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                return this.Json(new { Message = $"Saving data throw Exception '{ex.Message}'" });
             }
         }
     }
