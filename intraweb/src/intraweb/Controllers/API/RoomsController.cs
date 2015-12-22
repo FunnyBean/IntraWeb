@@ -4,6 +4,7 @@ using intraweb.Models;
 using intraweb.ViewModels.Administration;
 using System.Net;
 using System;
+using intraweb.Filters;
 
 namespace intraweb.Controllers
 {
@@ -59,36 +60,24 @@ namespace intraweb.Controllers
         /// <param name="roomVm">New room.</param>
         /// <returns>Added room.</returns>
         [HttpPost()]
+        [ValidateModelState]
+        [CheckArgumentsForNull]
         public IActionResult Post([FromBody] RoomViewModel roomVm)
         {
-            if (roomVm == null)
+            try
             {
-                this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
-                return this.Json(new { Message = "Invalid argument. Room can not be null." });
+                var room = AutoMapper.Mapper.Map<Room>(roomVm);
+
+                _roomRepository.AddRoom(room);
+                _roomRepository.Save();
+
+                this.Response.StatusCode = (int) HttpStatusCode.Created;
+                return this.Json(AutoMapper.Mapper.Map<RoomViewModel>(room));
             }
-            else if (!this.ModelState.IsValid)
+            catch (Exception ex)
             {
-                this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
-                return this.Json(new { Message = "Validation failed.", ModelState = this.ModelState });
-            }
-            else
-            {
-                try
-                {
-                    var room = AutoMapper.Mapper.Map<Room>(roomVm);
-
-                    _roomRepository.AddRoom(room);
-                    _roomRepository.Save();
-
-                    this.Response.StatusCode = (int) HttpStatusCode.Created;
-                    return this.Json(AutoMapper.Mapper.Map<RoomViewModel>(room));
-                }
-                catch (Exception ex)
-                {
-                    this.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
-                    return this.Json(new { Message = $"Saving data throw Exception '{ex.Message}'" });
-                }
-
+                this.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                return this.Json(new { Message = $"Saving data throw Exception '{ex.Message}'" });
             }
         }
 
@@ -98,12 +87,14 @@ namespace intraweb.Controllers
         /// <param name="roomId">Room id for update.</param>
         /// <param name="roomVm">Room view model, whit new properties.</param>
         [HttpPut("{roomId}")]
+        [ValidateModelState]
+        [CheckArgumentsForNull]
         public IActionResult Put(int roomId, [FromBody] RoomViewModel roomVm)
         {
-            if (roomVm == null || roomVm.Id != roomId)
+            if (roomVm.Id != roomId)
             {
                 this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
-                return this.Json(new { Message = "Invalid argument." });
+                return this.Json(new { Message = "Invalid argument. Id and roomVm.Id are not equal." });
             }
 
             var room = _roomRepository.GetRoom(roomId);
