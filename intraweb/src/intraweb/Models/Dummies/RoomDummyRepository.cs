@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace intraweb.Models.Dummies
@@ -88,6 +89,16 @@ namespace intraweb.Models.Dummies
         public Room GetRoom(int roomId)
         {
             return this.GetAllRooms().FirstOrDefault(p => p.Id == roomId);
+        }
+
+        /// <summary>
+        /// Gets room with specific name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>Room with specific name; if doesn't exist then return null.</returns>
+        public Room GetRoom(string name)
+        {
+            return this.GetAllRooms().FirstOrDefault(p => p.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
         }
 
         /// <summary>

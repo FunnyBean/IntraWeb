@@ -64,21 +64,31 @@ namespace intraweb.Controllers
         [CheckArgumentsForNull]
         public IActionResult Post([FromBody] RoomViewModel roomVm)
         {
-            try
-            {
-                var room = AutoMapper.Mapper.Map<Room>(roomVm);
 
-                _roomRepository.AddRoom(room);
-                _roomRepository.Save();
-
-                this.Response.StatusCode = (int) HttpStatusCode.Created;
-                return this.Json(AutoMapper.Mapper.Map<RoomViewModel>(room));
-            }
-            catch (Exception ex)
+            if (_roomRepository.GetRoom(roomVm.Name) == null)
             {
-                this.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
-                return this.Json(new { Message = $"Saving data throw Exception '{ex.Message}'" });
+                try
+                {
+                    var room = AutoMapper.Mapper.Map<Room>(roomVm);
+                    _roomRepository.AddRoom(room);
+                    _roomRepository.Save();
+
+                    this.Response.StatusCode = (int) HttpStatusCode.Created;
+                    return this.Json(AutoMapper.Mapper.Map<RoomViewModel>(room));
+                }
+                catch (Exception ex)
+                {
+                    this.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                    return this.Json(new { Message = $"Saving data throw Exception '{ex.Message}'" });
+                }
             }
+            else
+            {
+                this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                return this.Json(new { Message = $"Room with name '{roomVm.Name}' already exist." });
+            }
+
+
         }
 
         /// <summary>
@@ -104,18 +114,28 @@ namespace intraweb.Controllers
                 return this.Json(null);
             }
 
-            room = AutoMapper.Mapper.Map<Room>(roomVm);
-            try
+            room = _roomRepository.GetRoom(roomVm.Name);
+            if (room?.Id != roomId)
             {
-                _roomRepository.Edit(room);
-                _roomRepository.Save();
-
-                return this.Json(null);
+                this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                return this.Json(new { Message = $"Room with name '{roomVm.Name}' already exist." });
             }
-            catch (Exception ex)
+            else
             {
-                this.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
-                return this.Json(new { Message = $"Saving data throw Exception '{ex.Message}'" });
+                room = AutoMapper.Mapper.Map<Room>(roomVm);
+                try
+                {
+                    _roomRepository.Edit(room);
+                    _roomRepository.Save();
+
+                    return this.Json(null);
+                }
+                catch (Exception ex)
+                {
+                    this.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                    return this.Json(new { Message = $"Saving data throw Exception '{ex.Message}'" });
+                }
+
             }
         }
     }

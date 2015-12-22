@@ -26,6 +26,13 @@ namespace intraweb.Models
         Room GetRoom(int roomId);
 
         /// <summary>
+        /// Gets room with specific name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>Room with specific name; if doesn't exist then return null.</returns>
+        Room GetRoom(string name);
+
+        /// <summary>
         /// Adds the room.
         /// </summary>
         /// <param name="room">The new room.</param>
