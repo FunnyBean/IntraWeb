@@ -6,16 +6,18 @@ using System.Net;
 using System;
 using intraweb.Filters;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNet.Authorization;
 
 namespace intraweb.Controllers
 {
     [Route("api/rooms")]
+    [Authorize]
     public class RoomsController : Controller
     {
         #region Private Fields
 
         private IRoomRepository _roomRepository;
-        private ILogger<RoomsController> _logger; 
+        private ILogger<RoomsController> _logger;
 
         #endregion
 
@@ -69,8 +71,8 @@ namespace intraweb.Controllers
         /// <param name="roomVm">New room.</param>
         /// <returns>Added room.</returns>
         [HttpPost()]
-        [ValidateModelState]
-        [CheckArgumentsForNull]
+        [ValidateModelState, CheckArgumentsForNull]
+        //[Authorize(Roles = "Administrator")] - ToDo: Zakomentovane pokia¾ sa nespraví autorizácia
         public IActionResult Post([FromBody] RoomViewModel roomVm)
         {
 
@@ -103,8 +105,8 @@ namespace intraweb.Controllers
         /// <param name="roomId">Room id for update.</param>
         /// <param name="roomVm">Room view model, whit new properties.</param>
         [HttpPut("{roomId}")]
-        [ValidateModelState]
-        [CheckArgumentsForNull]
+        [ValidateModelState, CheckArgumentsForNull]
+        //[Authorize(Roles = "Administrator")] - ToDo: Zakomentovane pokia¾ sa nespraví autorizácia
         public IActionResult Put(int roomId, [FromBody] RoomViewModel roomVm)
         {
             if (roomVm.Id != roomId)
@@ -143,6 +145,7 @@ namespace intraweb.Controllers
         /// </summary>
         /// <param name="roomId">The room identifier.</param>
         [HttpDelete("{roomId}")]
+        //[Authorize(Roles = "Administrator")] - ToDo: Zakomentovane pokia¾ sa nespraví autorizácia
         public IActionResult Delete(int roomId)
         {
             return SaveData(() =>

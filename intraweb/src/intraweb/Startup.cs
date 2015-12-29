@@ -12,6 +12,8 @@ using Microsoft.Extensions.Logging;
 using intraweb.Models;
 using intraweb.Services;
 using intraweb.ViewModels.Administration;
+using Microsoft.AspNet.Authentication.Cookies;
+using System.Net;
 
 namespace intraweb
 {
@@ -46,9 +48,32 @@ namespace intraweb
                 .AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            services.AddIdentity<ApplicationUser, IdentityRole>(conf =>
+            {
+                conf.Password.RequiredLength = 8;
+                conf.Password.RequireNonLetterOrDigit = false;
+                conf.Password.RequireLowercase = false;
+                conf.Password.RequireUppercase = false;
+                conf.Cookies.ApplicationCookie.Events = new CookieAuthenticationEvents()
+                {
+                    OnRedirectToLogin = ctx =>
+                    {
+                        if (ctx.Request.Path.StartsWithSegments("/api") &&
+                            ctx.Response.StatusCode == (int) HttpStatusCode.OK)
+                        {
+                            ctx.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+                        }
+                        else
+                        {
+                            ctx.Response.Redirect(ctx.RedirectUri);
+                        }
+
+                        return Task.FromResult(0);
+                    }
+                };
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
 
             services.AddMvc();
 
@@ -57,7 +82,7 @@ namespace intraweb
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
             //services.AddInstance<IRoomRepository>(new Models.Dummies.RoomDummyRepository()); //Testovacia implementacia
-            services.AddTransient<IRoomRepository, RoomsReposiotry>();
+            services.AddScoped<IRoomRepository, RoomsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

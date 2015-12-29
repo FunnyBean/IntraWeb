@@ -10,7 +10,7 @@ namespace intraweb.Models
     /// Rooms repository with EF
     /// </summary>
     /// <seealso cref="intraweb.Models.IRoomRepository" />
-    public class RoomsReposiotry : IRoomRepository
+    public class RoomsRepository : IRoomRepository
     {
 
         #region Private Fields
@@ -20,10 +20,10 @@ namespace intraweb.Models
         #endregion
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RoomsReposiotry"/> class.
+        /// Initializes a new instance of the <see cref="RoomsRepository"/> class.
         /// </summary>
         /// <param name="dbCondext">The database condext.</param>
-        public RoomsReposiotry(ApplicationDbContext dbCondext)
+        public RoomsRepository(ApplicationDbContext dbCondext)
         {
             _dbCondext = dbCondext;
         }
