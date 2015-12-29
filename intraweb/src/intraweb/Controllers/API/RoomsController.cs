@@ -75,6 +75,7 @@ namespace intraweb.Controllers
                 },
                 () =>
                 {
+                    this.Response.StatusCode = (int) HttpStatusCode.Created;
                     return this.Json(AutoMapper.Mapper.Map<RoomViewModel>(room));
                 });
             }

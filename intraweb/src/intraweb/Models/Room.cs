@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,6 +25,8 @@ namespace intraweb.Models
         /// <value>
         /// The name.
         /// </value>
+        [MaxLength(50)]
+        [Required()]
         public string Name { get; set; }
 
         /// <summary>
@@ -32,6 +35,7 @@ namespace intraweb.Models
         /// <value>
         /// The description.
         /// </value>
+        [MaxLength(255)]
         public string Description { get; set; }
     }
 }

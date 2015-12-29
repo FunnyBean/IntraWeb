@@ -24,7 +24,7 @@ namespace intraweb.Models.Dummies
         /// <returns>
         /// Added room.
         /// </returns>
-        public Room AddRoom(Room room)
+        public void AddRoom(Room room)
         {
             if (_rooms.Any(p => p.Name.Equals(room.Name, System.StringComparison.CurrentCultureIgnoreCase)))
             {
@@ -34,8 +34,6 @@ namespace intraweb.Models.Dummies
             room.Id = _rooms.Max(p => p.Id) + 1;
 
             _rooms.Add(room);
-
-            return room;
         }
 
         /// <summary>

@@ -56,7 +56,8 @@ namespace intraweb
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
-            services.AddInstance<IRoomRepository>(new Models.Dummies.RoomDummyRepository()); //Testovacia implementacia
+            //services.AddInstance<IRoomRepository>(new Models.Dummies.RoomDummyRepository()); //Testovacia implementacia
+            services.AddTransient<IRoomRepository, RoomsReposiotry>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

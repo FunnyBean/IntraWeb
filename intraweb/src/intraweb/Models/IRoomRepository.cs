@@ -37,7 +37,7 @@ namespace intraweb.Models
         /// </summary>
         /// <param name="room">The new room.</param>
         /// <returns>Added room.</returns>
-        Room AddRoom(Room room);
+        void AddRoom(Room room);
 
         /// <summary>
         /// Edits the specified room.
