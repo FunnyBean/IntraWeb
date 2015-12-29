@@ -4,7 +4,6 @@
   "compilationOptions": {
     "emitEntryPoint": true
   },
-
   "dependencies": {
     "AutoMapper": "4.1.1",
     "EntityFramework.Commands": "7.0.0-rc1-final",
@@ -27,17 +26,14 @@
     "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final",
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-rc1-final"
   },
-
   "commands": {
     "web": "Microsoft.AspNet.Server.Kestrel",
     "ef": "EntityFramework.Commands"
   },
-
   "frameworks": {
     "dnx451": { },
     "dnxcore50": { }
   },
-
   "exclude": [
     "wwwroot",
     "node_modules"
@@ -48,5 +44,8 @@
   ],
   "scripts": {
     "prepublish": [ "npm install", "bower install", "gulp clean", "gulp min" ]
+  },
+  "configurations": {
+    "Testing": { }
   }
 }

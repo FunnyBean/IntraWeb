@@ -5,21 +5,30 @@ using intraweb.ViewModels.Administration;
 using System.Net;
 using System;
 using intraweb.Filters;
+using Microsoft.Extensions.Logging;
 
 namespace intraweb.Controllers
 {
     [Route("api/rooms")]
     public class RoomsController : Controller
     {
+        #region Private Fields
+
         private IRoomRepository _roomRepository;
+        private ILogger<RoomsController> _logger; 
+
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RoomsController"/> class.
         /// </summary>
         /// <param name="roomRepository">The room repository.</param>
-        public RoomsController(IRoomRepository roomRepository)
+        /// <param name="logger">Logger.</param>
+        public RoomsController(IRoomRepository roomRepository,
+                      ILogger<RoomsController> logger)
         {
             _roomRepository = roomRepository;
+            _logger = logger;
         }
 
         /// <summary>
@@ -101,6 +110,7 @@ namespace intraweb.Controllers
             if (roomVm.Id != roomId)
             {
                 this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                _logger.LogWarning($"Invalid argument. Id '{roomId}' and roomVm.Id '{roomVm.Id}' are not equal.");
                 return this.Json(new { Message = "Invalid argument. Id and roomVm.Id are not equal." });
             }
 
@@ -158,6 +168,7 @@ namespace intraweb.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError("Exception occured when saving data.", ex);
                 this.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                 return this.Json(new { Message = $"Saving data throw Exception '{ex.Message}'" });
             }
