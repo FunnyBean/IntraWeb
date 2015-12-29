@@ -112,8 +112,9 @@ namespace intraweb.Controllers
             if (roomVm.Id != roomId)
             {
                 this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
-                _logger.LogWarning($"Invalid argument. Id '{roomId}' and roomVm.Id '{roomVm.Id}' are not equal.");
-                return this.Json(new { Message = "Invalid argument. Id and roomVm.Id are not equal." });
+                var message = $"Invalid argument. Id '{roomId}' and roomVm.Id '{roomVm.Id}' are not equal.";
+                _logger.LogWarning(message);
+                return this.Json(new { Message = message });
             }
 
             var room = _roomRepository.GetRoom(roomId);
