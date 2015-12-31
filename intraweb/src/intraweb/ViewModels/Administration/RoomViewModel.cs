@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace intraweb.ViewModels.Administration
+namespace IntraWeb.ViewModels.Administration
 {
     /// <summary>
     /// Room View Model for Room model

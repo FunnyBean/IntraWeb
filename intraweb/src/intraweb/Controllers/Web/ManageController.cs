@@ -7,11 +7,11 @@ using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
-using intraweb.Models;
-using intraweb.Services;
-using intraweb.ViewModels.Manage;
+using IntraWeb.Models;
+using IntraWeb.Services;
+using IntraWeb.ViewModels.Manage;
 
-namespace intraweb.Controllers
+namespace IntraWeb.Controllers
 {
     [Authorize]
     public class ManageController : Controller

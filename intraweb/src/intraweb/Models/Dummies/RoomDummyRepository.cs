@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace intraweb.Models.Dummies
+namespace IntraWeb.Models.Dummies
 {
     /// <summary>
     /// Room dummy repository for testing

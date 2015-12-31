@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Data.Entity.Migrations;
 using Microsoft.Data.Entity.Metadata;
 
-namespace intraweb.Migrations
+namespace IntraWeb.Migrations
 {
     public partial class AddRooms : Migration
     {

@@ -9,11 +9,11 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
 using Microsoft.Extensions.Logging;
-using intraweb.Models;
-using intraweb.Services;
-using intraweb.ViewModels.Account;
+using IntraWeb.Models;
+using IntraWeb.Services;
+using IntraWeb.ViewModels.Account;
 
-namespace intraweb.Controllers
+namespace IntraWeb.Controllers
 {
     [Authorize]
     public class AccountController : Controller

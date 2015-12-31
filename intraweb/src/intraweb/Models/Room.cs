@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace intraweb.Models
+namespace IntraWeb.Models
 {
     /// <summary>
     /// Model, which represet Room.

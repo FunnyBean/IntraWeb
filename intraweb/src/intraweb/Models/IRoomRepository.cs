@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace intraweb.Models
+namespace IntraWeb.Models
 {
     /// <summary>
     /// Interface, which describe repository for CRUD operations on the Room model.

@@ -3,9 +3,9 @@ using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Data.Entity.Metadata;
 using Microsoft.Data.Entity.Migrations;
-using intraweb.Models;
+using IntraWeb.Models;
 
-namespace intraweb.Migrations
+namespace IntraWeb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20151222193936_AddRooms")]
@@ -17,7 +17,7 @@ namespace intraweb.Migrations
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("intraweb.Models.Room", b =>
+            modelBuilder.Entity("IntraWeb.Models.Room", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();

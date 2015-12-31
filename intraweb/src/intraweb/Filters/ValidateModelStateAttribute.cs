@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Filters;
 
-namespace intraweb.Filters
+namespace IntraWeb.Filters
 {
     /// <summary>
     /// Action filter attribute for model validating.

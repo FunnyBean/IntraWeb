@@ -1,6 +1,6 @@
-﻿using intraweb.Models;
+﻿using IntraWeb.Models;
 
-namespace intraweb.ViewModels.Administration
+namespace IntraWeb.ViewModels.Administration
 {
     /// <summary>
     /// Class for initialize model to view model and revers mapping in Administration section.

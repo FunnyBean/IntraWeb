@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using Microsoft.AspNet.Mvc;
-using intraweb.Models;
-using intraweb.ViewModels.Administration;
+using IntraWeb.Models;
+using IntraWeb.ViewModels.Administration;
 using System.Net;
 using System;
-using intraweb.Filters;
+using IntraWeb.Filters;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNet.Authorization;
 
-namespace intraweb.Controllers
+namespace IntraWeb.Controllers
 {
     [Route("api/rooms")]
     [Authorize]
@@ -114,29 +114,29 @@ namespace intraweb.Controllers
                 this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 var message = $"Invalid argument. Id '{roomId}' and roomVm.Id '{roomVm.Id}' are not equal.";
                 _logger.LogWarning(message);
+
                 return this.Json(new { Message = message });
             }
 
-            var room = _roomRepository.GetRoom(roomId);
-            if (room == null)
+            var editedRoom = _roomRepository.GetRoom(roomId);
+            if (editedRoom == null)
             {
                 this.Response.StatusCode = (int) HttpStatusCode.NoContent;
                 return this.Json(null);
             }
-
-            room = _roomRepository.GetRoom(roomVm.Name);
-            if (room?.Id != roomId)
+            
+            if (ExistAnotherRoomWithName(roomVm.Name, roomId))
             {
                 this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 return this.Json(new { Message = $"Room with name '{roomVm.Name}' already exist." });
             }
             else
-            {
-                room = AutoMapper.Mapper.Map<Room>(roomVm);
+            {               
+                editedRoom = AutoMapper.Mapper.Map(roomVm, editedRoom);
 
                 return SaveData(() =>
                 {
-                    _roomRepository.Edit(room);
+                    _roomRepository.Edit(editedRoom);
                 });
             }
         }
@@ -155,6 +155,12 @@ namespace intraweb.Controllers
             });
         }
 
+        private bool ExistAnotherRoomWithName(string roomName, int roomId)
+        {
+            var room = _roomRepository.GetRoom(roomName);
+
+            return room != null && room.Id != roomId;
+        }
 
         private IActionResult SaveData(Action beforeAction)
         {

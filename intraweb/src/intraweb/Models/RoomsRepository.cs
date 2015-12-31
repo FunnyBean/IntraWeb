@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.Entity;
 
-namespace intraweb.Models
+namespace IntraWeb.Models
 {
     /// <summary>
     /// Rooms repository with EF
     /// </summary>
-    /// <seealso cref="intraweb.Models.IRoomRepository" />
+    /// <seealso cref="IntraWeb.Models.IRoomRepository" />
     public class RoomsRepository : IRoomRepository
     {
 
