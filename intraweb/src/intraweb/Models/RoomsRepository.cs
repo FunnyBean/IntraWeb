@@ -15,17 +15,17 @@ namespace IntraWeb.Models
 
         #region Private Fields
 
-        private ApplicationDbContext _dbCondext;
+        private ApplicationDbContext _dbContext;
 
         #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RoomsRepository"/> class.
         /// </summary>
-        /// <param name="dbCondext">The database condext.</param>
-        public RoomsRepository(ApplicationDbContext dbCondext)
+        /// <param name="dbCondext">The database context.</param>
+        public RoomsRepository(ApplicationDbContext dbContext)
         {
-            _dbCondext = dbCondext;
+            _dbContext = dbContext;
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace IntraWeb.Models
         /// </returns>
         public void AddRoom(Room room)
         {
-            _dbCondext.Rooms.Add(room);
+            _dbContext.Rooms.Add(room);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace IntraWeb.Models
         /// <param name="room">The room for deleting.</param>
         public void Delete(Room room)
         {
-            _dbCondext.Rooms.Remove(room);
+            _dbContext.Rooms.Remove(room);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace IntraWeb.Models
         /// <param name="room">The room.</param>
         public void Edit(Room room)
         {
-            _dbCondext.Entry(room).State = EntityState.Modified;
+            _dbContext.Entry(room).State = EntityState.Modified;
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace IntraWeb.Models
         /// </returns>
         public IQueryable<Room> GetAllRooms()
         {
-            return _dbCondext.Rooms;
+            return _dbContext.Rooms;
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace IntraWeb.Models
         /// </returns>
         public Room GetRoom(string name)
         {
-            return _dbCondext.Rooms.FirstOrDefault(p => p.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+            return _dbContext.Rooms.FirstOrDefault(p => p.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace IntraWeb.Models
         /// </returns>
         public Room GetRoom(int roomId)
         {
-            return _dbCondext.Rooms.FirstOrDefault(p => p.Id == roomId);
+            return _dbContext.Rooms.FirstOrDefault(p => p.Id == roomId);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace IntraWeb.Models
         /// </summary>
         public void Save()
         {
-            _dbCondext.SaveChanges();
+            _dbContext.SaveChanges();
         }
     }
 }
