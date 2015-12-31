@@ -72,7 +72,7 @@ namespace IntraWeb.Controllers
         /// <returns>Added room.</returns>
         [HttpPost()]
         [ValidateModelState, CheckArgumentsForNull]
-        //[Authorize(Roles = "Administrator")] - ToDo: Zakomentovane pokia¾ sa nespraví autorizácia
+        //[Authorize(Roles = "Administrator")] - ToDo: Zakomentovane pokiaÂ¾ sa nespravÃ­ autorizÃ¡cia
         public IActionResult Post([FromBody] RoomViewModel roomVm)
         {
 
@@ -103,10 +103,10 @@ namespace IntraWeb.Controllers
         /// Update the room.
         /// </summary>
         /// <param name="roomId">Room id for update.</param>
-        /// <param name="roomVm">Room view model, whit new properties.</param>
+        /// <param name="roomVm">Room view model, with new properties.</param>
         [HttpPut("{roomId}")]
         [ValidateModelState, CheckArgumentsForNull]
-        //[Authorize(Roles = "Administrator")] - ToDo: Zakomentovane pokia¾ sa nespraví autorizácia
+        //[Authorize(Roles = "Administrator")] - ToDo: Zakomentovane pokiaÂ¾ sa nespravÃ­ autorizÃ¡cia
         public IActionResult Put(int roomId, [FromBody] RoomViewModel roomVm)
         {
             if (roomVm.Id != roomId)
@@ -146,7 +146,7 @@ namespace IntraWeb.Controllers
         /// </summary>
         /// <param name="roomId">The room identifier.</param>
         [HttpDelete("{roomId}")]
-        //[Authorize(Roles = "Administrator")] - ToDo: Zakomentovane pokia¾ sa nespraví autorizácia
+        //[Authorize(Roles = "Administrator")] - ToDo: Zakomentovane pokiaÂ¾ sa nespravÃ­ autorizÃ¡cia
         public IActionResult Delete(int roomId)
         {
             return SaveData(() =>
