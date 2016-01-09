@@ -8,7 +8,7 @@ using IntraWeb.Filters;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNet.Authorization;
 
-namespace IntraWeb.Controllers
+namespace IntraWeb.Controllers 
 {
     [Route("api/rooms")]
     [Authorize]
