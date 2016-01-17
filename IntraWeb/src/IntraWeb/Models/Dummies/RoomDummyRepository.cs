@@ -31,7 +31,7 @@ namespace IntraWeb.Models.Dummies
                 throw new System.InvalidProgramException($"Room with name {room.Name}, already exist.");
             }
 
-            room.Id = _rooms.Max(p => p.Id) + 1;
+            room.Id = _rooms?.Count > 0 ? _rooms.Max(p => p.Id) + 1 : 0;
 
             _rooms.Add(room);
         }
@@ -105,6 +105,14 @@ namespace IntraWeb.Models.Dummies
         /// <returns></returns>
         public void Save()
         {
+        }
+
+        /// <summary>
+        /// Delete all rooms.
+        /// </summary>
+        public void ClearAll()
+        {
+            _rooms.Clear();
         }
 
         private void CreateTestingData()
