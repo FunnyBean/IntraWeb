@@ -75,10 +75,11 @@ namespace IntraWeb
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
-            
+
+            services.AddMvc();
+
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
 
             //services.AddInstance<IRoomRepository>(new Models.Dummies.RoomDummyRepository()); //Testovacia implementacia
             services.AddScoped<IRoomRepository, RoomsRepository>();
@@ -123,7 +124,7 @@ namespace IntraWeb
             AdministrationModelMapping.ConfigureRoomMapping();
 
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
-                        
+            app.UseMvc();            
         }
 
         // Entry point for the application.
