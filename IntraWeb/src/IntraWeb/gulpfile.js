@@ -1,4 +1,4 @@
-﻿/// <binding Clean='clean' />
+﻿/// <binding AfterBuild="default" Clean="clean" />
 "use strict";
 
 var gulp = require("gulp"),
@@ -8,8 +8,28 @@ var gulp = require("gulp"),
     uglify = require("gulp-uglify");
 
 var paths = {
-    webroot: "./wwwroot/"
+    webroot: "./wwwroot/",
+    npm: "./node_modules/",
+    lib: "./wwwroot/lib/",
+    scripts: "./Scripts/"
 };
+
+var libs = [
+    paths.npm + "angular2/bundles/angular2.dev.js",
+    paths.npm + "angular2/bundles/http.dev.js",
+    paths.npm + "angular2/bundles/angular2-polyfills.js",
+    paths.npm + "es6-shim/es6-shim.js",
+    paths.npm + "systemjs/dist/system.js",
+    paths.npm + "systemjs/dist/system-polyfills.js"
+];
+
+gulp.task("rxjs", function () {
+    return gulp.src(paths.npm + "rxjs/**/*.js").pipe(gulp.dest(paths.lib + "rxjs/"));
+});
+
+gulp.task("libs", ["rxjs"], function () {
+    return gulp.src(libs).pipe(gulp.dest(paths.lib));
+});
 
 paths.js = paths.webroot + "js/**/*.js";
 paths.minJs = paths.webroot + "js/**/*.min.js";
@@ -43,3 +63,5 @@ gulp.task("min:css", function () {
 });
 
 gulp.task("min", ["min:js", "min:css"]);
+
+gulp.task("default", ["libs", "min"]);
