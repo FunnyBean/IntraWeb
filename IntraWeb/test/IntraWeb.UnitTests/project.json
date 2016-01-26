@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "description": "IntraWeb.UnitTests Class Library",
   "authors": [ "Mino" ],
@@ -6,8 +6,11 @@
   "projectUrl": "",
   "licenseUrl": "",
   "frameworks": {
-    "dnx451": { },
-    "dnxcore50": { }
+    "dnx451": {
+      "dependencies": {
+        "NSubstitute": "1.9.2"
+      }
+    }
   },
   "dependencies": {
     "IntraWeb": "1.0.0",

@@ -13,7 +13,7 @@ using System.Net;
 using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.AspNet.Authorization;
-using IntraWeb.UnitTests.Extensions;
+using IntraWeb.UnitTests.Filters;
 using IntraWeb.Filters;
 
 namespace IntraWeb.UnitTests.Controllers.Api
