@@ -29,7 +29,7 @@ namespace IntraWeb.UnitTests.Controllers.Api
         #region "Get rooms"
 
         [Fact]
-        public void GetRoomsReturnEmptyListWhenRoomsDonotExist()
+        public void GetRoomsReturnEmptyListWhenRoomsDoesnotExist()
         {
             // Arrange
             var target = CreateRoomsController(null);
@@ -74,8 +74,6 @@ namespace IntraWeb.UnitTests.Controllers.Api
 
 
         #region "GetRoom"
-
-        //Get Item
 
         [Fact()]
         public void GetRoomReturnCorrectRoom()
@@ -316,10 +314,301 @@ namespace IntraWeb.UnitTests.Controllers.Api
 
         #endregion
 
-        //ToDo: UnitTesty na autorizaciu. Az ked bude autorizacia hotova.
-        //ToDo: Unit Testy pre Put 
-        //ToDo: Unit testy pre Delete
-        //ToDo: Unit testy pre Attributy
+
+        #region "Authoritzation"
+
+        //ToDo: Testy na autorizaciu az ked bude autorizacia hotova.
+
+        #endregion
+
+
+        #region "Put"
+
+        [Fact]
+        public void PutIncorrectId()
+        {
+            // Arrange
+            var target = CreateRoomsController(null);
+
+            // Act
+            var response = target.Put(1, new RoomViewModel() { Id = 5, Name = "First" });
+
+            // Assert
+            Assert.Equal((int) HttpStatusCode.BadRequest, target.Response.StatusCode);
+        }
+
+        [Fact]
+        public void PutNameWhichAlreadyExist()
+        {
+            // Arrange
+            var target = CreateRoomsController(rep =>
+            {
+                rep.AddRoom(new Models.Room()
+                {
+                    Name = "First",
+                    Description = "First room"
+                });
+                rep.AddRoom(new Models.Room()
+                {
+                    Name = "Second",
+                    Description = "Second room"
+                });
+            });
+
+            // Act
+            var response = target.Put(1, new RoomViewModel() { Id = 1, Name = "First" });
+
+            // Assert
+            Assert.Equal((int) HttpStatusCode.BadRequest, target.Response.StatusCode);
+        }
+
+        [Fact]
+        public void PutRoomDoesntExist()
+        {
+            // Arrange
+            var target = CreateRoomsController(rep =>
+            {
+                rep.AddRoom(new Models.Room()
+                {
+                    Name = "First",
+                    Description = "First room"
+                });
+                rep.AddRoom(new Models.Room()
+                {
+                    Name = "Second",
+                    Description = "Second room"
+                });
+            });
+
+            // Act
+            var response = target.Put(4, new RoomViewModel() { Id = 4, Name = "White" });
+
+            // Assert
+            Assert.Equal((int) HttpStatusCode.NoContent, target.Response.StatusCode);
+        }
+
+        [Fact]
+        public void PutRoomCorrectUpdate()
+        {
+            // Arrange
+            RoomDummyRepository repository = null;
+            var target = CreateRoomsController(rep =>
+            {
+                rep.AddRoom(new Models.Room()
+                {
+                    Name = "First",
+                    Description = "First room"
+                });
+                rep.AddRoom(new Models.Room()
+                {
+                    Name = "Second",
+                    Description = "Second room"
+                });
+                repository = rep;
+            });
+
+            // Act
+            var response = target.Put(1, new RoomViewModel() { Id = 1, Name = "White", Description = "Room whit white color" });
+            var roomForTest = repository.GetRoom(1);
+
+            // Assert
+            Assert.Equal("White", roomForTest.Name);
+            Assert.Equal("Room whit white color", roomForTest.Description);
+        }
+
+        [Fact]
+        public void PutRoomCorrectUpdateOkResponseStatusCode()
+        {
+            // Arrange
+            RoomDummyRepository repository = null;
+            var target = CreateRoomsController(rep =>
+            {
+                rep.AddRoom(new Models.Room()
+                {
+                    Name = "First",
+                    Description = "First room"
+                });
+                rep.AddRoom(new Models.Room()
+                {
+                    Name = "Second",
+                    Description = "Second room"
+                });
+                repository = rep;
+            });
+
+            // Act
+            var response = target.Put(1, new RoomViewModel()
+            {
+                Id = 1,
+                Name = "White",
+                Description = "Room whit white color"
+            });
+
+            // Assert
+            Assert.Equal((int) HttpStatusCode.OK, target.Response.StatusCode);
+        }
+
+        [Fact]
+        public void PutInternalServerErrorStatusCode()
+        {
+            // Arrange
+            var target = CreateRoomsController((rep) =>
+            {
+                rep.AddRoom(new Models.Room()
+                {
+                    Name = "First",
+                    Description = "First room"
+                });
+                rep.ThrowExceptionWhenSaveData = true;
+
+            });
+
+            // Act
+            var response = target.Put(0, new RoomViewModel()
+            {
+                Id = 0,
+                Name = "Second",
+                Description = "Second room"
+            });
+
+            // Assert
+            Assert.Equal((int) HttpStatusCode.InternalServerError, target.Response.StatusCode);
+        }
+
+        [Fact()]
+        public void PutMethodHasCheckArgumentsForNullAttribute()
+        {
+            // Arrange
+            var target = new RoomsController(null, null);
+            Func<int, RoomViewModel, IActionResult> method = target.Put;
+
+            // Act
+            var hasCheckArgumentsForNullAttribute = method.HasMethodActionFilterAttribute<CheckArgumentsForNullAttribute>();
+
+            // Assert
+            Assert.True(hasCheckArgumentsForNullAttribute);
+        }
+
+        [Fact()]
+        public void PutMethodHasValidateModelStateAttribute()
+        {
+            // Arrange
+            var target = new RoomsController(null, null);
+            Func<int, RoomViewModel, IActionResult> method = target.Put;
+
+            // Act
+            var hasValidateModelStateAttribute = method.HasMethodActionFilterAttribute<ValidateModelStateAttribute>();
+
+            // Assert
+            Assert.True(hasValidateModelStateAttribute);
+        }
+
+        #endregion
+
+
+        #region "Delete"
+
+        [Fact]
+        public void DeleteRoomOkResponseStatusCode()
+        {
+            // Arrange
+            var target = CreateRoomsController(rep =>
+            {
+                rep.AddRoom(new Models.Room()
+                {
+                    Name = "First",
+                    Description = "First room"
+                });
+                rep.AddRoom(new Models.Room()
+                {
+                    Name = "Second",
+                    Description = "Second room"
+                });
+            });
+
+            // Act
+            var response = target.Delete(0);
+
+            // Assert
+            Assert.Equal((int) HttpStatusCode.OK, target.Response.StatusCode);
+        }
+
+        [Fact]
+        public void DeleteRoomCorrectRemoveRoom()
+        {
+            // Arrange
+            RoomDummyRepository repository = null;
+            var target = CreateRoomsController(rep =>
+            {
+                rep.AddRoom(new Models.Room()
+                {
+                    Name = "First",
+                    Description = "First room"
+                });
+                rep.AddRoom(new Models.Room()
+                {
+                    Name = "Second",
+                    Description = "Second room"
+                });
+                repository = rep;
+            });
+
+            // Act
+            var response = target.Delete(0);
+
+            // Assert
+            Assert.Equal(1, repository.GetAllRooms().Count());
+        }
+
+        [Fact]
+        public void DeleteInternalServerErrorStatusCode()
+        {
+            // Arrange
+            var target = CreateRoomsController((rep) =>
+            {
+                rep.AddRoom(new Models.Room()
+                {
+                    Name = "First",
+                    Description = "First room"
+                });
+                rep.ThrowExceptionWhenSaveData = true;
+
+            });
+
+            // Act
+            var response = target.Delete(0);
+
+            // Assert
+            Assert.Equal((int) HttpStatusCode.InternalServerError, target.Response.StatusCode);
+        }
+
+        [Fact]
+        public void DeleteRoomWhichDoesntExistIsOk()
+        {
+            // Arrange
+            var target = CreateRoomsController(rep =>
+            {
+                rep.AddRoom(new Models.Room()
+                {
+                    Name = "First",
+                    Description = "First room"
+                });
+                rep.AddRoom(new Models.Room()
+                {
+                    Name = "Second",
+                    Description = "Second room"
+                });
+            });
+
+            // Act
+            var response = target.Delete(6);
+
+            // Assert
+            Assert.Equal((int) HttpStatusCode.OK, target.Response.StatusCode);
+        }
+
+        #endregion
+
 
         #region "Helpers"
 
@@ -347,5 +636,5 @@ namespace IntraWeb.UnitTests.Controllers.Api
 
         #endregion
 
-    }   
+    }
 }
