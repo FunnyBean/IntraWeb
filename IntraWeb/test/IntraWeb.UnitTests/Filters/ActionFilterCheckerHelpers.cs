@@ -12,7 +12,7 @@ namespace IntraWeb.UnitTests.Filters
     /// <summary>
     /// Class for checking Action filter attributes
     /// </summary>
-    public static  class ActionFilterCheckerExtensions
+    public static class ActionFilterCheckerExtensions
     {
         /// <summary>
         /// Has method custom action filter attribute?
@@ -34,13 +34,25 @@ namespace IntraWeb.UnitTests.Filters
         /// <summary>
         /// Creates the action executing context for testing.
         /// </summary>
+        /// <returns>The action executing context for testing.</returns>
+        public static ActionExecutingContext CreateActionExecutingContext()
+        {
+            return CreateActionExecutingContext(null);
+        }
+
+        /// <summary>
+        /// Creates the action executing context for testing.
+        /// </summary>
         /// <param name="initActionArguments">Action for init action arguments.</param>
         /// <returns>The action executing context for testing.</returns>
         public static ActionExecutingContext CreateActionExecutingContext(Action<Dictionary<string, object>> initActionArguments)
         {
             var actionArguments = new Dictionary<string, object>();
 
-            initActionArguments(actionArguments);
+            if (initActionArguments != null)
+            {
+                initActionArguments(actionArguments);
+            }
 
             var executingContext = new ActionExecutingContext(new ActionContext
             {
