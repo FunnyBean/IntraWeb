@@ -18,6 +18,11 @@ namespace IntraWeb.Models.Dummies
         }
 
         /// <summary>
+        /// Throw exception when saving data? For unit tests.
+        /// </summary>
+        public bool ThrowExceptionWhenSaveData { get; set; } = false;
+
+        /// <summary>
         /// Adds the room.
         /// </summary>
         /// <param name="room">The new room.</param>
@@ -31,7 +36,7 @@ namespace IntraWeb.Models.Dummies
                 throw new System.InvalidProgramException($"Room with name {room.Name}, already exist.");
             }
 
-            room.Id = _rooms.Max(p => p.Id) + 1;
+            room.Id = _rooms?.Count > 0 ? _rooms.Max(p => p.Id) + 1 : 0;
 
             _rooms.Add(room);
         }
@@ -102,9 +107,21 @@ namespace IntraWeb.Models.Dummies
         /// <summary>
         /// Save changes.
         /// </summary>
-        /// <returns></returns>
+        /// <exception cref="Exception">Testing exception if property ThrowExceptionWhenSaveData is set to true.</exception>
         public void Save()
         {
+            if (this.ThrowExceptionWhenSaveData)
+            {
+                throw new Exception("Testing exception.");
+            }
+        }
+
+        /// <summary>
+        /// Delete all rooms.
+        /// </summary>
+        public void ClearAll()
+        {
+            _rooms.Clear();
         }
 
         private void CreateTestingData()
