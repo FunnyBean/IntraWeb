@@ -8,17 +8,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('angular2/core');
-var browser_1 = require('angular2/platform/browser');
-var App = (function () {
-    function App() {
+var LoginComponent = (function () {
+    function LoginComponent() {
     }
-    App = __decorate([
+    LoginComponent = __decorate([
         core_1.Component({
-            selector: 'app',
-            template: '<h1>FunnyBean App</h1>'
+            selector: 'login',
+            templateUrl: 'app/components/login/login.component.html',
+            styleUrls: ['app/components/login/login.component.css']
         }), 
         __metadata('design:paramtypes', [])
-    ], App);
-    return App;
+    ], LoginComponent);
+    return LoginComponent;
 })();
-browser_1.bootstrap(App);
+exports.LoginComponent = LoginComponent;
