@@ -29,7 +29,7 @@ namespace IntraWeb.UnitTests.Controllers.Api
         #region "Get rooms"
 
         [Fact]
-        public void GetRoomsReturnEmptyListWhenRoomsDoesnotExist()
+        public void GetRoomsReturnEmptyListWhenRoomsDoesNotExist()
         {
             // Arrange
             var target = CreateRoomsController(null);
