@@ -10,12 +10,9 @@ using IntraWeb.ViewModels.Administration;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Http.Internal;
 using System.Net;
-using System.Linq.Expressions;
-using System.Reflection;
-using Microsoft.AspNet.Authorization;
 using IntraWeb.UnitTests.Filters;
 using IntraWeb.Filters;
-using IntraWeb.Controllers.Api;
+using IntraWeb.Controllers.Api.v1;
 
 namespace IntraWeb.UnitTests.Controllers.Api
 {
