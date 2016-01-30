@@ -1,5 +1,6 @@
 ﻿using IntraWeb.Resources.Email;
 using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MimeKit;
@@ -55,7 +56,7 @@ namespace IntraWeb.Services
 
                     using (var client = new SmtpClient())
                     {
-                        client.Connect(smtp, port, useSsl);
+                        client.Connect(smtp, port, SecureSocketOptions.StartTls);
 
                         if (useSsl)
                         {
