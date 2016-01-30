@@ -15,6 +15,7 @@ using System.Reflection;
 using Microsoft.AspNet.Authorization;
 using IntraWeb.UnitTests.Filters;
 using IntraWeb.Filters;
+using IntraWeb.Controllers.Api;
 
 namespace IntraWeb.UnitTests.Controllers.Api
 {
