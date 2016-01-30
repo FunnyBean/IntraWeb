@@ -116,6 +116,7 @@ namespace IntraWeb
 
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
 
+            app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseIdentity();
@@ -123,13 +124,7 @@ namespace IntraWeb
             AdministrationModelMapping.ConfigureRoomMapping();
 
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseMvc();            
         }
 
         // Entry point for the application.
