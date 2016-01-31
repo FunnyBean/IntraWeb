@@ -14,7 +14,7 @@ using IntraWeb.UnitTests.Filters;
 using IntraWeb.Filters;
 using IntraWeb.Controllers.Api.v1;
 
-namespace IntraWeb.UnitTests.Controllers.Api
+namespace IntraWeb.UnitTests.Controllers.Api.v1
 {
     public class RoomsControllerTest
     {

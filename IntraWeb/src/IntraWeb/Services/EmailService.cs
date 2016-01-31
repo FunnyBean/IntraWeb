@@ -35,34 +35,29 @@ namespace IntraWeb.Services
         {
             try
             {
-                var builder = new ConfigurationBuilder();
-                builder.AddJsonFile("appsettings.json");
-                builder.AddEnvironmentVariables();
-                var config = builder.Build();
-
-                string smtp = config["Email:SMTP:serverAddress"];
-                int port = int.Parse(config["Email:SMTP:port"]);
-                bool useSsl = bool.Parse(config["Email:SMTP:useSsl"]);
-                string userName = config["Email:SMTP:userName"];
-                string password = config["Email:SMTP:password"];
-
                 if (!string.IsNullOrWhiteSpace(email))
                 {
+                    var emailConfigure = this.GetConfiguration();
                     var msg = new MimeMessage();
-                    msg.From.Add(new MailboxAddress(Encoding.UTF8, EmailStringTable.MailboxNameFrom, userName));
+                    msg.From.Add(new MailboxAddress(Encoding.UTF8, EmailStringTable.MailboxNameFrom, emailConfigure.userName));
                     msg.To.Add(new MailboxAddress(Encoding.UTF8, EmailStringTable.MailboxNameTo, email));
                     msg.Subject = subject;
                     msg.Body = this.CreateHTMLEmail(message);
 
                     using (var client = new SmtpClient())
                     {
-                        client.Connect(smtp, port, SecureSocketOptions.StartTls);
-
-                        if (useSsl)
+                        if (emailConfigure.useSsl)
                         {
-                            client.Authenticate(userName, password);
+                            client.Connect(emailConfigure.smtp, emailConfigure.port, SecureSocketOptions.StartTls);
+                        }
+                        else
+                        {
+                            client.Connect(emailConfigure.smtp, emailConfigure.port, false);
+                            client.AuthenticationMechanisms.Remove("XOAUTH2");
+                            
                         }
 
+                        client.Authenticate(emailConfigure.userName, emailConfigure.password);
                         client.Send(msg);
                         client.Disconnect(true);
                     }
@@ -92,5 +87,44 @@ namespace IntraWeb.Services
             // Now we just need to set the message body and we're done
             return builder.ToMessageBody();
         }
+
+        private EmailConfiguration GetConfiguration()
+        {
+            EmailConfiguration ret = new EmailConfiguration();
+            var builder = new ConfigurationBuilder();
+            builder.AddJsonFile("appsettings.json");
+            builder.AddEnvironmentVariables();
+            var config = builder.Build();
+
+#if DEBUG
+            ret.smtp = config["Email:Gmail_SMTP:serverAddress"];
+            ret.port = int.Parse(config["Email:Gmail_SMTP:port"]);
+            ret.useSsl = bool.Parse(config["Email:Gmail_SMTP:useSsl"]);
+            ret.userName = config["Email:Gmail_SMTP:userName"];
+            ret.password = config["Email:Gmail_SMTP:password"];
+#else
+            ret.smtp = config["Email:SendGrid_SMTP:serverAddress"];
+            ret.port = int.Parse(config["Email:SendGrid_SMTP:port"]);
+            ret.useSsl = bool.Parse(config["Email:SendGrid_SMTP:useSsl"]);
+            ret.userName = config["Email:SendGrid_SMTP:userName"];
+            ret.password = config["Email:SendGrid_SMTP:password"];
+#endif
+
+            return ret;
+        }
+
+        /// <summary>
+        /// The scructure for email's configuration
+        /// </summary>
+        private struct EmailConfiguration
+        {
+            public string smtp;
+            public int port;
+            public bool useSsl;
+            public string userName;
+            public string password;
+        }
     }
+
+
 }
