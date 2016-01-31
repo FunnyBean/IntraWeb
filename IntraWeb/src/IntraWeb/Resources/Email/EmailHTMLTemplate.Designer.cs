@@ -62,26 +62,22 @@ namespace IntraWeb.Resources.Email {
         /// <summary>
         ///    Looks up a localized string similar to  &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
         ///&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
-        ///
         ///&lt;head&gt;
-        ///    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
-        ///    &lt;style type=&quot;text/css&quot;&gt;
-        ///            body {
-        ///                margin: 0;
-        ///                padding: 0;
-        ///                min-width: 100% !important;
-        ///            }
-        ///
-        ///            img {
-        ///                height: auto;
-        ///            }
-        ///
-        ///            .content {
-        /// [rest of string was truncated]&quot;;.
+        ///  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
+        ///  &lt;title&gt;[SUBJECT]&lt;/title&gt;
+        ///  &lt;style type=&quot;text/css&quot;&gt;
+        ///  body {
+        ///   padding-top: 0 !important;
+        ///   padding-bottom: 0 !important;
+        ///   padding-top: 0 !important;
+        ///   padding-bottom: 0 !important;
+        ///   margin:0 !important;
+        ///   width: 100% !important;
+        ///   -webkit-text [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string HTMLText {
+        internal static string HTMLTextResponsive {
             get {
-                return ResourceManager.GetString("HTMLText", resourceCulture);
+                return ResourceManager.GetString("HTMLTextResponsive", resourceCulture);
             }
         }
     }

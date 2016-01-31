@@ -39,7 +39,7 @@ namespace IntraWeb.Controllers.Api.v1
         [HttpGet("{email}")]
         public void TestSendingEmail(string email)
         {
-            _EmailService.SendEmail(email, "FunnyBean Subject TEST", EmailStringTable.TemplateBodyText);
+            _EmailService.SendEmail(email, "FunnyBean Subject TEST", EmailStringTable.TemplateBodyText, EmailStringTable.TemplateBodySalutation);
         }
 
     }

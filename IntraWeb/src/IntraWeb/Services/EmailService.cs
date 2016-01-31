@@ -31,7 +31,7 @@ namespace IntraWeb.Services
 
         #endregion
 
-        public void SendEmail(string email, string subject, string message)
+        public void SendEmail(string email, string subject, string message, string salutation)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace IntraWeb.Services
                     msg.From.Add(new MailboxAddress(Encoding.UTF8, EmailStringTable.MailboxNameFrom, emailConfigure.userName));
                     msg.To.Add(new MailboxAddress(Encoding.UTF8, EmailStringTable.MailboxNameTo, email));
                     msg.Subject = subject;
-                    msg.Body = this.CreateHTMLEmail(message);
+                    msg.Body = this.CreateHTMLEmail(message, subject, salutation);
 
                     using (var client = new SmtpClient())
                     {
@@ -69,20 +69,25 @@ namespace IntraWeb.Services
             }
         }
 
-        private MimeEntity CreateHTMLEmail(string textMessage)
+        private MimeEntity CreateHTMLEmail(string textMessage, string subject, string salutation)
         {
             var builder = new BodyBuilder();
             
             // Set the plain-text version of the message text
-            builder.TextBody = textMessage;
+            if (!string.IsNullOrWhiteSpace(salutation))
+            {
+                builder.TextBody = salutation + "\n\n";
+            }
+            builder.TextBody += textMessage;
 
             // Set the html version of the message text
-            builder.HtmlBody = EmailHTMLTemplate.HTMLText;
-            builder.HtmlBody = builder.HtmlBody.Replace("##HEADER_CAPTION##", EmailStringTable.TemplateHeaderCaption);
-            builder.HtmlBody = builder.HtmlBody.Replace("##HEADER_SUB_CAPTION##", EmailStringTable.TemplateHeaderSubCaption);
-            builder.HtmlBody = builder.HtmlBody.Replace("##BODY_SALUTATION##", EmailStringTable.TemplateBodySalutation);
-            builder.HtmlBody = builder.HtmlBody.Replace("##BODY_TEXT##", textMessage.Replace("\n", "<br />"));
-            builder.HtmlBody = builder.HtmlBody.Replace("##FOOTER_COPYRIGHT##", EmailStringTable.TemplateFooterCopyright);
+            builder.HtmlBody = EmailHTMLTemplate.HTMLTextResponsive; // Template from: http://templates.cakemail.com/details/basic
+            builder.HtmlBody = builder.HtmlBody.Replace("[SUBJECT]", subject);
+            builder.HtmlBody = builder.HtmlBody.Replace("[CLIENTS_WEBSITE]", EmailStringTable.TemplateCompanyWebSite);
+            builder.HtmlBody = builder.HtmlBody.Replace("[MAIN_CAPTION]", string.Empty); // EmailStringTable.TemplateHeaderSubCaption
+            builder.HtmlBody = builder.HtmlBody.Replace("[SALUTATION]", salutation);
+            builder.HtmlBody = builder.HtmlBody.Replace("[BODY_TEXT]", textMessage.Replace("\n", "<br />"));
+            builder.HtmlBody = builder.HtmlBody.Replace("[FOOTER_COPYRIGHT]", EmailStringTable.TemplateFooterCopyright);
 
             // Now we just need to set the message body and we're done
             return builder.ToMessageBody();

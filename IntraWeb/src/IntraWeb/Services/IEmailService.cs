@@ -13,6 +13,7 @@ namespace IntraWeb.Services
         /// <param name="email">The email address "to"</param>
         /// <param name="subject">The subject of email</param>
         /// <param name="message">The message of email</param>
-        void SendEmail(string email, string subject, string message);
+        /// <param name="salutation">The salutation of email</param>
+        void SendEmail(string email, string subject, string message, string salutation);
     }
 }

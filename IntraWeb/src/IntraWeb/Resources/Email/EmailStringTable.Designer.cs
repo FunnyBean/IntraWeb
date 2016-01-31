@@ -87,17 +87,25 @@ namespace IntraWeb.Resources.Email {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to  Jak napsat správný uvítací e-mail
+        ///    Looks up a localized string similar to  Nejhorší ze všeho je promarněná příležitost: Správně napsaný uvítací e-mail má 4x vyšší míru přečtení, 5x vyšší počet kliků a 8x vyšší návratnost přepočtenou na jeden e-mail. Jak ho tedy správně napsat?
         ///
-        ///Nejhorší ze všeho je promarněná příležitost: Správně napsaný uvítací e-mail má 4x vyšší míru přečtení, 5x vyšší počet kliků a 8x vyšší návratnost přepočtenou na jeden e-mail. Jak ho tedy správně napsat?
+        ///Na své webové stránce máte formulář na zasílání e-mailových zpráv. To znamená, že někdo byl na vašem webu dřív, než jste svou firmu aktivně propagovali. Kujte tedy železo, dokud je žhavé: Oslovte zákazníka, dokud vás má ještě v hlavě. Okamžitě zaslaný mail má celkem slušnou šanci, že bude otevřen.
         ///
-        ///1. Rychle
         ///
-        ///Na své webové stránce máte formulář na zasílání e-mailových zpráv. To znamená, že někdo byl na vašem webu dřív, než jste svou firmu aktivně propagovali. Kujte tedy železo, dokud je žhavé: Oslovte zákazníka, dokud vás má ještě v hlavě. Okamžitě zaslaný mail [rest of string was truncated]&quot;;.
+        ///Kr [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TemplateBodyText {
             get {
                 return ResourceManager.GetString("TemplateBodyText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to http://funnybean.cloudapp.net.
+        /// </summary>
+        internal static string TemplateCompanyWebSite {
+            get {
+                return ResourceManager.GetString("TemplateCompanyWebSite", resourceCulture);
             }
         }
         
@@ -107,15 +115,6 @@ namespace IntraWeb.Resources.Email {
         internal static string TemplateFooterCopyright {
             get {
                 return ResourceManager.GetString("TemplateFooterCopyright", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///    Looks up a localized string similar to Krosbook.
-        /// </summary>
-        internal static string TemplateHeaderCaption {
-            get {
-                return ResourceManager.GetString("TemplateHeaderCaption", resourceCulture);
             }
         }
         

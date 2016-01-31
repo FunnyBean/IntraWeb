@@ -117,221 +117,280 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="HTMLText" xml:space="preserve">
+  <data name="HTMLTextResponsive" xml:space="preserve">
     <value>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
 &lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
-
 &lt;head&gt;
-    &lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt;
-    &lt;style type="text/css"&gt;
-            body {
-                margin: 0;
-                padding: 0;
-                min-width: 100% !important;
-            }
+  &lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt;
+  &lt;title&gt;[SUBJECT]&lt;/title&gt;
+  &lt;style type="text/css"&gt;
+  body {
+   padding-top: 0 !important;
+   padding-bottom: 0 !important;
+   padding-top: 0 !important;
+   padding-bottom: 0 !important;
+   margin:0 !important;
+   width: 100% !important;
+   -webkit-text-size-adjust: 100% !important;
+   -ms-text-size-adjust: 100% !important;
+   -webkit-font-smoothing: antialiased !important;
+ }
+ .tableContent img {
+   border: 0 !important;
+   display: block !important;
+   outline: none !important;
+ }
+ a{
+  color:#382F2E;
+}
 
-            img {
-                height: auto;
-            }
+p, h1,h2,ul,ol,li,div{
+  margin:0;
+  padding:0;
+}
 
-            .content {
-                width: 100%;
-                max-width: 600px;
-            }
+h1,h2{
+  font-weight: normal;
+  background:transparent !important;
+  border:none !important;
+}
 
-            .header {
-                padding: 40px 30px 20px 30px;
-            }
+.contentEditable h2.big,.contentEditable h1.big{
+  font-size: 26px !important;
+}
 
-            .innerpadding {
-                padding: 30px 30px 30px 30px;
-            }
+ .contentEditable h2.bigger,.contentEditable h1.bigger{
+  font-size: 37px !important;
+}
 
-            .borderbottom {
-                border-bottom: 1px solid #f2eeed;
-            }
+td,table{
+  vertical-align: top;
+}
+td.middle{
+  vertical-align: middle;
+}
 
-            .subhead {
-                font-size: 15px;
-                color: #ffffff;
-                font-family: sans-serif;
-                letter-spacing: 10px;
-            }
+a.link1{
+  font-size:13px;
+  color:#27A1E5;
+  line-height: 24px;
+  text-decoration:none;
+}
+a{
+  text-decoration: none;
+}
 
-            .h1, .h2, .bodycopy {
-                color: #153643;
-                font-family: sans-serif;
-            }
+.link2{
+color:#ffffff;
+border-top:10px solid #27A1E5;
+border-bottom:10px solid #27A1E5;
+border-left:18px solid #27A1E5;
+border-right:18px solid #27A1E5;
+border-radius:3px;
+-moz-border-radius:3px;
+-webkit-border-radius:3px;
+background:#27A1E5;
+}
 
-            .h1 {
-                font-size: 33px;
-                line-height: 38px;
-                font-weight: bold;
-            }
+.link3{
+color:#555555;
+border:1px solid #cccccc;
+padding:10px 18px;
+border-radius:3px;
+-moz-border-radius:3px;
+-webkit-border-radius:3px;
+background:#ffffff;
+}
 
-            .h2 {
-                padding: 0 0 15px 0;
-                font-size: 24px;
-                line-height: 28px;
-                font-weight: bold;
-            }
+.link4{
+color:#27A1E5;
+line-height: 24px;
+}
 
-            .bodycopy {
-                font-size: 16px;
-                line-height: 22px;
-            }
+h2,h1{
+line-height: 20px;
+}
+p{
+  font-size: 14px;
+  line-height: 21px;
+  color: #555555;
+}
 
-            .button {
-                text-align: center;
-                font-size: 18px;
-                font-family: sans-serif;
-                font-weight: bold;
-                padding: 0 30px 0 30px;
-            }
+.contentEditable li{
+ 
+}
 
-                .button a {
-                    color: #ffffff;
-                    text-decoration: none;
-                }
+.appart p{
+ 
+}
+.bgItem{
+background: #ffffff;
+}
+.bgBody{
+background: #ffffff;
+}
 
-            .footer {
-                padding: 20px 30px 15px 30px;
-            }
+img { 
+  outline:none; 
+  text-decoration:none; 
+  -ms-interpolation-mode: bicubic;
+  width: auto;
+  max-width: 100%; 
+  clear: both; 
+  display: block;
+  float: none;
+}
 
-            .footercopy {
-                font-family: sans-serif;
-                font-size: 14px;
-                color: #ffffff;
-            }
+&lt;/style&gt;
 
-                .footercopy a {
-                    color: #ffffff;
-                    text-decoration: underline;
-                }
 
-            @media only screen and (max-width: 550px), screen and (max-device-width: 550px) {
-                body[yahoo] .hide {
-                    display: none !important;
-                }
+&lt;script type="colorScheme" class="swatch active"&gt;
+{
+    "name":"Default",
+    "bgBody":"ffffff",
+    "link":"27A1E5",
+    "color":"AAAAAA",
+    "bgItem":"ffffff",
+    "title":"444444"
+}
+&lt;/script&gt;
 
-                body[yahoo] .buttonwrapper {
-                    background-color: transparent !important;
-                }
 
-                body[yahoo] .button {
-                    padding: 0px !important;
-                }
-
-                    body[yahoo] .button a {
-                        background-color: #e05443;
-                        padding: 15px 15px 13px !important;
-                    }
-
-                body[yahoo] .unsubscribe {
-                    display: block;
-                    margin-top: 20px;
-                    padding: 10px 50px;
-                    background: #2f3942;
-                    border-radius: 5px;
-                    text-decoration: none !important;
-                    font-weight: bold;
-                }
-            }
-
-            /*@media only screen and (min-device-width: 601px) {
-        .content {width: 600px !important;}
-        .col425 {width: 425px!important;}
-        .col380 {width: 380px!important;}
-        }*/
-    &lt;/style&gt;
 &lt;/head&gt;
-
-&lt;body yahoo bgcolor="#f6f8f1"&gt;
-    &lt;table width="100%" bgcolor="#f6f8f1" border="0" cellpadding="0" cellspacing="0"&gt;
+&lt;body paddingwidth="0" paddingheight="0" bgcolor="#d1d3d4"  style="padding-top: 0; padding-bottom: 0; padding-top: 0; padding-bottom: 0; background-repeat: repeat; width: 100% !important; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased;" offset="0" toppadding="0" leftpadding="0"&gt;
+  &lt;table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableContent bgBody" align="center"  style='font-family:Helvetica, sans-serif;'&gt;
+    &lt;!-- =============== START HEADER =============== --&gt;
+    
+  &lt;tr&gt;
+    &lt;td align='center'&gt;
+      &lt;table width="600" border="0" cellspacing="0" cellpadding="0" align="center" &gt;
+      &lt;tr&gt;
+      &lt;td class="bgItem" align="center"&gt;
+      &lt;table width="580" border="0" cellspacing="0" cellpadding="0" align="center"&gt;
         &lt;tr&gt;
-            &lt;td&gt;
-                &lt;!--[if (gte mso 9)|(IE)]&gt;
-                  &lt;table width="600" align="center" cellpadding="0" cellspacing="0" border="0"&gt;
-                    &lt;tr&gt;
-                      &lt;td&gt;
-                &lt;![endif]--&gt;
-                &lt;table bgcolor="#ffffff" class="content" align="center" cellpadding="0" cellspacing="0" border="0"&gt;
-                    &lt;tr&gt;
-                        &lt;td bgcolor="#c7d8a7" class="header"&gt;
-                            &lt;table width="70" align="left" border="0" cellpadding="0" cellspacing="0"&gt;
-                                &lt;tr&gt;
-                                    &lt;td height="70" style="padding: 0 20px 20px 0;"&gt;
-                                        &lt;img class="fix" src="http://funnybean.cloudapp.net/images/mail_icon.gif" width="70" height="70" border="0" alt="" /&gt;
-                                    &lt;/td&gt;
-                                &lt;/tr&gt;
-                            &lt;/table&gt;
-                            &lt;!--[if (gte mso 9)|(IE)]&gt;
-                              &lt;table width="425" align="left" cellpadding="0" cellspacing="0" border="0"&gt;
-                                &lt;tr&gt;
-                                  &lt;td&gt;
-                            &lt;![endif]--&gt;
-                            &lt;table class="col425" align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 425px;"&gt;
-                                &lt;tr&gt;
-                                    &lt;td height="70"&gt;
-                                        &lt;table width="100%" border="0" cellspacing="0" cellpadding="0"&gt;
-                                            &lt;tr&gt;
-                                                &lt;td class="subhead" style="padding: 0 0 0 3px;"&gt;
-                                                    ##HEADER_CAPTION##
-                                                &lt;/td&gt;
-                                            &lt;/tr&gt;
-                                            &lt;tr&gt;
-                                                &lt;td class="h1" style="padding: 5px 0 0 0;"&gt;
-                                                    ##HEADER_SUB_CAPTION##
-                                                &lt;/td&gt;
-                                            &lt;/tr&gt;
-                                        &lt;/table&gt;
-                                    &lt;/td&gt;
-                                &lt;/tr&gt;
-                            &lt;/table&gt;
-                            &lt;!--[if (gte mso 9)|(IE)]&gt;
-                                  &lt;/td&gt;
-                                &lt;/tr&gt;
-                            &lt;/table&gt;
-                            &lt;![endif]--&gt;
+          &lt;td class='movableContentContainer' align="center"&gt;
+            
+            &lt;div class='movableContent'&gt;
+              &lt;table width="580" border="0" cellspacing="0" cellpadding="0" align="center"&gt;
+                &lt;tr&gt;&lt;td height='15'&gt;&lt;/td&gt;&lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;
+                    &lt;table width="580" border="0" cellspacing="0" cellpadding="0" align="center"&gt;
+                      &lt;tr&gt;
+                        &lt;td width='112'&gt;
+                          &lt;div class='contentEditableContainer contentImageEditable'&gt;
+                            &lt;div class='contentEditable'&gt;
+                              &lt;a target='_blank' href="[CLIENTS_WEBSITE]"&gt;&lt;img src="http://funnybean.cloudapp.net/images/logo.png" alt="Logo" width='112' height='39' data-default="placeholder" data-max-width="200"&gt;&lt;/a&gt;
+                            &lt;/div&gt;
+                          &lt;/div&gt;
                         &lt;/td&gt;
-                    &lt;/tr&gt;
-                    &lt;tr&gt;
-                        &lt;td class="innerpadding borderbottom"&gt;
-                            &lt;table width="100%" border="0" cellspacing="0" cellpadding="0"&gt;
-                                &lt;tr&gt;
-                                    &lt;td class="h2"&gt;
-                                        ##BODY_SALUTATION##
-                                    &lt;/td&gt;
-                                &lt;/tr&gt;
-                                &lt;tr&gt;
-                                    &lt;td class="bodycopy"&gt;
-                                        ##BODY_TEXT##
-                                    &lt;/td&gt;
-                                &lt;/tr&gt;
-                            &lt;/table&gt;
+                        &lt;td width='10'&gt;&lt;/td&gt;
+                        &lt;td valign="middle" style='vertical-align: middle;'&gt;
+                          &lt;div class='contentEditableContainer contentTextEditable'&gt;
+                            &lt;div class='contentEditable' style='text-align: left;font-weight: light; color:#555555;font-size:26;line-height: 39px;font-family: Helvetica Neue;'&gt;
+                              &lt;h1 class='big'&gt;&lt;a target='_blank' href="[COMPANY_WEBSITE]" style='color:#444444'&gt;[MAIN_CAPTION]&lt;/a&gt;&lt;/h1&gt;
+                            &lt;/div&gt;
+                          &lt;/div&gt;
                         &lt;/td&gt;
-                    &lt;/tr&gt;
-                    &lt;tr&gt;
-                        &lt;td class="footer" bgcolor="#44525f"&gt;
-                            &lt;table width="100%" border="0" cellspacing="0" cellpadding="0"&gt;
-                                &lt;tr&gt;
-                                    &lt;td align="center" class="footercopy"&gt;
-                                        ##FOOTER_COPYRIGHT## &lt;br /&gt;
-                                    &lt;/td&gt;
-                                &lt;/tr&gt;
-                            &lt;/table&gt;
+                        &lt;td width='10'&gt;&lt;/td&gt;
+                        &lt;td valign="middle" style='vertical-align: middle;' width='150'&gt;
+                          &lt;div class='contentEditableContainer contentTextEditable'&gt;
+                          &lt;/div&gt;
                         &lt;/td&gt;
-                    &lt;/tr&gt;
-                &lt;/table&gt;
-                &lt;!--[if (gte mso 9)|(IE)]&gt;
-                      &lt;/td&gt;
-                    &lt;/tr&gt;
-                &lt;/table&gt;
-                &lt;![endif]--&gt;
-            &lt;/td&gt;
+                      &lt;/tr&gt;
+                    &lt;/table&gt;
+                  &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;&lt;td height='15'&gt;&lt;/td&gt;&lt;/tr&gt;
+                &lt;tr&gt;&lt;td &gt;&lt;hr style='height:1px;background:#DDDDDD;border:none;'&gt;&lt;/td&gt;&lt;/tr&gt;
+              &lt;/table&gt;  
+            &lt;/div&gt;  
+            
+      
+        
+&lt;!-- =============== END HEADER =============== --&gt;
+&lt;!-- =============== START BODY =============== --&gt;
+            &lt;div class='movableContent'&gt;
+              &lt;table width="580" border="0" cellspacing="0" cellpadding="0" align="center"&gt;
+                &lt;tr&gt;&lt;td height='40'&gt;&lt;/td&gt;&lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;
+                    &lt;div class='contentEditableContainer contentImageEditable'&gt;
+                      &lt;div class='contentEditable' style="text-align: center;"&gt;
+                        &lt;img src="http://funnybean.cloudapp.net/images/bigImg.png" alt="Logo" width='580' height='221' data-default="placeholder" data-max-width="580"&gt;
+                      &lt;/div&gt;
+                    &lt;/div&gt;
+                  &lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/table&gt;  
+            &lt;/div&gt;
+
+            &lt;div class='movableContent'&gt;
+              &lt;table width="580" border="0" cellspacing="0" cellpadding="0" align="center"&gt;
+                &lt;tr&gt;&lt;td height='40' colspan="3"&gt;&lt;/td&gt;&lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td width='580'&gt;
+                    &lt;table width="580" cellpadding="0" cellspacing="0" align="center"&gt;
+                      &lt;tr&gt;&lt;td height='15'&gt;&lt;/td&gt;&lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;td&gt;
+                          &lt;div class='contentEditableContainer contentTextEditable'&gt;
+                            &lt;div class='contentEditable' style='text-align: left;'&gt;
+                              &lt;h2 style='font-size:16px;'&gt;[SALUTATION]&lt;/h2&gt;
+                              &lt;br&gt;
+                              &lt;p&gt;[BODY_TEXT]&lt;/p&gt;
+                              &lt;br&gt;
+                            &lt;/div&gt;
+                          &lt;/div&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                    &lt;/table&gt;
+                  &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;&lt;td height='40' colspan="3"&gt;&lt;/td&gt;&lt;/tr&gt;
+                &lt;tr&gt;&lt;td colspan="3"&gt;&lt;hr style='height:1px;background:#DDDDDD;border:none;'&gt;&lt;/td&gt;&lt;/tr&gt;
+              &lt;/table&gt;  
+            &lt;/div&gt;
+
+&lt;!-- =============== END BODY =============== --&gt;
+&lt;!-- =============== START FOOTER =============== --&gt;
+            &lt;div class='movableContent'&gt;
+              &lt;table width="580" border="0" cellspacing="0" cellpadding="0" align="center"&gt;
+                &lt;tr&gt;&lt;td colspan="3" height='48'&gt;&lt;/td&gt;&lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td width='90'&gt;&lt;/td&gt;
+                  &lt;td width='400'align='center' style='text-align: center;'&gt;
+                    &lt;table width='400' cellpadding="0" cellspacing="0" align="center"&gt;
+                      &lt;tr&gt;
+                        &lt;td&gt;
+                          &lt;div class='contentEditableContainer contentTextEditable'&gt;
+                            &lt;div class='contentEditable' style='text-align: center;color:#AAAAAA;'&gt;
+                              &lt;p&gt;
+                                [FOOTER_COPYRIGHT]
+                              &lt;/p&gt;
+                            &lt;/div&gt;
+                          &lt;/div&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                    &lt;/table&gt;
+                  &lt;/td&gt;
+                  &lt;td width='90'&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/table&gt;  
+            &lt;/div&gt;
+&lt;!-- =============== END FOOTER =============== --&gt;
+          &lt;/td&gt;
         &lt;/tr&gt;
-    &lt;/table&gt;
-&lt;/body&gt;
-&lt;/html&gt;</value>
+      &lt;/table&gt;
+      &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+
+  &lt;/body&gt;
+  &lt;/html&gt;</value>
   </data>
 </root>
