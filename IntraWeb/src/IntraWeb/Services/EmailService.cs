@@ -4,6 +4,7 @@ using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MimeKit;
+using System;
 using System.Text;
 
 namespace IntraWeb.Services
@@ -14,6 +15,18 @@ namespace IntraWeb.Services
     /// </summary>
     public class EmailService : IEmailService
     {
+
+        #region Constants
+
+        public const string cTemplateSubject = "[SUBJECT]";
+        public const string cTemplateCompanyWebsite = "[COMPANY_WEBSITE]";
+        public const string cTemplateCaption = "[MAIN_CAPTION]";
+        public const string cTemplateSalutation = "[SALUTATION]";
+        public const string cTemplateBody = "[BODY_TEXT]";
+        public const string cTemplateFooter = "[FOOTER_COPYRIGHT]";
+
+        #endregion
+
 
         #region Private members
 
@@ -31,36 +44,64 @@ namespace IntraWeb.Services
 
         #endregion
 
-        public void SendEmail(string email, string subject, string message, string salutation)
+
+        #region Getters/Setters
+
+        public string GetCurrentEmailHTMLTemplate
         {
+            get { return EmailHTMLTemplate.HTMLTextResponsive; }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Sending email
+        /// </summary>
+        /// <param name="email">The email address "to".</param>
+        /// <param name="subject">The subject of the email.</param>
+        /// <param name="message">The message of the email.</param>
+        /// <param name="salutation">Optional: The salutation of the email.</param>
+        public void SendEmail(string email, string subject, string message, string salutation = null)
+        {
+            // Validate arguments
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                throw new ArgumentException();
+            }
+            if (string.IsNullOrWhiteSpace(subject))
+            {
+                throw new ArgumentException();
+            }
+            if (string.IsNullOrWhiteSpace(message))
+            {
+                throw new ArgumentException();
+            }
+
             try
             {
-                if (!string.IsNullOrWhiteSpace(email))
+                var emailConfigure = this.GetConfiguration();
+                var msg = new MimeMessage();
+                msg.From.Add(new MailboxAddress(Encoding.UTF8, EmailStringTable.MailboxNameFrom, emailConfigure.userName));
+                msg.To.Add(new MailboxAddress(Encoding.UTF8, EmailStringTable.MailboxNameTo, email));
+                msg.Subject = subject;
+                msg.Body = this.CreateHTMLEmail(message, subject, salutation);
+
+                using (var client = new SmtpClient())
                 {
-                    var emailConfigure = this.GetConfiguration();
-                    var msg = new MimeMessage();
-                    msg.From.Add(new MailboxAddress(Encoding.UTF8, EmailStringTable.MailboxNameFrom, emailConfigure.userName));
-                    msg.To.Add(new MailboxAddress(Encoding.UTF8, EmailStringTable.MailboxNameTo, email));
-                    msg.Subject = subject;
-                    msg.Body = this.CreateHTMLEmail(message, subject, salutation);
-
-                    using (var client = new SmtpClient())
+                    if (emailConfigure.useSsl)
                     {
-                        if (emailConfigure.useSsl)
-                        {
-                            client.Connect(emailConfigure.smtp, emailConfigure.port, SecureSocketOptions.StartTls);
-                        }
-                        else
-                        {
-                            client.Connect(emailConfigure.smtp, emailConfigure.port, false);
-                            client.AuthenticationMechanisms.Remove("XOAUTH2");
-                            
-                        }
-
-                        client.Authenticate(emailConfigure.userName, emailConfigure.password);
-                        client.Send(msg);
-                        client.Disconnect(true);
+                        client.Connect(emailConfigure.smtp, emailConfigure.port, SecureSocketOptions.StartTls);
                     }
+                    else
+                    {
+                        client.Connect(emailConfigure.smtp, emailConfigure.port, false);
+                        client.AuthenticationMechanisms.Remove("XOAUTH2");
+
+                    }
+
+                    client.Authenticate(emailConfigure.userName, emailConfigure.password);
+                    client.Send(msg);
+                    client.Disconnect(true);
                 }
             }
             catch (System.Exception ex)
@@ -81,16 +122,66 @@ namespace IntraWeb.Services
             builder.TextBody += textMessage;
 
             // Set the html version of the message text
-            builder.HtmlBody = EmailHTMLTemplate.HTMLTextResponsive; // Template from: http://templates.cakemail.com/details/basic
-            builder.HtmlBody = builder.HtmlBody.Replace("[SUBJECT]", subject);
-            builder.HtmlBody = builder.HtmlBody.Replace("[CLIENTS_WEBSITE]", EmailStringTable.TemplateCompanyWebSite);
-            builder.HtmlBody = builder.HtmlBody.Replace("[MAIN_CAPTION]", string.Empty); // EmailStringTable.TemplateHeaderSubCaption
-            builder.HtmlBody = builder.HtmlBody.Replace("[SALUTATION]", salutation);
-            builder.HtmlBody = builder.HtmlBody.Replace("[BODY_TEXT]", textMessage.Replace("\n", "<br />"));
-            builder.HtmlBody = builder.HtmlBody.Replace("[FOOTER_COPYRIGHT]", EmailStringTable.TemplateFooterCopyright);
+            builder.HtmlBody = this.CreateHTMLBody(textMessage, subject, salutation);
 
             // Now we just need to set the message body and we're done
             return builder.ToMessageBody();
+        }
+
+        private string CreateHTMLBody(string textMessage, string subject, string salutation)
+        {
+            string ret;
+
+            if (this.ValidateHTMLTemplate(this.GetCurrentEmailHTMLTemplate))
+            {
+                ret = this.GetCurrentEmailHTMLTemplate; // Template from: http://templates.cakemail.com/details/basic
+                ret = ret.Replace(cTemplateSubject, subject);
+                ret = ret.Replace(cTemplateCompanyWebsite, EmailStringTable.TemplateCompanyWebSite);
+                ret = ret.Replace(cTemplateCaption, string.Empty); // EmailStringTable.TemplateHeaderSubCaption
+                ret = ret.Replace(cTemplateSalutation, salutation);
+                ret = ret.Replace(cTemplateBody, textMessage.Replace("\n", "<br />"));
+                ret = ret.Replace(cTemplateFooter, EmailStringTable.TemplateFooterCopyright);
+            }
+            else
+            {
+                throw new Exception("The invalid HTML template.");
+            }
+
+            return ret;
+        }
+
+        private bool ValidateHTMLTemplate(string htmlTemplate)
+        {
+            if (string.IsNullOrWhiteSpace(htmlTemplate))
+            {
+                return false;
+            }
+            if (!htmlTemplate.Contains(cTemplateSubject))
+            {
+                return false;
+            }
+            if (!htmlTemplate.Contains(cTemplateCompanyWebsite))
+            {
+                return false;
+            }
+            if (!htmlTemplate.Contains(cTemplateCaption))
+            {
+                return false;
+            }
+            if (!htmlTemplate.Contains(cTemplateSalutation))
+            {
+                return false;
+            }
+            if (!htmlTemplate.Contains(cTemplateBody))
+            {
+                return false;
+            }
+            if (!htmlTemplate.Contains(cTemplateFooter))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private EmailConfiguration GetConfiguration()
@@ -117,6 +208,10 @@ namespace IntraWeb.Services
 
             return ret;
         }
+
+
+
+
 
         /// <summary>
         /// The scructure for email's configuration

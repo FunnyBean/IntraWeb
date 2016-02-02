@@ -280,7 +280,7 @@ img {
                         &lt;td width='112'&gt;
                           &lt;div class='contentEditableContainer contentImageEditable'&gt;
                             &lt;div class='contentEditable'&gt;
-                              &lt;a target='_blank' href="[CLIENTS_WEBSITE]"&gt;&lt;img src="http://funnybean.cloudapp.net/images/logo.png" alt="Logo" width='112' height='39' data-default="placeholder" data-max-width="200"&gt;&lt;/a&gt;
+                              &lt;a target='_blank' href="[COMPANY_WEBSITE]"&gt;&lt;img src="http://funnybean.cloudapp.net/images/logo.png" alt="Logo" width='112' height='39' data-default="placeholder" data-max-width="200"&gt;&lt;/a&gt;
                             &lt;/div&gt;
                           &lt;/div&gt;
                         &lt;/td&gt;
