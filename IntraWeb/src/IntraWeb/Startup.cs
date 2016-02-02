@@ -14,9 +14,6 @@ using IntraWeb.Services;
 using IntraWeb.ViewModels.Administration;
 using Microsoft.AspNet.Authentication.Cookies;
 using System.Net;
-using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Authorization;
-using IntraWeb.Filters;
 
 namespace IntraWeb
 {
@@ -79,10 +76,10 @@ namespace IntraWeb
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-            services.AddMvc(); // ToDo: Replace with Web API when it will be done in ASP.NET Core 1.0
+            services.AddMvc();
 
-            // Add application services
-            services.AddTransient<IEmailService, EmailService>();
+            // Add application services.
+            services.AddTransient<IEmailSender, AuthMessageSender>();
 
             //services.AddInstance<IRoomRepository>(new Models.Dummies.RoomDummyRepository()); //Testovacia implementacia
             services.AddScoped<IRoomRepository, RoomsRepository>();
@@ -127,7 +124,7 @@ namespace IntraWeb
             AdministrationModelMapping.ConfigureRoomMapping();
 
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
-            app.UseMvc();
+            app.UseMvc();            
         }
 
         // Entry point for the application.
