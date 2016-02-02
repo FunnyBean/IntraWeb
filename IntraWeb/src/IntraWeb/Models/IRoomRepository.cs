@@ -36,13 +36,14 @@ namespace IntraWeb.Models
         /// Adds the room.
         /// </summary>
         /// <param name="room">The new room.</param>
+        /// <returns>Added room.</returns>
         void AddRoom(Room room);
 
         /// <summary>
         /// Edits the specified room.
         /// </summary>
         /// <param name="room">The room.</param>
-        void Edit(Room room);
+        void  Edit(Room room);
 
         /// <summary>
         /// Deletes the specified room.
