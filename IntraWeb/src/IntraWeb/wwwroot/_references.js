@@ -1,5 +1,6 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="../gulpfile.js" />
+/// <reference path="../Scripts/boot.js" />
 /// <reference path="../scripts/components/app.component.js" />
 /// <reference path="../scripts/components/login/login.component.js" />
 /// <reference path="app/boot.js" />
