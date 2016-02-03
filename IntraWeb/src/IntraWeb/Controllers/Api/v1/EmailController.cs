@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNet.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using IntraWeb.Services;
 using Microsoft.AspNet.Authorization;
+using IntraWeb.Services.Emails;
 using IntraWeb.Resources.Email;
-using IntraWeb.Resources;
 
 namespace IntraWeb.Controllers.Api.v1
 {

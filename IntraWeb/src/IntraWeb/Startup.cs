@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -10,11 +7,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using IntraWeb.Models;
-using IntraWeb.Services;
 using IntraWeb.ViewModels.Administration;
 using Microsoft.AspNet.Authentication.Cookies;
 using System.Net;
-using Microsoft.AspNet.Mvc;
+using IntraWeb.Services.Emails;
 
 namespace IntraWeb
 {
@@ -81,6 +77,7 @@ namespace IntraWeb
 
             // Add application services
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IEmailFormatter, EmailFormatter>();
 
             //services.AddInstance<IRoomRepository>(new Models.Dummies.RoomDummyRepository()); //Testovacia implementacia
             services.AddScoped<IRoomRepository, RoomsRepository>();

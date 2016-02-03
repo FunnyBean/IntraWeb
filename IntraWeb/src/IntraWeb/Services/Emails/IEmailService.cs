@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace IntraWeb.Services
+namespace IntraWeb.Services.Emails
 {
     /// <summary>
     ///  Interface, which describe service for emails.

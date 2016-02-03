@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace IntraWeb.Resources {
+namespace IntraWeb.Resources.Email {
     using System;
     using System.Reflection;
     
@@ -38,7 +38,7 @@ namespace IntraWeb.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("IntraWeb.Resources.EmailStringTable", typeof(EmailStringTable).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("IntraWeb.Resources.Email.EmailStringTable", typeof(EmailStringTable).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

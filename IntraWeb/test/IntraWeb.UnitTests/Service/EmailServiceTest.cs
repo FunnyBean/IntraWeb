@@ -1,61 +1,63 @@
-﻿using IntraWeb.Services;
+﻿using IntraWeb.Services.Emails;
+using MimeKit;
 using Xunit;
 
 namespace IntraWeb.UnitTests.Service
 {
     /// <summary>
-    /// Class for checking EmailService class.
+    /// Class for checking EmailFormatter class.
     /// </summary>
-    public class EmailServiceTest
+    public class EmailFormatterTest
     {
 
         #region "Validate email template"
 
-        private EmailService CreateEmailService()
+        private EmailFormatter CreateEmailFormatter()
         {
-            return new EmailService(new StubLogger<EmailService>());
+            return new EmailFormatter(new StubLogger<EmailFormatter>());
         }
 
         [Fact]
-        public void HasEmailHTMLTemplateSubject()
+        public void HasEmailTemplateSubject()
         {
+            // Arrange
+            string subject = "##Email Subject##";
+            string body = "##Email Body##";
+
+            // Act
+            MimeMessage message = this.CreateEmailFormatter().CreateHTMLEmail(subject, body);
+
             // Assert            
-            Assert.Contains(EmailService.cTemplateSubject, this.CreateEmailService().GetCurrentEmailHTMLTemplate);
+            Assert.Contains(subject, message.Body.ToString());
         }
 
         [Fact]
-        public void HasEmailHTMLTemplateCompanyWebsite()
+        public void HasEmailTemplateBody()
         {
+            // Arrange
+            string subject = "##Email Subject##";
+            string body = "##Email Body##";
+
+            // Act
+            MimeMessage message = this.CreateEmailFormatter().CreateHTMLEmail(subject, body);
+
             // Assert            
-            Assert.Contains(EmailService.cTemplateCompanyWebsite, this.CreateEmailService().GetCurrentEmailHTMLTemplate);
+            Assert.Contains(body, message.Body.ToString());
         }
 
         [Fact]
-        public void HasEmailHTMLTemplateCaption()
+        public void HasEmailTemplateSalutation()
         {
-            // Assert            
-            Assert.Contains(EmailService.cTemplateCaption, this.CreateEmailService().GetCurrentEmailHTMLTemplate);
-        }
+            // Arrange
+            string subject = "##Email Subject##";
+            string body = "##Email Body##";
+            string salutation = "##Email Salutation##";
 
-        [Fact]
-        public void HasEmailHTMLTemplateSalutation()
-        {
-            // Assert            
-            Assert.Contains(EmailService.cTemplateSalutation, this.CreateEmailService().GetCurrentEmailHTMLTemplate);
-        }
+            // Act
+            MimeMessage message = this.CreateEmailFormatter().CreateHTMLEmail(subject, body, salutation);
 
-        [Fact]
-        public void HasEmailHTMLTemplateBody()
-        {
             // Assert            
-            Assert.Contains(EmailService.cTemplateBody, this.CreateEmailService().GetCurrentEmailHTMLTemplate);
-        }
-
-        [Fact]
-        public void HasEmailHTMLTemplateFooter()
-        {
-            // Assert            
-            Assert.Contains(EmailService.cTemplateFooter, this.CreateEmailService().GetCurrentEmailHTMLTemplate);
+            Assert.Contains(salutation, message.Body.ToString());
         }
 
         #endregion
