@@ -29,23 +29,6 @@ namespace IntraWeb.Services.Emails
         #endregion
 
 
-        #region Private members
-
-        private ILogger<EmailFormatter> _logger;
-
-        #endregion
-
-
-        #region Constructor
-
-        public EmailFormatter(ILogger<EmailFormatter> logger)
-        {
-            _logger = logger;
-        }
-
-        #endregion
-
-
         /// <summary>
         /// Creates HTML email.
         /// </summary>
@@ -66,14 +49,7 @@ namespace IntraWeb.Services.Emails
                 throw new ArgumentException($"Argument {nameof(message) } is required.");
             }
 
-            try
-            {
-                ret.Body = this.CreateHTMLEmailBody(message, subject, salutation);
-            }
-            catch (System.Exception ex)
-            {
-                _logger.LogError("Error during creating of HTML email. Error: ", ex);
-            }
+            ret.Body = this.CreateHTMLEmailBody(message, subject, salutation);
 
             return ret;
         }

@@ -14,7 +14,7 @@ namespace IntraWeb.UnitTests.Service
 
         private EmailFormatter CreateEmailFormatter()
         {
-            return new EmailFormatter(new StubLogger<EmailFormatter>());
+            return new EmailFormatter();
         }
 
         [Fact]
