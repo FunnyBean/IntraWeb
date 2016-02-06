@@ -6,7 +6,8 @@ var gulp = require("gulp"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify"),
-    less = require("gulp-less");
+    sass = require("gulp-sass"),
+    typescript = require("gulp-typescript");
 
 var paths = {
     webroot: "./wwwroot/",
@@ -47,13 +48,23 @@ gulp.task("html", function () {
 });
 
 gulp.task("js", function () {
-    return gulp.src(paths.scripts + "**/*.js")
+    return gulp.src(paths.scripts + "**/*.ts")
+        .pipe(typescript({
+            "noImplicitAny": false,
+            "noEmitOnError": true,
+            "removeComments": false,
+            "sourceMap": false,
+            "target": "es5",
+            "module": "commonjs",
+            "experimentalDecorators": true,
+            "emitDecoratorMetadata": true
+        }))
         .pipe(gulp.dest(paths.app));
 });
 
 gulp.task("css", function () {
-    return gulp.src(paths.scripts + "**/*.less")
-        .pipe(less())
+    return gulp.src(paths.scripts + "**/*.scss")
+        .pipe(sass())
         .pipe(gulp.dest(paths.app));
 });
 
