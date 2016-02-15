@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 namespace IntraWeb.Models
 {
     /// <summary>
-    /// Model, which represent Room.
+    /// Model, which represent Equipment.
     /// </summary>
-    public class Room
+    public class Equipment
     {
+
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>
@@ -20,31 +21,21 @@ namespace IntraWeb.Models
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        [MaxLength(50)]
-        [Required()]
-        public string Name { get; set; }
-
-        /// <summary>
         /// Gets or sets the description.
         /// </summary>
         /// <value>
         /// The description.
         /// </value>
-        [MaxLength(255)]
+        [MaxLength(100)]
+        [Required()]
         public string Description { get; set; }
 
-
         /// <summary>
-        /// Gets or sets the equipments.
+        /// Gets or sets the rooms.
         /// </summary>
         /// <value>
-        /// The equipments.
+        /// The rooms.
         /// </value>
-        public ICollection<RoomEquipment> Equipments { get; set; }
+        public ICollection<RoomEquipment> Rooms { get; set; }
     }
 }

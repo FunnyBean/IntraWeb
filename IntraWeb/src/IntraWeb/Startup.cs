@@ -11,6 +11,7 @@ using IntraWeb.ViewModels.Administration;
 using Microsoft.AspNet.Authentication.Cookies;
 using System.Net;
 using IntraWeb.Services.Emails;
+using System;
 
 namespace IntraWeb
 {
@@ -109,7 +110,9 @@ namespace IntraWeb
                              .Database.Migrate();
                     }
                 }
-                catch { }
+                catch (Exception e)
+                {
+                }
             }
 
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
