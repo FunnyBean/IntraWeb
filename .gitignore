@@ -196,3 +196,6 @@ FakesAssemblies/
 *.opt
 
 # Funnybean build directories
+**/wwwroot/app
+**/wwwroot/lib
+_references.js
