@@ -199,3 +199,4 @@ FakesAssemblies/
 **/wwwroot/app
 **/wwwroot/lib
 _references.js
+appsettings.*.json
