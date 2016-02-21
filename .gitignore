@@ -200,3 +200,4 @@ FakesAssemblies/
 **/wwwroot/lib
 _references.js
 appsettings.*.json
+*.DPack
