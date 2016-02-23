@@ -81,7 +81,7 @@ namespace IntraWeb
             services.AddTransient<IEmailFormatter, EmailFormatter>();
 
             //services.AddInstance<IRoomRepository>(new Models.Dummies.RoomDummyRepository()); //Testovacia implementacia
-            services.AddScoped<IRoomRepository, RoomsRepository>();
+            services.AddScoped<IRoomRepository, RoomRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

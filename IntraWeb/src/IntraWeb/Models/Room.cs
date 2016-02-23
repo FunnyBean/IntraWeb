@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using IntraWeb.Models.Base;
 
 namespace IntraWeb.Models
 {
     /// <summary>
     /// Model, which represent Room.
     /// </summary>
-    public class Room
+    public class Room: IModel
     {
         /// <summary>
         /// Gets or sets the identifier.

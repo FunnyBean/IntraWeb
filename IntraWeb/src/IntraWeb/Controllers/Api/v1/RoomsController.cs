@@ -39,7 +39,7 @@ namespace IntraWeb.Controllers.Api.v1
         [HttpGet]
         public IEnumerable<RoomViewModel> Get()
         {
-            var rooms = AutoMapper.Mapper.Map<IEnumerable<RoomViewModel>>(_roomRepository.GetAllRooms());
+            var rooms = AutoMapper.Mapper.Map<IEnumerable<RoomViewModel>>(_roomRepository.GetAll());
             return rooms;
         }
 
@@ -51,7 +51,7 @@ namespace IntraWeb.Controllers.Api.v1
         [HttpGet("{roomId}", Name = "GetRoom")]
         public IActionResult Get(int roomId)
         {
-            var room = _roomRepository.GetRoom(roomId);
+            var room = _roomRepository.GetItem(roomId);
 
             if (room == null)
             {
@@ -75,13 +75,13 @@ namespace IntraWeb.Controllers.Api.v1
         public IActionResult Post([FromBody] RoomViewModel roomVm)
         {
 
-            if (_roomRepository.GetRoom(roomVm.Name) == null)
+            if (_roomRepository.GetItem(roomVm.Name) == null)
             {
                 var room = AutoMapper.Mapper.Map<Room>(roomVm);
 
                 return SaveData(() =>
                 {
-                    _roomRepository.AddRoom(room);
+                    _roomRepository.Add(room);
                 },
                 () =>
                 {
@@ -117,7 +117,7 @@ namespace IntraWeb.Controllers.Api.v1
                 return this.Json(new { Message = message });
             }
 
-            var editedRoom = _roomRepository.GetRoom(roomId);
+            var editedRoom = _roomRepository.GetItem(roomId);
             if (editedRoom == null)
             {
                 this.Response.StatusCode = (int) HttpStatusCode.NoContent;
@@ -156,7 +156,7 @@ namespace IntraWeb.Controllers.Api.v1
 
         private bool ExistAnotherRoomWithName(string roomName, int roomId)
         {
-            var room = _roomRepository.GetRoom(roomName);
+            var room = _roomRepository.GetItem(roomName);
 
             return room != null && room.Id != roomId;
         }

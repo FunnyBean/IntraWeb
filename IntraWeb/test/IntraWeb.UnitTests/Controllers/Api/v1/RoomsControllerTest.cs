@@ -48,12 +48,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -82,12 +82,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -135,18 +135,18 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         #region "Post"
 
         [Fact()]
-        public void PostRoomAddRoomToRepository()
+        public void PostRoomAddToRepository()
         {
             // Arrange
             RoomDummyRepository reposiotry = null;
             var target = CreateRoomsController((rep) =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -163,8 +163,8 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             });
 
             // Assert
-            Assert.Equal(3, reposiotry.GetAllRooms().Count());
-            var room = reposiotry.GetAllRooms().Last();
+            Assert.Equal(3, reposiotry.GetAll().Count());
+            var room = reposiotry.GetAll().Last();
             Assert.Equal(2, room.Id);
             Assert.Equal("Third", room.Name);
             Assert.Equal("Third room", room.Description);
@@ -176,12 +176,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -209,12 +209,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -239,12 +239,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -344,12 +344,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController(rep =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -369,12 +369,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController(rep =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -395,12 +395,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             RoomDummyRepository repository = null;
             var target = CreateRoomsController(rep =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -410,7 +410,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
 
             // Act
             var response = target.Put(1, new RoomViewModel() { Id = 1, Name = "White", Description = "Room whit white color" });
-            var roomForTest = repository.GetRoom(1);
+            var roomForTest = repository.GetItem(1);
 
             // Assert
             Assert.Equal("White", roomForTest.Name);
@@ -424,12 +424,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             RoomDummyRepository repository = null;
             var target = CreateRoomsController(rep =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -455,7 +455,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "First",
                     Description = "First room"
@@ -515,12 +515,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController(rep =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -541,12 +541,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             RoomDummyRepository repository = null;
             var target = CreateRoomsController(rep =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -558,7 +558,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var response = target.Delete(0);
 
             // Assert
-            Assert.Equal(1, repository.GetAllRooms().Count());
+            Assert.Equal(1, repository.GetAll().Count());
         }
 
         [Fact]
@@ -567,7 +567,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "First",
                     Description = "First room"
@@ -589,12 +589,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController(rep =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Models.Room()
                 {
                     Name = "Second",
                     Description = "Second room"
