@@ -82,6 +82,7 @@ namespace IntraWeb
 
             //services.AddInstance<IRoomRepository>(new Models.Dummies.RoomDummyRepository()); //Testovacia implementacia
             services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddScoped<IEquipmentRepository, EquipmentRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

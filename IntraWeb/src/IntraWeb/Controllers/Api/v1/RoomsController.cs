@@ -6,7 +6,6 @@ using System.Net;
 using System;
 using IntraWeb.Filters;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNet.Authorization;
 
 namespace IntraWeb.Controllers.Api.v1
 {
