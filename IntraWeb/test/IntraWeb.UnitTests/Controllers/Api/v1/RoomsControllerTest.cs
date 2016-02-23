@@ -21,7 +21,10 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
 
         public RoomsControllerTest()
         {
-            AdministrationModelMapping.ConfigureRoomMapping();
+            AutoMapper.Mapper.Initialize(conf =>
+            {
+                conf.AddProfile<RoomsMappingProfile>();
+            });
         }
 
         #region "Get rooms"

@@ -122,10 +122,18 @@ namespace IntraWeb
 
             app.UseIdentity();
 
-            AdministrationModelMapping.ConfigureRoomMapping();
+            InitializeAutoMapper();
 
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
             app.UseMvc();
+        }
+
+        private static void InitializeAutoMapper()
+        {
+            AutoMapper.Mapper.Initialize(conf =>
+            {
+                conf.AddProfile<RoomsMappingProfile>();
+            });
         }
 
         // Entry point for the application.

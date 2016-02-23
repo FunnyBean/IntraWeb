@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -57,5 +58,11 @@ namespace IntraWeb.Models
         /// </value>
         /// <remarks>Navigation property.</remarks>
         public Equipment Equipment { get; set; }
+
+        /// <summary>
+        /// Count.
+        /// </summary>
+        [Range(0, Int32.MaxValue)]
+        public int Count { get; set; }
     }
 }

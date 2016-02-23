@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace IntraWeb.ViewModels.Administration
 {
     /// <summary>
-    /// Room View Model for Room model
+    /// Equipment View Model for Equipment.
     /// </summary>
-    public class RoomViewModel
+    public class EquipmentViewModel
     {
         /// <summary>
         /// Gets or sets the identifier.
@@ -17,18 +17,8 @@ namespace IntraWeb.ViewModels.Administration
         /// <value>
         /// The identifier.
         /// </value>
-        [Required()]
+        [Required]
         public int Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        [Required()]
-        [MaxLength(50)]
-        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the description.
@@ -36,15 +26,8 @@ namespace IntraWeb.ViewModels.Administration
         /// <value>
         /// The description.
         /// </value>
-        [MaxLength(255)]
+        [Required()]
+        [MaxLength(100)]
         public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets the equipments.
-        /// </summary>
-        /// <value>
-        /// The equipments.
-        /// </value>
-        public ICollection<EquipmentViewModel> Equipments { get; set; }
     }
 }
