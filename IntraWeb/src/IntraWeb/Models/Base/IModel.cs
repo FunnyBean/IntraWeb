@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace IntraWeb.Models.Base
+﻿namespace IntraWeb.Models.Base
 {
     /// <summary>
     /// Interface for Db models.
