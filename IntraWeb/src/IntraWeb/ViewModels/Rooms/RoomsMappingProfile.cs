@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using IntraWeb.Models;
+using IntraWeb.Models.Rooms;
 
-namespace IntraWeb.ViewModels.Administration
+namespace IntraWeb.ViewModels.Rooms
 {
     /// <summary>
     /// Initialization model to view model and revers mapping for rooms.

@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using Microsoft.AspNet.Mvc;
 using IntraWeb.Models;
-using IntraWeb.ViewModels.Administration;
+using IntraWeb.ViewModels.Rooms;
 using System.Net;
 using System;
 using IntraWeb.Filters;
 using Microsoft.Extensions.Logging;
+using IntraWeb.Models.Rooms;
 
 namespace IntraWeb.Controllers.Api.v1
 {
@@ -93,8 +94,6 @@ namespace IntraWeb.Controllers.Api.v1
                 this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 return this.Json(new { Message = $"Room with name '{roomVm.Name}' already exist." });
             }
-
-
         }
 
         /// <summary>

@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
-using IntraWeb.Controllers;
-using IntraWeb.Models.Dummies;
 using IntraWeb.UnitTests.Service;
-using IntraWeb.ViewModels.Administration;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Http.Internal;
 using System.Net;
 using IntraWeb.UnitTests.Filters;
 using IntraWeb.Filters;
 using IntraWeb.Controllers.Api.v1;
+using IntraWeb.Models.Rooms;
+using IntraWeb.ViewModels.Rooms;
 
 namespace IntraWeb.UnitTests.Controllers.Api.v1
 {
@@ -48,12 +45,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -82,12 +79,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -141,12 +138,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             RoomDummyRepository reposiotry = null;
             var target = CreateRoomsController((rep) =>
             {
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -176,12 +173,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -209,12 +206,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -239,12 +236,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -344,12 +341,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController(rep =>
             {
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -369,12 +366,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController(rep =>
             {
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -395,12 +392,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             RoomDummyRepository repository = null;
             var target = CreateRoomsController(rep =>
             {
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -424,12 +421,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             RoomDummyRepository repository = null;
             var target = CreateRoomsController(rep =>
             {
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -455,7 +452,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
@@ -515,12 +512,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController(rep =>
             {
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -541,12 +538,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             RoomDummyRepository repository = null;
             var target = CreateRoomsController(rep =>
             {
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -567,7 +564,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
@@ -589,12 +586,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController(rep =>
             {
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.Add(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"

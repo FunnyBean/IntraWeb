@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IntraWeb.ViewModels.Administration
+namespace IntraWeb.ViewModels.Rooms
 {
     /// <summary>
     /// Equipment View Model for Equipment.

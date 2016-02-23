@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace IntraWeb.ViewModels.Administration
+namespace IntraWeb.ViewModels.Rooms
 {
     /// <summary>
     /// Room View Model for Room model

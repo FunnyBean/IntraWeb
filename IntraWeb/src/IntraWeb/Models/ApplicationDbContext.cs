@@ -1,3 +1,4 @@
+using IntraWeb.Models.Rooms;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
 

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using IntraWeb.Models.Base;
 
-namespace IntraWeb.Models
+namespace IntraWeb.Models.Rooms
 {
     /// <summary>
     /// Model, which represent Room.

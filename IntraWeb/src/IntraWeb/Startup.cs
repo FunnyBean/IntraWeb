@@ -7,11 +7,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using IntraWeb.Models;
-using IntraWeb.ViewModels.Administration;
+using IntraWeb.ViewModels.Rooms;
 using Microsoft.AspNet.Authentication.Cookies;
 using System.Net;
 using IntraWeb.Services.Emails;
 using System;
+using IntraWeb.Models.Rooms;
 
 namespace IntraWeb
 {

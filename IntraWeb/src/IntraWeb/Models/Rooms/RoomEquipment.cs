@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IntraWeb.Models
+namespace IntraWeb.Models.Rooms
 {
     /// <summary>
     /// Model, which represent join table between Room and equipment.

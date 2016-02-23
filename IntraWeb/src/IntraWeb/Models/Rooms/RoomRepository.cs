@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using IntraWeb.Models.Base;
 using Microsoft.Data.Entity;
 
-namespace IntraWeb.Models
+namespace IntraWeb.Models.Rooms
 {
     /// <summary>
     /// Rooms repository with EF
