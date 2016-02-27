@@ -64,6 +64,21 @@ namespace IntraWeb.Migrations
                     b.HasAnnotation("Relational:TableName", "AspNetUsers");
                 });
 
+            modelBuilder.Entity("IntraWeb.Models.Equipment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Description")
+                        .IsUnique();
+                });
+
             modelBuilder.Entity("IntraWeb.Models.Room", b =>
                 {
                     b.Property<int>("Id")
@@ -80,6 +95,20 @@ namespace IntraWeb.Migrations
 
                     b.HasIndex("Name")
                         .IsUnique();
+                });
+
+            modelBuilder.Entity("IntraWeb.Models.RoomEquipment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Count");
+
+                    b.Property<int>("EquipmentId");
+
+                    b.Property<int>("RoomId");
+
+                    b.HasKey("Id");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRole", b =>
@@ -162,6 +191,17 @@ namespace IntraWeb.Migrations
                     b.HasKey("UserId", "RoleId");
 
                     b.HasAnnotation("Relational:TableName", "AspNetUserRoles");
+                });
+
+            modelBuilder.Entity("IntraWeb.Models.RoomEquipment", b =>
+                {
+                    b.HasOne("IntraWeb.Models.Equipment")
+                        .WithMany()
+                        .HasForeignKey("EquipmentId");
+
+                    b.HasOne("IntraWeb.Models.Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRoleClaim<string>", b =>
