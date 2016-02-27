@@ -1,6 +1,6 @@
 ﻿namespace IntraWeb.Services.Emails
 {
-    public class EmailSettings
+    public class EmailOptions
     {
 
         public string Server { get; set; }

@@ -21,7 +21,7 @@ namespace IntraWeb.Services.Emails
 
         #region Private members
 
-        private EmailSettings _options;
+        private EmailOptions _options;
         private ILogger<EmailService> _logger;
         private IEmailFormatter _formatter;
 
@@ -30,7 +30,7 @@ namespace IntraWeb.Services.Emails
 
         #region Constructor
 
-        public EmailService(IOptions<EmailSettings> options, 
+        public EmailService(IOptions<EmailOptions> options, 
                             ILogger<EmailService> logger, 
                             IEmailFormatter formatter)
         {

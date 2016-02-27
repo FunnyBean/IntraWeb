@@ -43,7 +43,7 @@ namespace IntraWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
-            services.Configure<EmailSettings>(Configuration.GetSection("Email"));
+            services.Configure<EmailOptions>(Configuration.GetSection("Email"));
 
             // Add framework services.
             services.AddEntityFramework()

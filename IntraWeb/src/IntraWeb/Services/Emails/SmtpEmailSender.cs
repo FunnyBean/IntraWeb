@@ -13,9 +13,9 @@ namespace IntraWeb.Services.Emails
     {
 
 
-        EmailSettings _options;
+        EmailOptions _options;
 
-        public SmtpEmailSender(IOptions<EmailSettings> options)
+        public SmtpEmailSender(IOptions<EmailOptions> options)
         {
             _options = options.Value;
         }
