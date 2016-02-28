@@ -64,7 +64,7 @@ namespace IntraWeb.Resources.Email {
         ///&lt;html&gt;
         ///&lt;head&gt;
         ///    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
-        ///    &lt;title&gt;{Title}&lt;/title&gt;
+        ///    &lt;title&gt;{title}&lt;/title&gt;
         ///
         ///    &lt;style type=&quot;text/css&quot;&gt;
         ///        body {
@@ -77,9 +77,37 @@ namespace IntraWeb.Resources.Email {
         ///            -webkit-font-smoothing: antialiased !important;
         ///        [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string LayoutTemplate {
+        internal static string Layout {
             get {
-                return ResourceManager.GetString("LayoutTemplate", resourceCulture);
+                return ResourceManager.GetString("Layout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to &lt;p&gt;
+        ///    Heslo si môžete obnoviť na nasledujúcom odkaze: &lt;a href=&quot;http://www.example.com&quot;&gt;www.example.com&lt;/a&gt;.
+        ///&lt;/p&gt;.
+        /// </summary>
+        internal static string PasswordReset {
+            get {
+                return ResourceManager.GetString("PasswordReset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to  &lt;p&gt;
+        ///    &lt;a href=&quot;http://example.com&quot;&gt;Lorem ipsum&lt;/a&gt; dolor sit amet,
+        ///    consectetur adipiscing elit. Integer sit amet euismod enim,
+        ///    ac viverra odio. Donec finibus erat tortor, viverra imperdiet
+        ///    nibh iaculis at. Nullam porttitor sagittis turpis, vel
+        ///    imperdiet magna malesuada vel. Duis id erat nulla. Integer
+        ///    consectetur tincidunt tortor sit amet sagittis. Integer
+        ///    vestibulum sapien id blandit fermentum. Curabitur nec ligula
+        ///    convallis, gravida velit non, blandit dui. Proin fauci [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Welcome {
+            get {
+                return ResourceManager.GetString("Welcome", resourceCulture);
             }
         }
     }
