@@ -57,7 +57,7 @@ namespace IntraWeb.Services.Emails
         private MimeEntity CreateHTMLEmailBody(string textMessage, string subject, string salutation)
         {
             var builder = new BodyBuilder();
-            
+
             // Set the plain-text version of the message text
             if (!string.IsNullOrWhiteSpace(salutation))
             {
@@ -76,9 +76,9 @@ namespace IntraWeb.Services.Emails
         {
             string ret;
 
-            if (this.ValidateHTMLTemplate(EmailHTMLTemplate.HTMLTextResponsive))
+            if (this.ValidateHTMLTemplate(EmailHTMLTemplate.HtmlTextResponsive))
             {
-                ret = EmailHTMLTemplate.HTMLTextResponsive; // Template from: http://templates.cakemail.com/details/basic
+                ret = EmailHTMLTemplate.HtmlTextResponsive; // Template from: http://templates.cakemail.com/details/basic
                 ret = ret.Replace(cTemplateSubject, subject);
                 ret = ret.Replace(cTemplateCompanyWebsite, EmailStringTable.TemplateCompanyWebSite);
                 ret = ret.Replace(cTemplateCaption, string.Empty); // EmailStringTable.TemplateHeaderSubCaption
