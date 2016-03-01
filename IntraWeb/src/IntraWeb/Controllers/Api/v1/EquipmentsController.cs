@@ -100,9 +100,66 @@ namespace IntraWeb.Controllers.Api.v1
             return _equipmentRepository.GetItem(p => p.Description.Equals(description, StringComparison.CurrentCultureIgnoreCase)) != null;
         }
 
-        //Put
+        /// <summary>
+        /// Update the equipment.
+        /// </summary>
+        /// <param name="equipmentId">Equipment id for update.</param>
+        /// <param name="equipmentVm">Equipment view model, with new properties.</param>
+        [HttpPut("{equipmentId}")]
+        [ValidateModelState, CheckArgumentsForNull]
+        //[Authorize(Roles = "Administrator")] - ToDo: Zakomentovane pokiaľ sa nespraví autorizácia
+        public IActionResult Put(int equipmentId, [FromBody] EquipmentViewModel equipmentVm)
+        {
+            if (equipmentVm.Id != equipmentId)
+            {
+                this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                var message = $"Invalid argument. Id '{equipmentId}' and equipmentVm.Id '{equipmentVm.Id}' are not equal.";
+                _logger.LogWarning(message);
 
-        //Delete
+                return this.Json(new { Message = message });
+            }
+
+            var editedEquipment = _equipmentRepository.GetItem(equipmentId);
+            if (editedEquipment == null)
+            {
+                this.Response.StatusCode = (int) HttpStatusCode.NoContent;
+                return this.Json(null);
+            }
+
+            if (ExistAnotherEquipmentWithName(equipmentVm.Description, equipmentId))
+            {
+                this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                return this.Json(new { Message = $"Equipment with name '{equipmentVm.Description}' already exist." });
+            }
+            else
+            {
+                editedEquipment = AutoMapper.Mapper.Map(equipmentVm, editedEquipment);
+
+                return SaveData(() =>
+                {
+                    _equipmentRepository.Edit(editedEquipment);
+                });
+            }
+        }
+
+        /// <summary>
+        /// Deletes the specified equipment.
+        /// </summary>
+        /// <param name="equipmentId">The equipment identifier.</param>
+        [HttpDelete("{equipmentId}")]
+        //[Authorize(Roles = "Administrator")] - ToDo: Zakomentovane pokia¾ sa nespraví autorizácia
+        public IActionResult Delete(int equipmentId)
+        {
+            return SaveData(() =>
+            {
+                _equipmentRepository.Delete(equipmentId);
+            });
+        }
+
+        private IActionResult SaveData(Action beforeAction)
+        {
+            return SaveData(beforeAction, () => this.Json(null));
+        }
 
         private IActionResult SaveData(Action beforeAction,
                           Func<IActionResult> result)
@@ -120,6 +177,13 @@ namespace IntraWeb.Controllers.Api.v1
                 this.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                 return this.Json(new { Message = $"Saving equipment throw Exception '{ex.Message}'" });
             }
+        }
+
+        private bool ExistAnotherEquipmentWithName(string equipmentDescription, int equipmentId)
+        {
+            var equipment = _equipmentRepository.GetItem(p => p.Description.Equals(equipmentDescription, StringComparison.CurrentCultureIgnoreCase));
+
+            return equipment != null && equipment.Id != equipmentId;
         }
     }
 }

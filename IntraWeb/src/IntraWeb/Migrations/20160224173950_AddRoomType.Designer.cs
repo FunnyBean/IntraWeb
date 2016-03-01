@@ -8,9 +8,10 @@ using IntraWeb.Models;
 namespace IntraWeb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160224173950_AddRoomType")]
+    partial class AddRoomType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -91,9 +92,7 @@ namespace IntraWeb.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 50);
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 25);
+                    b.Property<string>("Type");
 
                     b.HasKey("Id");
 

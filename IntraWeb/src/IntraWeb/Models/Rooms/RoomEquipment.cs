@@ -60,9 +60,9 @@ namespace IntraWeb.Models.Rooms
         public Equipment Equipment { get; set; }
 
         /// <summary>
-        /// Count.
+        /// Amount.
         /// </summary>
-        [Range(0, Int32.MaxValue)]
-        public int Count { get; set; }
+        [Range(0, double.MaxValue)]
+        public decimal Amount { get; set; }
     }
 }

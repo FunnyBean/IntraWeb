@@ -7,7 +7,7 @@ namespace IntraWeb.Models.Rooms
     /// <summary>
     /// Model, which represent Room.
     /// </summary>
-    public class Room: IModel
+    public class Room : IModel
     {
         /// <summary>
         /// Gets or sets the identifier.
@@ -36,6 +36,15 @@ namespace IntraWeb.Models.Rooms
         [MaxLength(255)]
         public string Description { get; set; }
 
+        /// <summary>
+        /// Gets or sets the type of room.
+        /// </summary>
+        /// <value>
+        /// The room type.
+        /// </value>
+        [MaxLength(25)]
+        [Required()]
+        public string Type { get; set; }
 
         /// <summary>
         /// Gets or sets the equipments.
@@ -44,5 +53,6 @@ namespace IntraWeb.Models.Rooms
         /// The equipments.
         /// </value>
         public ICollection<RoomEquipment> Equipments { get; set; }
+
     }
 }

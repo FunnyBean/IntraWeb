@@ -8,8 +8,8 @@ using IntraWeb.Models;
 namespace IntraWeb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20160222193309_AddRoomEquipmentCount")]
-    partial class AddRoomEquipmentCount
+    [Migration("20160224182343_AddTypeConstraints")]
+    partial class AddRoomTypeConstraints
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -65,7 +65,7 @@ namespace IntraWeb.Migrations
                     b.HasAnnotation("Relational:TableName", "AspNetUsers");
                 });
 
-            modelBuilder.Entity("IntraWeb.Models.Equipment", b =>
+            modelBuilder.Entity("IntraWeb.Models.Rooms.Equipment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -80,7 +80,7 @@ namespace IntraWeb.Migrations
                         .IsUnique();
                 });
 
-            modelBuilder.Entity("IntraWeb.Models.Room", b =>
+            modelBuilder.Entity("IntraWeb.Models.Rooms.Room", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -92,18 +92,22 @@ namespace IntraWeb.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 50);
 
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 25);
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .IsUnique();
                 });
 
-            modelBuilder.Entity("IntraWeb.Models.RoomEquipment", b =>
+            modelBuilder.Entity("IntraWeb.Models.Rooms.RoomEquipment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Count");
+                    b.Property<decimal>("Amount");
 
                     b.Property<int>("EquipmentId");
 
@@ -194,13 +198,13 @@ namespace IntraWeb.Migrations
                     b.HasAnnotation("Relational:TableName", "AspNetUserRoles");
                 });
 
-            modelBuilder.Entity("IntraWeb.Models.RoomEquipment", b =>
+            modelBuilder.Entity("IntraWeb.Models.Rooms.RoomEquipment", b =>
                 {
-                    b.HasOne("IntraWeb.Models.Equipment")
+                    b.HasOne("IntraWeb.Models.Rooms.Equipment")
                         .WithMany()
                         .HasForeignKey("EquipmentId");
 
-                    b.HasOne("IntraWeb.Models.Room")
+                    b.HasOne("IntraWeb.Models.Rooms.Room")
                         .WithMany()
                         .HasForeignKey("RoomId");
                 });

@@ -7,6 +7,5 @@ namespace IntraWeb.Models.Rooms
     /// </summary>
     public interface IEquipmentRepository : IRepository<Equipment>
     {
-
     }
 }
