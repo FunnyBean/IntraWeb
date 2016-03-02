@@ -82,8 +82,6 @@ namespace IntraWeb
             services.AddMvc(); // ToDo: Replace with Web API when it will be done in ASP.NET Core 1.0
 
             // Add application services
-            services.AddTransient<IEmailService, EmailService>();
-            services.AddTransient<IEmailFormatter, EmailFormatter>();
 
             //services.AddInstance<IRoomRepository>(new Models.Dummies.RoomDummyRepository()); //Testovacia implementacia
             services.AddScoped<IRoomRepository, RoomsRepository>();
