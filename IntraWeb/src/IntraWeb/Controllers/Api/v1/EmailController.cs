@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Authorization;
 using IntraWeb.Services.Emails;
+using System.Collections.Generic;
 
 namespace IntraWeb.Controllers.Api.v1
 {
-    /// <summary>
-    /// Class only for testing sending emails.
-    /// </summary>
+
     [Route("api/email")]
     [AllowAnonymous]
     public class EmailController : BaseController
@@ -14,27 +13,29 @@ namespace IntraWeb.Controllers.Api.v1
 
         #region Private members
 
-        private IEmailService _EmailService;
+        private IEmailCreator _creator;
+        private IEmailSender _sender;
 
         #endregion
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EmailController"/> class.
-        /// </summary>
-        /// <param name="emailService">The email service</param>
-        public EmailController(IEmailService emailService)
-        {
-            _EmailService = emailService;
 
+        public EmailController(IEmailCreator creator, IEmailSender sender)
+        {
+            _creator = creator;
+            _sender = sender;
         }
 
-        /// <summary>
-        /// Test sending email.
-        /// </summary>
-        [HttpGet("{email}")]
-        public void TestSendingEmail(string email)
+
+        [HttpGet]
+        [Route("send/{emailType}")]
+        public void Send(string emailType, string to)
         {
-            _EmailService.SendEmail(email, "FunnyBean Subject TEST", "", "");
+            var data = new Dictionary<string, string>();
+            data[EmailDataKeys.From] = Resources.Resources.EmailFrom;
+            data[EmailDataKeys.To] = to;
+
+            var msg = _creator.CreateEmail(emailType, data);
+            _sender.SendEmail(msg);
         }
 
     }

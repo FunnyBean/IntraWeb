@@ -82,6 +82,7 @@ namespace IntraWeb
             services.AddMvc(); // ToDo: Replace with Web API when it will be done in ASP.NET Core 1.0
 
             // Add application services
+            AddIntraWebServices(services);
 
             //services.AddInstance<IRoomRepository>(new Models.Dummies.RoomDummyRepository()); //Testovacia implementacia
             services.AddScoped<IRoomRepository, RoomsRepository>();
@@ -128,6 +129,15 @@ namespace IntraWeb
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
             app.UseMvc();
         }
+
+
+        private void AddIntraWebServices(IServiceCollection services)
+        {
+            services.AddScoped<IEmailSender, SmtpEmailSender>();
+            services.AddScoped<IEmailCreator, HtmlEmailCreator>();
+            services.AddScoped<IEmailFormatter, FileEmailFormatter>();
+        }
+
 
         // Entry point for the application.
         public static void Main(string[] args) => WebApplication.Run<Startup>(args);
