@@ -1,5 +1,7 @@
 ﻿using IntraWeb.Services.Emails;
 using MimeKit;
+using NSubstitute;
+using System.Collections.Generic;
 using Xunit;
 
 namespace IntraWeb.UnitTests.Service.Email
@@ -35,14 +37,72 @@ Paragraph 2.";
         [Fact]
         public void ShouldCreateMessage()
         {
-            var creator = new HtmlEmailCreator();
-            var msg = creator.CreateEmail(_htmlBody);
+            const string emailType = "test";
+            var data = new Dictionary<string, string>();
+
+            var formatter = Substitute.For<IEmailFormatter>();
+            formatter.FormatEmail(emailType, data).Returns(_htmlBody);
+
+            var creator = new HtmlEmailCreator(formatter);
+            var msg = creator.CreateEmail(emailType, data);
 
             Assert.Equal("Lorem ipsum", msg.Subject);
 
-            var body = msg.Body as MultipartAlternative;
-            Assert.Equal(_htmlBody, body.HtmlBody);
-            Assert.Equal(_textBody, body.TextBody);
+            TextPart htmlPart = null;
+            TextPart textPart = null;
+            foreach (var part in msg.BodyParts)
+            {
+                if (part.ContentType.IsMimeType("text", "html"))
+                {
+                    htmlPart = part as TextPart;
+                } else if (part.ContentType.IsMimeType("text", "plain"))
+                {
+                    textPart  = part as TextPart;
+                }
+            }
+
+            Assert.Equal(_htmlBody, htmlPart.Text);
+            Assert.Equal(_textBody, textPart.Text);
+        }
+
+
+        [Fact]
+        public void ShouldHaveCorrectAddresses()
+        {
+            const string emailType = "test";
+            var data = new Dictionary<string, string>() {
+                {EmailDataKeys.From, "From Email <from@example.com>"},
+                {EmailDataKeys.To, "To Email <to@example.com>"},
+                {EmailDataKeys.Cc, "Cc Email <cc@example.com>"},
+                {EmailDataKeys.Bcc, "Bcc Email <bcc@example.com>"},
+                {EmailDataKeys.ReplyTo, "ReplyTo Email <replyto@example.com>"}
+            };
+
+            var formatter = Substitute.For<IEmailFormatter>();
+            formatter.FormatEmail(emailType, data).Returns(_htmlBody);
+
+            var creator = new HtmlEmailCreator(formatter);
+            var msg = creator.CreateEmail(emailType, data);
+
+            var emailAddress = msg.From[0] as MailboxAddress;
+            Assert.Equal(emailAddress.Name, "From Email");
+            Assert.Equal(emailAddress.Address, "from@example.com");
+
+            emailAddress = msg.To[0] as MailboxAddress;
+            Assert.Equal(emailAddress.Name, "To Email");
+            Assert.Equal(emailAddress.Address, "to@example.com");
+
+            emailAddress = msg.Cc[0] as MailboxAddress;
+            Assert.Equal(emailAddress.Name, "Cc Email");
+            Assert.Equal(emailAddress.Address, "cc@example.com");
+
+            emailAddress = msg.Bcc[0] as MailboxAddress;
+            Assert.Equal(emailAddress.Name, "Bcc Email");
+            Assert.Equal(emailAddress.Address, "bcc@example.com");
+
+            emailAddress = msg.ReplyTo[0] as MailboxAddress;
+            Assert.Equal(emailAddress.Name, "ReplyTo Email");
+            Assert.Equal(emailAddress.Address, "replyto@example.com");
         }
 
     }

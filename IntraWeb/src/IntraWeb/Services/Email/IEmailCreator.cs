@@ -1,4 +1,5 @@
 ﻿using MimeKit;
+using System.Collections.Generic;
 
 namespace IntraWeb.Services.Emails
 {
@@ -10,7 +11,7 @@ namespace IntraWeb.Services.Emails
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        MimeMessage CreateEmail(string body);
+        MimeMessage CreateEmail(string emailType, IDictionary<string, string> data);
 
     }
 }

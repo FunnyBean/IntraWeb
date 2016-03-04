@@ -1,22 +1,27 @@
-﻿using System.Text.RegularExpressions;
-
-using MimeKit;
+﻿using MimeKit;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace IntraWeb.Services.Emails
 {
     public class HtmlEmailCreator : IEmailCreator
     {
 
-        private Regex _reSubject = new Regex(@"<title>(.+?)</title>", RegexOptions.IgnoreCase);
+        IEmailFormatter _formatter;
 
-        public MimeMessage CreateEmail(string htmlBody)
+        public HtmlEmailCreator(IEmailFormatter formatter)
         {
+            _formatter = formatter;
+        }
+
+
+        public MimeMessage CreateEmail(string emailType, IDictionary<string, string> data)
+        {
+            var htmlBody = _formatter.FormatEmail(emailType, data);
+
             var msg = new MimeMessage();
-            var titleMatch = _reSubject.Match(htmlBody);
-            if (titleMatch.Success)
-            {
-                msg.Subject = titleMatch.Groups[1].Value;
-            }
+            SetAddresses(msg, data);
+            SetSubject(msg, htmlBody);
 
             var builder = new BodyBuilder();
             builder.HtmlBody = htmlBody;
@@ -25,6 +30,37 @@ namespace IntraWeb.Services.Emails
             msg.Body = builder.ToMessageBody();
 
             return msg;
+        }
+
+
+        private void SetAddresses(MimeMessage msg, IDictionary<string, string> data)
+        {
+            SetAddress(msg.From, data, EmailDataKeys.From);
+            SetAddress(msg.To, data, EmailDataKeys.To);
+            SetAddress(msg.Cc, data, EmailDataKeys.Cc);
+            SetAddress(msg.Bcc, data, EmailDataKeys.Bcc);
+            SetAddress(msg.ReplyTo, data, EmailDataKeys.ReplyTo);
+        }
+
+        private void SetAddress(InternetAddressList addresses, IDictionary<string, string> data, string key)
+        {
+            string address = null;
+            if (data.TryGetValue(key, out address))
+            {
+                addresses.Add(address);
+            }
+        }
+
+
+        private Regex _reSubject = new Regex(@"<title>(.+?)</title>", RegexOptions.IgnoreCase);
+
+        private void SetSubject(MimeMessage msg, string htmlBody)
+        {
+            var titleMatch = _reSubject.Match(htmlBody);
+            if (titleMatch.Success)
+            {
+                msg.Subject = titleMatch.Groups[1].Value;
+            }
         }
 
 
