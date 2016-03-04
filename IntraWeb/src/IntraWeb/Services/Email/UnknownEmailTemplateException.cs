@@ -6,7 +6,7 @@ namespace IntraWeb.Services.Emails
     {
 
         public UnknownEmailTemplateException(string emailType)
-            : base($"Emailová šablóna \"{emailType}\" neexistuje.")
+            : base(string.Format(Resources.Resources.UnknownEmailTemplateException_Message, emailType))
         {
             _emailType = emailType;
         }
