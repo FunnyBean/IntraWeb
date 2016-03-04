@@ -1,4 +1,4 @@
-﻿using IntraWeb.Services.Emails;
+﻿using IntraWeb.Services.Email;
 using MimeKit;
 using NSubstitute;
 using System.Collections.Generic;

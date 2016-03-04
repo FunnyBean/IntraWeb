@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Authorization;
-using IntraWeb.Services.Emails;
+using IntraWeb.Services.Email;
 using System.Collections.Generic;
 
 namespace IntraWeb.Controllers.Api.v1

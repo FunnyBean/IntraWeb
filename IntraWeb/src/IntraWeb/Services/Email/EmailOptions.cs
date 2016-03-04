@@ -1,4 +1,4 @@
-﻿namespace IntraWeb.Services.Emails
+﻿namespace IntraWeb.Services.Email
 {
     public class EmailOptions
     {

@@ -1,7 +1,7 @@
 ﻿using MimeKit;
 using Xunit;
 
-using IntraWeb.Services.Emails;
+using IntraWeb.Services.Email;
 
 
 namespace IntraWeb.UnitTests.Service.Email

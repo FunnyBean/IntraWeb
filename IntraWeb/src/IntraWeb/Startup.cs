@@ -1,5 +1,5 @@
 ﻿using IntraWeb.Models;
-using IntraWeb.Services.Emails;
+using IntraWeb.Services.Email;
 using IntraWeb.ViewModels.Administration;
 
 using Microsoft.AspNet.Authentication.Cookies;

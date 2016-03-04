@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IntraWeb.Services.Emails
+namespace IntraWeb.Services.Email
 {
     public class UnknownEmailTemplateException : Exception
     {

@@ -7,7 +7,7 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 
 
-namespace IntraWeb.Services.Emails
+namespace IntraWeb.Services.Email
 {
     public class SmtpEmailSender : IEmailSender
     {

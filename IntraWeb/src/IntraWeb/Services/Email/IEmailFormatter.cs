@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace IntraWeb.Services.Emails
+namespace IntraWeb.Services.Email
 {
     public interface IEmailFormatter
     {

@@ -1,6 +1,6 @@
 ﻿using MimeKit;
 
-namespace IntraWeb.Services.Emails
+namespace IntraWeb.Services.Email
 {
     public interface IEmailSender
     {

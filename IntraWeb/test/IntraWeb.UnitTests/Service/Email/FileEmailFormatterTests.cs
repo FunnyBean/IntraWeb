@@ -1,4 +1,4 @@
-﻿using IntraWeb.Services.Emails;
+﻿using IntraWeb.Services.Email;
 using NSubstitute;
 using Xunit;
 using Microsoft.AspNet.Hosting;

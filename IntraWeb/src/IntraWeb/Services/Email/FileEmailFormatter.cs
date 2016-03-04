@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace IntraWeb.Services.Emails
+namespace IntraWeb.Services.Email
 {
 
     public class FileEmailFormatter : IEmailFormatter
