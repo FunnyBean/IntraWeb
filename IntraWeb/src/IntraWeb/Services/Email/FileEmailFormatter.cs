@@ -19,6 +19,7 @@ namespace IntraWeb.Services.Emails
 
 
         public string LayoutTemplateName { get; set; } = "Layout";
+        public string TemplateContentTag { get; set; } = "{template.content}";
 
 
         public string FormatEmail(string emailType, IDictionary<string, string> data)
@@ -40,7 +41,7 @@ namespace IntraWeb.Services.Emails
 
         private string LoadTemplate(string emailType)
         {
-            return GetTemplateText(LayoutTemplateName)?.Replace("{template.content}", GetTemplateText(emailType));
+            return GetTemplateText(LayoutTemplateName)?.Replace(TemplateContentTag, GetTemplateText(emailType));
         }
 
 
