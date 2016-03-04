@@ -27,7 +27,7 @@ namespace IntraWeb.UnitTests.Service.Email
         </p>
     </div>
     <div id=""content"">
-        {template.content}
+        {content}
     </div>
     <div id=""footer"">
         <p>
@@ -75,6 +75,38 @@ namespace IntraWeb.UnitTests.Service.Email
 </body>
 </html>";
 
+
+        private readonly string _testTitleLayout =
+@"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=""utf-8"" />
+    <title>{title}</title>
+</head>
+<body>
+{content}
+</body>
+</html>";
+
+
+        private readonly string _testTitleContent =
+@"<title>Title inside template</title>
+Lorem ipsum";
+
+
+        private readonly string _expectedTitleTemplate =
+@"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=""utf-8"" />
+    <title>Title inside template</title>
+</head>
+<body>
+
+Lorem ipsum
+</body>
+</html>";
+
         #endregion
 
 
@@ -85,7 +117,7 @@ namespace IntraWeb.UnitTests.Service.Email
             env.WebRootPath.Returns(string.Empty);
 
             var formatter = Substitute.For<FileEmailFormatter>(env);
-            formatter.GetTemplateText(formatter.LayoutTemplateName).Returns(this._layout);
+            formatter.GetTemplateText(FileEmailFormatter.LayoutTemplateName).Returns(this._layout);
             formatter.GetTemplateText("test").Returns(this._testTemplate);
 
             var data = new Dictionary<string, string>() {
@@ -96,6 +128,22 @@ namespace IntraWeb.UnitTests.Service.Email
 
             var actual = formatter.FormatEmail("test", data);
             Assert.Equal(this._expectedEmail, actual);
+        }
+
+
+        [Fact]
+        public void ShouldGetTitleFromTemplate()
+        {
+            const string templateName = "test";
+            var env = Substitute.For<IHostingEnvironment>();
+            env.WebRootPath.Returns(string.Empty);
+
+            var formatter = Substitute.For<FileEmailFormatter>(env);
+            formatter.GetTemplateText(FileEmailFormatter.LayoutTemplateName).Returns(_testTitleLayout);
+            formatter.GetTemplateText(templateName).Returns(_testTitleContent);
+
+            var actual = formatter.FormatEmail(templateName, null);
+            Assert.Equal(_expectedTitleTemplate, actual);
         }
 
 

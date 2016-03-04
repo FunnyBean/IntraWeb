@@ -18,8 +18,9 @@ namespace IntraWeb.Services.Email
         }
 
 
-        public string LayoutTemplateName { get; set; } = "Layout";
-        public string TemplateContentTag { get; set; } = "{template.content}";
+        public const string LayoutTemplateName = "Layout";
+        public const string TemplateContentTag = "{content}";
+        public const string TemplateTitleTag = "{title}";
 
 
         public string FormatEmail(string emailType, IDictionary<string, string> data)
@@ -39,9 +40,36 @@ namespace IntraWeb.Services.Email
         }
 
 
-        private string LoadTemplate(string emailType)
+        private string LoadLayout()
         {
-            return GetTemplateText(LayoutTemplateName)?.Replace(TemplateContentTag, GetTemplateText(emailType));
+            return GetTemplateText(LayoutTemplateName);
+        }
+
+
+        private string LoadTemplate(string templateName)
+        {
+            var layout = LoadLayout();
+            var template = GetTemplateText(templateName);
+            SetTemplateHtmlTitle(ref layout, ref template);
+
+            return layout.Replace(TemplateContentTag, template);
+        }
+
+
+        private Regex _reTitle = new Regex("<title>(.+?)</title>", RegexOptions.IgnoreCase);
+
+        private void SetTemplateHtmlTitle(ref string layout, ref string template)
+        {
+            string title = null;
+            template = _reTitle.Replace(template, (m) =>
+            {
+                title = m.Groups[1].Value;
+                return string.Empty;
+            });
+            if (title != null)
+            {
+                layout = layout.Replace(TemplateTitleTag, title);
+            }
         }
 
 
