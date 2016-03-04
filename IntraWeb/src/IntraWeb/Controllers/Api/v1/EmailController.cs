@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Authorization;
 using IntraWeb.Services.Emails;
-using IntraWeb.Resources.Email;
 
 namespace IntraWeb.Controllers.Api.v1
 {
@@ -26,7 +25,7 @@ namespace IntraWeb.Controllers.Api.v1
         public EmailController(IEmailService emailService)
         {
             _EmailService = emailService;
-            
+
         }
 
         /// <summary>
@@ -35,7 +34,7 @@ namespace IntraWeb.Controllers.Api.v1
         [HttpGet("{email}")]
         public void TestSendingEmail(string email)
         {
-            _EmailService.SendEmail(email, "FunnyBean Subject TEST", EmailStringTable.TemplateBodyText, EmailStringTable.TemplateBodySalutation);
+            _EmailService.SendEmail(email, "FunnyBean Subject TEST", "", "");
         }
 
     }
