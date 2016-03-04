@@ -18,6 +18,7 @@ namespace IntraWeb.UnitTests.Service.Email
    <h1>Main Header</h1>
    <p>Paragraph 1.
 Second line with link: <a href=""http://example.com"">link to example</a>.
+Third line: <a href='http://example.com'>link to example</a>.
 Last line.  </p>
 
 <p>Paragraph 2.</p>
@@ -26,7 +27,7 @@ Last line.  </p>
         private readonly string _textBody =
 @"Main Header
 
-Paragraph 1. Second line with link: link to example (http://example.com). Last line.
+Paragraph 1. Second line with link: link to example (http://example.com). Third line: link to example (http://example.com). Last line.
 
 Paragraph 2.";
 

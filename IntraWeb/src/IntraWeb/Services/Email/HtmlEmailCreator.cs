@@ -32,7 +32,7 @@ namespace IntraWeb.Services.Emails
             @"<(style|script|head).*?</\1>", RegexOptions.IgnoreCase | RegexOptions.Singleline);
         private Regex _reTables = new Regex(@"<t[dh][ >]", RegexOptions.IgnoreCase);
         private Regex _reLinks = new Regex(
-            @"<a [^>]*href=""?(?<href>[^""]+)""?[^>]*>(?<text>.*?)</a>", RegexOptions.IgnoreCase);
+            @"<a [^>]*href=((""(?<href1>[^""]+)"")|('(?<href2>[^']+)'))[^>]*>(?<text>.*?)</a>", RegexOptions.IgnoreCase);
         private Regex _reNewLines = new Regex(@"[\r\n]+");
         private Regex _reParagraphs = new Regex(@"<(/?p|/?h\d|li|br|/tr)[ >/]", RegexOptions.IgnoreCase);
         private Regex _reHtmlTags = new Regex(@"<[^>]*>");
@@ -45,7 +45,16 @@ namespace IntraWeb.Services.Emails
             var textBody = htmlBody;
             textBody = _reHeader.Replace(textBody, string.Empty);
             textBody = _reTables.Replace(textBody, " $0");
-            textBody = _reLinks.Replace(textBody, "${text} (${href})");
+            textBody = _reLinks.Replace(textBody,
+                                        (m) =>
+                                        {
+                                            var href = m.Groups["href1"].Value;
+                                            if (href == "")
+                                            {
+                                                href = m.Groups["href2"].Value;
+                                            }
+                                            return $"{m.Groups["text"].Value} ({href})";
+                                        });
             textBody = _reNewLines.Replace(textBody, " ");
             textBody = _reParagraphs.Replace(textBody, "\r\n$0");
             textBody = _reHtmlTags.Replace(textBody, string.Empty);
