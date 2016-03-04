@@ -60,7 +60,7 @@ namespace IntraWeb.Services.Email
             var titleMatch = _reSubject.Match(htmlBody);
             if (titleMatch.Success)
             {
-                msg.Subject = titleMatch.Groups[1].Value;
+                msg.Subject = System.Net.WebUtility.HtmlDecode(titleMatch.Groups[1].Value);
             }
         }
 
