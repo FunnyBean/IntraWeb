@@ -1,4 +1,5 @@
 ﻿using MimeKit;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -18,6 +19,10 @@ namespace IntraWeb.Services.Emails
         public MimeMessage CreateEmail(string emailType, IDictionary<string, string> data)
         {
             var htmlBody = _formatter.FormatEmail(emailType, data);
+            if (htmlBody == null)
+            {
+                throw new CreateEmailException(emailType);
+            }
 
             var msg = new MimeMessage();
             SetAddresses(msg, data);
