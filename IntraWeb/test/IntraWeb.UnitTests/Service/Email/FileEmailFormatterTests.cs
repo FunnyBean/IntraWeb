@@ -3,6 +3,7 @@ using NSubstitute;
 using Xunit;
 using Microsoft.AspNet.Hosting;
 using System.Collections.Generic;
+using System;
 
 namespace IntraWeb.UnitTests.Service.Email
 {
@@ -82,9 +83,11 @@ namespace IntraWeb.UnitTests.Service.Email
         {
             var env = Substitute.For<IHostingEnvironment>();
             env.WebRootPath.Returns(string.Empty);
+
             var formatter = Substitute.For<FileEmailFormatter>(env);
             formatter.GetTemplateText(formatter.LayoutTemplateName).Returns(this._layout);
             formatter.GetTemplateText("test").Returns(this._testTemplate);
+
             var data = new Dictionary<string, string>() {
                 {"title", "Lorem ipsum"},
                 {"user.Name", "Gabriel"},
@@ -94,5 +97,60 @@ namespace IntraWeb.UnitTests.Service.Email
             var actual = formatter.FormatEmail("test", data);
             Assert.Equal(this._expectedEmail, actual);
         }
+
+
+        [Fact]
+        public void ShouldReturnNullForInvalidEmailType()
+        {
+            var env = Substitute.For<IHostingEnvironment>();
+            env.WebRootPath.Returns(string.Empty);
+
+            var formatter = new FileEmailFormatter(env);
+            var template = formatter.FormatEmail("test", null);
+            Assert.Null(template);
+        }
+
+
+        [Fact]
+        public void ShouldThrowArgumentNullExceptionWhenNullEmailType()
+        {
+            var env = Substitute.For<IHostingEnvironment>();
+            env.WebRootPath.Returns(string.Empty);
+
+            var formatter = new FileEmailFormatter(env);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                formatter.FormatEmail(null, null);
+            });
+        }
+
+
+        [Fact]
+        public void ShouldThrowArgumentNullExceptionWhenEmptyEmailType()
+        {
+            var env = Substitute.For<IHostingEnvironment>();
+            env.WebRootPath.Returns(string.Empty);
+
+            var formatter = new FileEmailFormatter(env);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                formatter.FormatEmail(string.Empty, null);
+            });
+        }
+
+
+        [Fact]
+        public void ShouldThrowArgumentNullExceptionWhenWhiteSpaceEmailType()
+        {
+            var env = Substitute.For<IHostingEnvironment>();
+            env.WebRootPath.Returns(string.Empty);
+
+            var formatter = new FileEmailFormatter(env);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                formatter.FormatEmail("   ", null);
+            });
+        }
+
     }
 }

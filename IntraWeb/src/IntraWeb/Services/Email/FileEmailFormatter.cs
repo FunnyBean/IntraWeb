@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Hosting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -22,8 +23,16 @@ namespace IntraWeb.Services.Emails
 
         public string FormatEmail(string emailType, IDictionary<string, string> data)
         {
+            if (string.IsNullOrWhiteSpace(emailType))
+            {
+                throw new ArgumentNullException(nameof(emailType));
+            }
+
             var template = LoadTemplate(emailType);
-            template = FillTemplate(template, data);
+            if ((template != null) && (data != null))
+            {
+                template = FillTemplate(template, data);
+            }
 
             return template;
         }
@@ -31,7 +40,7 @@ namespace IntraWeb.Services.Emails
 
         private string LoadTemplate(string emailType)
         {
-            return GetTemplateText(LayoutTemplateName).Replace("{template.content}", GetTemplateText(emailType));
+            return GetTemplateText(LayoutTemplateName)?.Replace("{template.content}", GetTemplateText(emailType));
         }
 
 
@@ -43,7 +52,7 @@ namespace IntraWeb.Services.Emails
                 return File.ReadAllText(fileName);
             }
 
-            return string.Empty;
+            return null;
         }
 
 
