@@ -100,18 +100,6 @@ namespace IntraWeb.UnitTests.Service.Email
 
 
         [Fact]
-        public void ShouldReturnNullForInvalidEmailType()
-        {
-            var env = Substitute.For<IHostingEnvironment>();
-            env.WebRootPath.Returns(string.Empty);
-
-            var formatter = new FileEmailFormatter(env);
-            var template = formatter.FormatEmail("test", null);
-            Assert.Null(template);
-        }
-
-
-        [Fact]
         public void ShouldThrowArgumentNullExceptionWhenNullEmailType()
         {
             var env = Substitute.For<IHostingEnvironment>();

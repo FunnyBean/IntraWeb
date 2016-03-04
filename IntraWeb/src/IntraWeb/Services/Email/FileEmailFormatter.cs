@@ -47,12 +47,11 @@ namespace IntraWeb.Services.Emails
         public virtual string GetTemplateText(string templateName)
         {
             var fileName = Path.Combine(_templateFolder, $"{templateName}.html");
-            if (File.Exists(fileName))
+            if (!File.Exists(fileName))
             {
-                return File.ReadAllText(fileName);
+                throw new UnknownEmailTemplateException(templateName);
             }
-
-            return null;
+            return File.ReadAllText(fileName);
         }
 
 
