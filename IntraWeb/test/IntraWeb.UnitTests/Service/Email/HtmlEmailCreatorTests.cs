@@ -105,16 +105,5 @@ Paragraph 2.";
             Assert.Equal(emailAddress.Address, "replyto@example.com");
         }
 
-
-        [Fact]
-        public void ShouldThrowCreateEmailExceptionWhenInvalidEmailType()
-        {
-            var formatter = Substitute.For<IEmailFormatter>();
-            formatter.FormatEmail("test", null).Returns((string)null);
-
-            var creator = new HtmlEmailCreator(formatter);
-            Assert.Throws<CreateEmailException>(() => creator.CreateEmail("test", null));
-        }
-
     }
 }
