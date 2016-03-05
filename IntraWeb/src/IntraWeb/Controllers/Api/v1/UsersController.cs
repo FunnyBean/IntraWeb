@@ -137,10 +137,10 @@ namespace IntraWeb.Controllers.Api.v1
                 return this.Json(new { Message = message });
             }
 
-            User oldUser = _userRepository.GetItemIncluding(userId, false);
+            User oldUser = _userRepository.GetItem(userId);
             if (oldUser == null)
             {
-                this.Response.StatusCode = (int) HttpStatusCode.NoContent;
+                this.Response.StatusCode = (int)HttpStatusCode.NotFound;
                 return this.Json(null);
             }
             
