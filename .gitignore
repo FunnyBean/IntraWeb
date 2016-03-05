@@ -201,3 +201,4 @@ FakesAssemblies/
 _references.js
 appsettings.*.json
 *.DPack
+PublishProfiles
