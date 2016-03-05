@@ -154,7 +154,7 @@ namespace IntraWeb.Controllers.Api.v1
                 IActionResult result;
                 IEnumerable<int> newRolesIds = (userVm.UserRoles ?? new List<UserRoleViewModel>()).Select(x => x.RoleId).AsEnumerable();
 
-                // Updating of user values
+                // Update user values
                 userVm.UserRoles = null; // It's important for disable duplicating of roles
                 User editedUser = AutoMapper.Mapper.Map(userVm, oldUser);
 
@@ -163,8 +163,7 @@ namespace IntraWeb.Controllers.Api.v1
                     _userRepository.Edit(editedUser);
                 });
 
-
-                // Updating of role values
+                // Update roles
                 IEnumerable<int> oldRolesIds = _userRepository.GetItemIncluding(userId, true, x => x.UserRoles).UserRoles.Select(x => x.RoleId).AsEnumerable();
 
                 if (!Enumerable.SequenceEqual(oldRolesIds, newRolesIds)) // Are role Ids the same?

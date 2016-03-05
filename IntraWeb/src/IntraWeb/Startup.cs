@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using IntraWeb.Services.Email;
+using Microsoft.AspNet.Authentication.Cookies;
+using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -8,9 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using IntraWeb.Models;
 using IntraWeb.ViewModels.Rooms;
-using Microsoft.AspNet.Authentication.Cookies;
 using System.Net;
-using IntraWeb.Services.Emails;
 using System;
 using IntraWeb.Models.Rooms;
 using IntraWeb.Models.Users;
@@ -44,7 +44,7 @@ namespace IntraWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
-            services.Configure<EmailSettings>(Configuration.GetSection("Email"));
+            services.Configure<EmailOptions>(Configuration.GetSection("Email"));
 
             // Add framework services.
             services.AddEntityFramework()
@@ -83,16 +83,10 @@ namespace IntraWeb
             services.AddMvc(); // ToDo: Replace with Web API when it will be done in ASP.NET Core 1.0
 
             // Add application services
-            services.AddTransient<IEmailService, EmailService>();
-            services.AddTransient<IEmailFormatter, EmailFormatter>();
+            AddIntraWebServices(services);
 
             //services.AddInstance<IRoomRepository>(new Models.Dummies.RoomDummyRepository()); //Testovacia implementacia
-            services.AddScoped<IRoomRepository, RoomRepository>();
-            services.AddScoped<IEquipmentRepository, EquipmentRepository>();
 
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IRoleRepository, RoleRepository>();
-            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -149,6 +143,22 @@ namespace IntraWeb
                 conf.AddProfile<UsersMappingProfile>();
             });
         }
+
+
+        private void AddIntraWebServices(IServiceCollection services)
+        {
+            services.AddScoped<IEmailSender, SmtpEmailSender>();
+            services.AddScoped<IEmailCreator, HtmlEmailCreator>();
+            services.AddScoped<IEmailFormatter, FileEmailFormatter>();
+
+            services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddScoped<IEquipmentRepository, EquipmentRepository>();
+
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+        }
+
 
         // Entry point for the application.
         public static void Main(string[] args) => WebApplication.Run<Startup>(args);
