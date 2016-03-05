@@ -60,7 +60,22 @@ namespace IntraWeb.Models.Base
         /// <param name="item">THe item for delete.</param>
         public virtual void Delete(T item)
         {
-            _data.Remove(item);
+            if (item != null)
+            {
+                _data.Remove(item);
+            }
+        }
+
+        /// <summary>
+        /// Deletes the specified items by predicate.
+        /// </summary>
+        /// <param name="predicate">A function to test each element for a condition.</param>
+        public virtual void Delete(Expression<Func<T, bool>> predicate)
+        {
+            foreach (T item in this.Get(predicate))
+            {
+                this.Delete(item);
+            }
         }
 
         /// <summary>
@@ -86,6 +101,20 @@ namespace IntraWeb.Models.Base
         }
 
         /// <summary>
+        /// Gets the item by Id with includings.
+        /// </summary>
+        /// <param name="itemId">The item identifier.</param>
+        /// <param name="asNoTracking">The returned entities will not be cached in the DbContext.</param>
+        /// <param name="includeProperties">A function for all includes.</param>
+        /// <returns>
+        /// Return item with specific id; otherwise null.
+        /// </returns>
+        public virtual T GetItemIncluding(int itemId, bool asNoTracking = false, params Expression<Func<T, object>>[] includeProperties)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Gets the item by predicate.
         /// </summary>
         /// <param name="predicate">The predicate.</param>
@@ -106,6 +135,17 @@ namespace IntraWeb.Models.Base
         public virtual IQueryable<T> GetAll()
         {
             return _data.AsQueryable();
+        }
+
+        /// <summary>
+        /// Gets all items with includings.
+        /// </summary>
+        /// <returns>
+        /// Queryalble for obtain all items.
+        /// </returns>
+        public virtual IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

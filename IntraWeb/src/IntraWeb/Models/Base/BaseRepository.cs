@@ -50,10 +50,22 @@ namespace IntraWeb.Models.Base
         /// <summary>
         /// Deletes the specified item.
         /// </summary>
-        /// <param name="item">THe item for delete.</param>
+        /// <param name="item">The item for delete.</param>
         public virtual void Delete(T item)
         {
-            _dbContext.Set<T>().Remove(item);
+            if (item != null)
+            {
+                _dbContext.Set<T>().Remove(item);
+            }
+        }
+
+        /// <summary>
+        /// Deletes the specified items by predicate.
+        /// </summary>
+        /// <param name="predicate">A function to test each element for a condition.</param>
+        public virtual void Delete(Expression<Func<T, bool>> predicate)
+        {
+            _dbContext.RemoveRange(this.Get(predicate));
         }
 
         /// <summary>
@@ -78,6 +90,33 @@ namespace IntraWeb.Models.Base
         }
 
         /// <summary>
+        /// Gets the item by Id with includings.
+        /// </summary>
+        /// <param name="itemId">The item identifier.</param>
+        /// <param name="asNoTracking">The returned entities will not be cached in the DbContext.</param>
+        /// <param name="includeProperties">A function for all includes.</param>
+        /// <returns>
+        /// Return item with specific id; otherwise null.
+        /// </returns>
+        public virtual T GetItemIncluding(int itemId, bool asNoTracking = false, params Expression<Func<T, object>>[] includeProperties)
+        {
+            IQueryable<T> query = _dbContext.Set<T>();
+
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (asNoTracking)
+            {
+                return query.AsNoTracking().FirstOrDefault(p => p.Id == itemId);
+            } else
+            {
+                return query.FirstOrDefault(p => p.Id == itemId);
+            }
+        }
+
+        /// <summary>
         /// Gets the item by predicate.
         /// </summary>
         /// <param name="predicate">The predicate.</param>
@@ -98,6 +137,25 @@ namespace IntraWeb.Models.Base
         public virtual IQueryable<T> GetAll()
         {
             return _dbContext.Set<T>();
+        }
+
+        /// <summary>
+        /// Gets all items with includings.
+        /// </summary>
+        /// <param name="includeProperties">A function for all includes.</param>
+        /// <returns>
+        /// Queryalble for obtain all items.
+        /// </returns>
+        public virtual IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties)
+        {
+            IQueryable<T> query = _dbContext.Set<T>();
+
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+
+            return query;
         }
 
         /// <summary>

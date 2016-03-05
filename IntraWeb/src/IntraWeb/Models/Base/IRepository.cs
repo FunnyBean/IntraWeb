@@ -19,6 +19,15 @@ namespace IntraWeb.Models.Base
         IQueryable<T> GetAll();
 
         /// <summary>
+        /// Gets all items with includings.
+        /// </summary>
+        /// <param name="includeProperties">A function for all includes.</param>
+        /// <returns>
+        /// Queryalble for obtain all items.
+        /// </returns>
+        IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties);
+
+        /// <summary>
         /// Gets the items by predicate.
         /// </summary>
         /// <param name="predicate">A function to test each element for a condition.</param>
@@ -35,6 +44,17 @@ namespace IntraWeb.Models.Base
         /// Return item with specific id; otherwise null.
         /// </returns>
         T GetItem(int itemId);
+
+        /// <summary>
+        /// Gets the item by Id with includings.
+        /// </summary>
+        /// <param name="itemId">The item identifier.</param>
+        /// <param name="asNoTracking">The returned entities will not be cached in the DbContext.</param>
+        /// <param name="includeProperties">A function for all includes.</param>
+        /// <returns>
+        /// Return item with specific id; otherwise null.
+        /// </returns>
+        T GetItemIncluding(int itemId, bool asNoTracking = false, params Expression<Func<T, object>>[] includeProperties);
 
         /// <summary>
         /// Gets the item by predicate.
@@ -68,6 +88,12 @@ namespace IntraWeb.Models.Base
         /// </summary>
         /// <param name="itemId">The item identifier for deleting.</param>
         void Delete(int itemId);
+
+        /// <summary>
+        /// Deletes the specified items by predicate.
+        /// </summary>
+        /// <param name="predicate">A function to test each element for a condition.</param>
+        void Delete(Expression<Func<T, bool>> predicate);
 
         /// <summary>
         /// Save changes.

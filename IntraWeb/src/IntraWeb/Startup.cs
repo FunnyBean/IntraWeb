@@ -13,6 +13,8 @@ using System.Net;
 using IntraWeb.Services.Emails;
 using System;
 using IntraWeb.Models.Rooms;
+using IntraWeb.Models.Users;
+using IntraWeb.ViewModels.Users;
 
 namespace IntraWeb
 {
@@ -87,6 +89,10 @@ namespace IntraWeb
             //services.AddInstance<IRoomRepository>(new Models.Dummies.RoomDummyRepository()); //Testovacia implementacia
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<IEquipmentRepository, EquipmentRepository>();
+
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -115,7 +121,7 @@ namespace IntraWeb
                              .Database.Migrate();
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                 }
             }
@@ -131,6 +137,8 @@ namespace IntraWeb
 
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
             app.UseMvc();
+
+            DbInitializer.Initialize(app.ApplicationServices);
         }
 
         private static void InitializeAutoMapper()
@@ -138,6 +146,7 @@ namespace IntraWeb
             AutoMapper.Mapper.Initialize(conf =>
             {
                 conf.AddProfile<RoomsMappingProfile>();
+                conf.AddProfile<UsersMappingProfile>();
             });
         }
 
