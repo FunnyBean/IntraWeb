@@ -1,5 +1,6 @@
-﻿using MimeKit;
-using System;
+﻿using Microsoft.AspNet.Hosting;
+using MimeKit;
+using System.IO;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -8,10 +9,14 @@ namespace IntraWeb.Services.Email
     public class HtmlEmailCreator : IEmailCreator
     {
 
-        IEmailFormatter _formatter;
+        private string _templateFolder;
+        private string _imagesFolder;
+        private IEmailFormatter _formatter;
 
-        public HtmlEmailCreator(IEmailFormatter formatter)
+        public HtmlEmailCreator(IHostingEnvironment env, IEmailFormatter formatter)
         {
+            _templateFolder = Path.Combine(env.WebRootPath, "templates", "email");
+            _imagesFolder = Path.Combine(_templateFolder, "images");
             _formatter = formatter;
         }
 
@@ -27,6 +32,7 @@ namespace IntraWeb.Services.Email
             var builder = new BodyBuilder();
             builder.HtmlBody = htmlBody;
             builder.TextBody = CreateTextBody(htmlBody);
+            AddLocalImages(builder, htmlBody);
 
             msg.Body = builder.ToMessageBody();
 
@@ -62,6 +68,47 @@ namespace IntraWeb.Services.Email
             {
                 msg.Subject = System.Net.WebUtility.HtmlDecode(titleMatch.Groups[1].Value);
             }
+        }
+
+
+        private void AddLocalImages(BodyBuilder builder, string htmlBody)
+        {
+            foreach (var img in GetLocalImagesFromHtml(htmlBody))
+            {
+                var filePath = Path.Combine(_imagesFolder, img);
+                if (File.Exists(filePath))
+                {
+                    builder.LinkedResources.Add(filePath);
+                } else
+                {
+                    // Todo: Log invalid image in template.
+                }
+            }
+        }
+
+
+        private Regex _reImageSources = new Regex(
+            @"<img [^>]*src=((""(?<src1>[^""]+)"")|('(?<src2>[^']+)'))", RegexOptions.IgnoreCase);
+        private Regex _reImageProtocol = new Regex(@"^(http://|https://|/)", RegexOptions.IgnoreCase);
+
+        private IEnumerable<string> GetLocalImagesFromHtml(string htmlBody)
+        {
+            var images = new HashSet<string>();
+
+            foreach (Match m in _reImageSources.Matches(htmlBody))
+            {
+                var src = m.Groups["src1"].Value.Trim();
+                if (src == "")
+                {
+                    src = m.Groups["src2"].Value.Trim();
+                }
+                if (!_reImageProtocol.IsMatch(src))
+                {
+                    images.Add(src);
+                }
+            }
+
+            return images;
         }
 
 
