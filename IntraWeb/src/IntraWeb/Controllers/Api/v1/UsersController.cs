@@ -100,7 +100,7 @@ namespace IntraWeb.Controllers.Api.v1
         /// Post new users.
         /// </summary>
         /// <param name="userVms">New users.</param>
-        /// <returns>Added user.</returns>
+        /// <returns>Added users.</returns>
         [HttpPost("BulkInsert")]
         [ValidateModelState, CheckArgumentsForNull]
         //[Authorize(Roles = "Administrator")] - ToDo: Zakomentovane pokiaľ sa nespraví autorizácia
@@ -123,6 +123,7 @@ namespace IntraWeb.Controllers.Api.v1
         /// </summary>
         /// <param name="userId">User id for update.</param>
         /// <param name="userVm">User view model, with new properties.</param>
+        /// <returns>Updated user.</returns>
         [HttpPut("{userId}")]
         [ValidateModelState, CheckArgumentsForNull]
         //[Authorize(Roles = "Administrator")] - ToDo: Zakomentovane pokiaľ sa nespraví autorizácia

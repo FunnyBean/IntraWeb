@@ -72,6 +72,16 @@ namespace IntraWeb.Models.Base
         /// <param name="predicate">A function to test each element for a condition.</param>
         public virtual void Delete(Expression<Func<T, bool>> predicate)
         {
+            //try
+            //{
+            //    foreach (T item in this.Get(predicate))
+            //    {
+            //        this.Delete(item);
+            //    }
+            //}
+            //catch (Exception)
+            //{
+            //}
             foreach (T item in this.Get(predicate))
             {
                 this.Delete(item);
