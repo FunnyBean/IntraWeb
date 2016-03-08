@@ -5,7 +5,7 @@ using Microsoft.Data.Entity.Metadata;
 using Microsoft.Data.Entity.Migrations;
 using IntraWeb.Models;
 
-namespace IntraWeb.Migrations
+namespace intraweb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -16,55 +16,22 @@ namespace IntraWeb.Migrations
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("IntraWeb.Models.ApplicationUser", b =>
+            modelBuilder.Entity("IntraWeb.Models.Rooms.Equipment", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AccessFailedCount");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
-
-                    b.Property<string>("Email")
-                        .HasAnnotation("MaxLength", 256);
-
-                    b.Property<bool>("EmailConfirmed");
-
-                    b.Property<bool>("LockoutEnabled");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasAnnotation("MaxLength", 256);
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasAnnotation("MaxLength", 256);
-
-                    b.Property<string>("PasswordHash");
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("SecurityStamp");
-
-                    b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<string>("UserName")
-                        .HasAnnotation("MaxLength", 256);
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 100);
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NormalizedEmail")
-                        .HasAnnotation("Relational:Name", "EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .HasAnnotation("Relational:Name", "UserNameIndex");
-
-                    b.HasAnnotation("Relational:TableName", "AspNetUsers");
+                    b.HasIndex("Description")
+                        .IsUnique();
                 });
 
-            modelBuilder.Entity("IntraWeb.Models.Room", b =>
+            modelBuilder.Entity("IntraWeb.Models.Rooms.Room", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -82,116 +49,95 @@ namespace IntraWeb.Migrations
                         .IsUnique();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRole", b =>
+            modelBuilder.Entity("IntraWeb.Models.Rooms.RoomEquipment", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
+                    b.Property<int>("Count");
+
+                    b.Property<int>("EquipmentId");
+
+                    b.Property<int>("RoomId");
+
+                    b.HasKey("Id");
+                });
+
+            modelBuilder.Entity("IntraWeb.Models.Users.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name")
-                        .HasAnnotation("MaxLength", 256);
-
-                    b.Property<string>("NormalizedName")
-                        .HasAnnotation("MaxLength", 256);
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 50);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .HasAnnotation("Relational:Name", "RoleNameIndex");
-
-                    b.HasAnnotation("Relational:TableName", "AspNetRoles");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("IntraWeb.Models.Users.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ClaimType");
+                    b.Property<DateTime>("DateCreated");
 
-                    b.Property<string>("ClaimValue");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 200);
 
-                    b.Property<string>("RoleId")
-                        .IsRequired();
+                    b.Property<string>("HashedPassword")
+                        .HasAnnotation("MaxLength", 200);
+
+                    b.Property<bool>("IsLocked");
+
+                    b.Property<string>("Name")
+                        .HasAnnotation("MaxLength", 100);
+
+                    b.Property<byte[]>("Photo");
+
+                    b.Property<string>("Salt")
+                        .HasAnnotation("MaxLength", 50);
+
+                    b.Property<string>("Surname")
+                        .HasAnnotation("MaxLength", 100);
+
+                    b.Property<string>("UserName")
+                        .HasAnnotation("MaxLength", 100);
 
                     b.HasKey("Id");
-
-                    b.HasAnnotation("Relational:TableName", "AspNetRoleClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("IntraWeb.Models.Users.UserRole", b =>
                 {
+                    b.Property<int>("UserId");
+
+                    b.Property<int>("RoleId");
+
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ClaimType");
-
-                    b.Property<string>("ClaimValue");
-
-                    b.Property<string>("UserId")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.HasAnnotation("Relational:TableName", "AspNetUserClaims");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserLogin<string>", b =>
-                {
-                    b.Property<string>("LoginProvider");
-
-                    b.Property<string>("ProviderKey");
-
-                    b.Property<string>("ProviderDisplayName");
-
-                    b.Property<string>("UserId")
-                        .IsRequired();
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasAnnotation("Relational:TableName", "AspNetUserLogins");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("UserId");
-
-                    b.Property<string>("RoleId");
 
                     b.HasKey("UserId", "RoleId");
-
-                    b.HasAnnotation("Relational:TableName", "AspNetUserRoles");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("IntraWeb.Models.Rooms.RoomEquipment", b =>
                 {
-                    b.HasOne("Microsoft.AspNet.Identity.EntityFramework.IdentityRole")
+                    b.HasOne("IntraWeb.Models.Rooms.Equipment")
                         .WithMany()
-                        .HasForeignKey("RoleId");
-                });
+                        .HasForeignKey("EquipmentId");
 
-            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserClaim<string>", b =>
-                {
-                    b.HasOne("IntraWeb.Models.ApplicationUser")
+                    b.HasOne("IntraWeb.Models.Rooms.Room")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("RoomId");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("IntraWeb.Models.Users.UserRole", b =>
                 {
-                    b.HasOne("IntraWeb.Models.ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNet.Identity.EntityFramework.IdentityRole")
+                    b.HasOne("IntraWeb.Models.Users.Role")
                         .WithMany()
                         .HasForeignKey("RoleId");
 
-                    b.HasOne("IntraWeb.Models.ApplicationUser")
+                    b.HasOne("IntraWeb.Models.Users.User")
                         .WithMany()
                         .HasForeignKey("UserId");
                 });
