@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using IntraWeb.Models;
+using IntraWeb.Services.Emails;
+using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -6,13 +8,11 @@ using Microsoft.Data.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using IntraWeb.Models;
 using IntraWeb.ViewModels.Rooms;
-using Microsoft.AspNet.Authentication.Cookies;
 using System.Net;
-using IntraWeb.Services.Emails;
 using System;
 using IntraWeb.Models.Rooms;
+using System.Threading.Tasks;
 
 namespace IntraWeb
 {
@@ -41,6 +41,9 @@ namespace IntraWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
+            services.Configure<EmailSettings>(Configuration.GetSection("Email"));
+
             // Add framework services.
             services.AddEntityFramework()
                 .AddSqlServer()
