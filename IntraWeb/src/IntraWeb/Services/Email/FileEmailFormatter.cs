@@ -33,7 +33,7 @@ namespace IntraWeb.Services.Email
             var template = LoadTemplate(emailType);
             if ((template != null) && (data != null))
             {
-                template = FillTemplate(template, data);
+                template = FillTemplate(template, data, emailType);
             }
 
             return template;
@@ -86,10 +86,22 @@ namespace IntraWeb.Services.Email
 
         private Regex _reTemplateKeys = new Regex(@"\{(.+?)\}");
 
-        public string FillTemplate(string template, IDictionary<string, string> data)
+        private string FillTemplate(string template, IDictionary<string, string> data, string emailType)
         {
             return _reTemplateKeys.Replace(template,
-                (m) => data.ContainsKey(m.Groups[1].Value) ? data[m.Groups[1].Value] : m.Value);
+                (m) =>
+                {
+                    var key = m.Groups[1].Value;
+                    if (data.ContainsKey(key))
+                    {
+                        return data[key];
+                    }
+                    else
+                    {
+                        throw new UnknownKeyException(emailType, key);
+                    }
+                }
+            );
         }
 
     }

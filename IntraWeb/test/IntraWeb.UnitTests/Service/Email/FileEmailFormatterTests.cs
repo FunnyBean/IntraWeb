@@ -10,7 +10,7 @@ namespace IntraWeb.UnitTests.Service.Email
     public class FileEmailFormatterTests
     {
 
-        #region Expected values
+        #region Input and expected values
 
         private readonly string _layout =
 @"<!DOCTYPE html>
@@ -188,5 +188,22 @@ Lorem ipsum
             });
         }
 
+
+        public void ShouldThrowUnknownKeyExceptionOnInvalidKeyInTemplate()
+        {
+            var env = Substitute.For<IHostingEnvironment>();
+            env.WebRootPath.Returns(string.Empty);
+
+            var formatter = new FileEmailFormatter(env);
+            formatter.GetTemplateText(FileEmailFormatter.LayoutTemplateName).Returns(this._layout);
+            formatter.GetTemplateText("test").Returns("Lorem {ipsum} dolor sit amet.");
+
+            var ex = Assert.Throws<UnknownKeyException>(() =>
+            {
+                formatter.FormatEmail("test", null);
+            });
+            Assert.Equal("test", ex.EmailType);
+            Assert.Equal("ipsum", ex.Key);
+        }
     }
 }
