@@ -37,6 +37,16 @@ namespace IntraWeb.Models.Base
         T GetItem(int itemId);
 
         /// <summary>
+        /// Gets the item by Id.
+        /// </summary>
+        /// <param name="itemId">The item identifier.</param>
+        /// <param name="includeProperties">The include properties.</param>
+        /// <returns>
+        /// Return item with specific id; otherwise null.
+        /// </returns>
+        T GetItem(int itemId, params Expression<Func<T, object>>[] includeProperties);
+
+        /// <summary>
         /// Gets the item by predicate.
         /// </summary>
         /// <param name="predicate">The predicate.</param>
@@ -44,6 +54,16 @@ namespace IntraWeb.Models.Base
         /// Return item, which match the predicate; otherwise null.
         /// </returns>
         T GetItem(Expression<Func<T, bool>> predicate);
+
+        /// <summary>
+        /// Gets the item by predicate.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <param name="includeProperties">The include properties.</param>
+        /// <returns>
+        /// Return item, which match the predicate; otherwise null.
+        /// </returns>
+        T GetItem(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
 
         /// <summary>
         /// Adds the item.

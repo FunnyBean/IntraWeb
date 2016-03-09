@@ -17,7 +17,9 @@ namespace IntraWeb.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "Type",
                 table: "Room",
-                nullable: true);          
+                nullable: true);   
+            
+            //ToDo: updatnut stplec typ na nejaky default.                  
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

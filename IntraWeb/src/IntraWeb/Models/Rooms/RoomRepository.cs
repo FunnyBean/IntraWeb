@@ -33,6 +33,6 @@ namespace IntraWeb.Models.Rooms
         public Room GetItem(string name)
         {
             return this.GetItem(p => p.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
-        }      
+        }
     }
 }

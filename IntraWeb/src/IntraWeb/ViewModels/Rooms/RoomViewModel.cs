@@ -52,6 +52,11 @@ namespace IntraWeb.ViewModels.Rooms
         /// <value>
         /// The equipments.
         /// </value>
-        public ICollection<EquipmentViewModel> Equipments { get; set; }
+        public ICollection<RoomEquipmentViewModel> Equipments { get; set; }
+
+        public override string ToString()
+        {
+            return $"{this.Id} - {this.Name}";
+        }
     }
 }

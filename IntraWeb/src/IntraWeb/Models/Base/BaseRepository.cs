@@ -16,7 +16,7 @@ namespace IntraWeb.Models.Base
     {
         #region Protected Fields
 
-        protected DbContext _dbContext;
+        protected ApplicationDbContext _dbContext;
 
         #endregion
 
@@ -74,7 +74,7 @@ namespace IntraWeb.Models.Base
         /// </returns>
         public virtual T GetItem(int itemId)
         {
-            return _dbContext.Set<T>().FirstOrDefault(p => p.Id == itemId);
+            return this.GetItem(p => p.Id == itemId);
         }
 
         /// <summary>
@@ -84,9 +84,42 @@ namespace IntraWeb.Models.Base
         /// <returns>
         /// Return item, which match the predicate; otherwise null.
         /// </returns>
-        public T GetItem(Expression<Func<T, bool>> predicate)
+        public virtual T GetItem(Expression<Func<T, bool>> predicate)
         {
             return _dbContext.Set<T>().FirstOrDefault(predicate);
+        }
+
+        /// <summary>
+        /// Gets the item by Id.
+        /// </summary>
+        /// <param name="itemId">The item identifier.</param>
+        /// <param name="includeProperties">The include properties.</param>
+        /// <returns>
+        /// Return item with specific id; otherwise null.
+        /// </returns>
+        public virtual T GetItem(int itemId, params Expression<Func<T, object>>[] includeProperties)
+        {
+            return this.GetItem(p => p.Id == itemId, includeProperties);
+        }
+
+        /// <summary>
+        /// Gets the item by predicate.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <param name="includeProperties">The include properties.</param>
+        /// <returns>
+        /// Return item, which match the predicate; otherwise null.
+        /// </returns>
+        public virtual T GetItem(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        {
+            IQueryable<T> query = _dbContext.Set<T>();
+
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+
+            return query.FirstOrDefault(predicate);
         }
 
         /// <summary>
@@ -107,7 +140,7 @@ namespace IntraWeb.Models.Base
         /// <returns>
         /// Items that satisfy the condition specified by predicate.
         /// </returns>
-        public IQueryable<T> Get(Expression<Func<T, bool>> predicate)
+        public virtual IQueryable<T> Get(Expression<Func<T, bool>> predicate)
         {
             return _dbContext.Set<T>().Where(predicate);
         }

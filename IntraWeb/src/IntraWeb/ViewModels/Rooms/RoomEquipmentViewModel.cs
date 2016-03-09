@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace IntraWeb.ViewModels.Rooms
 {
     /// <summary>
-    /// Equipment View Model for Equipment.
+    /// View model for RoomEquipment model.
     /// </summary>
-    public class EquipmentViewModel
+    public class RoomEquipmentViewModel
     {
         /// <summary>
         /// Gets or sets the identifier.
@@ -17,8 +13,15 @@ namespace IntraWeb.ViewModels.Rooms
         /// <value>
         /// The identifier.
         /// </value>
-        [Required]
         public int Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the equipment identifier.
+        /// </summary>
+        /// <value>
+        /// The equipment identifier.
+        /// </value>
+        public int EquipmentId { get; set; }
 
         /// <summary>
         /// Gets or sets the description.
@@ -26,9 +29,13 @@ namespace IntraWeb.ViewModels.Rooms
         /// <value>
         /// The description.
         /// </value>
-        [Required()]
-        [MaxLength(100)]
         public string Description { get; set; }
+
+        /// <summary>
+        /// Amount.
+        /// </summary>
+        [Range(0, double.MaxValue)]
+        public decimal Amount { get; set; }
 
         public override string ToString()
         {

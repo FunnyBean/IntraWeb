@@ -7,6 +7,8 @@ using System;
 using IntraWeb.Filters;
 using Microsoft.Extensions.Logging;
 using IntraWeb.Models.Rooms;
+using System.Linq;
+using Microsoft.Data.Entity;
 
 namespace IntraWeb.Controllers.Api.v1
 {
@@ -39,7 +41,8 @@ namespace IntraWeb.Controllers.Api.v1
         [HttpGet]
         public IEnumerable<RoomViewModel> Get()
         {
-            var rooms = AutoMapper.Mapper.Map<IEnumerable<RoomViewModel>>(_roomRepository.GetAll());
+            var rooms = AutoMapper.Mapper.Map<IEnumerable<RoomViewModel>>(
+                _roomRepository.GetAll().Include(p => p.Equipments));
             return rooms;
         }
 
@@ -51,7 +54,7 @@ namespace IntraWeb.Controllers.Api.v1
         [HttpGet("{roomId}", Name = "GetRoom")]
         public IActionResult Get(int roomId)
         {
-            var room = _roomRepository.GetItem(roomId);
+            var room = _roomRepository.GetItem(roomId, r => r.Equipments);
 
             if (room == null)
             {
@@ -106,6 +109,7 @@ namespace IntraWeb.Controllers.Api.v1
         //[Authorize(Roles = "Administrator")] - ToDo: Zakomentovane pokiaľ sa nespraví autorizácia
         public IActionResult Put(int roomId, [FromBody] RoomViewModel roomVm)
         {
+            //ToDo: Over editovanie miestnosti aj s requirement. (Otazka ci sa ma editovat aj zoznam equipmentov, mozno nie)
             if (roomVm.Id != roomId)
             {
                 this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
@@ -121,14 +125,14 @@ namespace IntraWeb.Controllers.Api.v1
                 this.Response.StatusCode = (int) HttpStatusCode.NoContent;
                 return this.Json(null);
             }
-            
+
             if (ExistAnotherRoomWithName(roomVm.Name, roomId))
             {
                 this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 return this.Json(new { Message = $"Room with name '{roomVm.Name}' already exist." });
             }
             else
-            {               
+            {
                 editedRoom = AutoMapper.Mapper.Map(roomVm, editedRoom);
 
                 return SaveData(() =>
@@ -146,11 +150,16 @@ namespace IntraWeb.Controllers.Api.v1
         //[Authorize(Roles = "Administrator")] - ToDo: Zakomentovane pokia¾ sa nespraví autorizácia
         public IActionResult Delete(int roomId)
         {
+            //ToDO: Overit kaskadu ma vymaz roomequipment
             return SaveData(() =>
             {
                 _roomRepository.Delete(roomId);
             });
         }
+
+        //ToDo: Pridanie equipmentu
+
+        //ToDo: Odobrantie equipmentu.
 
         private bool ExistAnotherRoomWithName(string roomName, int roomId)
         {

@@ -98,6 +98,32 @@ namespace IntraWeb.Models.Base
         }
 
         /// <summary>
+        /// Gets the item by Id.
+        /// </summary>
+        /// <param name="itemId">The item identifier.</param>
+        /// <param name="includeProperties">The include properties.</param>
+        /// <returns>
+        /// Return item with specific id; otherwise null.
+        /// </returns>
+        public T GetItem(int itemId, params Expression<Func<T, object>>[] includeProperties)
+        {
+            return this.GetItem(itemId);
+        }
+
+        /// <summary>
+        /// Gets the item by predicate.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <param name="includeProperties">The include properties.</param>
+        /// <returns>
+        /// Return item, which match the predicate; otherwise null.
+        /// </returns>
+        public T GetItem(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        {
+            return this.GetItem(predicate);
+        }
+
+        /// <summary>
         /// Gets all items.
         /// </summary>
         /// <returns>

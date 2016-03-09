@@ -14,6 +14,9 @@ namespace IntraWeb.ViewModels.Rooms
         {
             this.CreateMap<Room, RoomViewModel>().ReverseMap();
             this.CreateMap<Equipment, EquipmentViewModel>().ReverseMap();
+            this.CreateMap<RoomEquipment, RoomEquipmentViewModel>().
+                ForMember(vm => vm.Description, map => map.MapFrom(m => m.Equipment.Description)).
+                ReverseMap();
         }
     }
 }

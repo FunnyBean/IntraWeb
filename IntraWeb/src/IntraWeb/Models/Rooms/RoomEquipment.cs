@@ -9,10 +9,6 @@ namespace IntraWeb.Models.Rooms
     /// <summary>
     /// Model, which represent join table between Room and equipment.
     /// </summary>
-    /// <remarks>
-    /// Many-to-many relationships without an entity class to represent the join table are not yet supported. 
-    /// <see href="http://ef.readthedocs.org/en/latest/modeling/relationships.html#many-to-many"/>
-    /// </remarks>
     public class RoomEquipment
     {
 
