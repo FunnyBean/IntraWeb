@@ -43,7 +43,7 @@ Paragraph 2.";
 
             var env = Substitute.For<IHostingEnvironment>();
             env.WebRootPath.Returns(string.Empty);
-            var formatter = Substitute.For<IEmailFormatter>();
+            var formatter = Substitute.For<ITemplateFormatter>();
             formatter.FormatEmail(emailType, data).Returns(_htmlBody);
 
             var creator = new HtmlEmailCreator(env, formatter);
@@ -58,9 +58,10 @@ Paragraph 2.";
                 if (part.ContentType.IsMimeType("text", "html"))
                 {
                     htmlPart = part as TextPart;
-                } else if (part.ContentType.IsMimeType("text", "plain"))
+                }
+                else if (part.ContentType.IsMimeType("text", "plain"))
                 {
-                    textPart  = part as TextPart;
+                    textPart = part as TextPart;
                 }
             }
 
@@ -83,7 +84,7 @@ Paragraph 2.";
 
             var env = Substitute.For<IHostingEnvironment>();
             env.WebRootPath.Returns(string.Empty);
-            var formatter = Substitute.For<IEmailFormatter>();
+            var formatter = Substitute.For<ITemplateFormatter>();
             formatter.FormatEmail(emailType, data).Returns(_htmlBody);
 
             var creator = new HtmlEmailCreator(env, formatter);
