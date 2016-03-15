@@ -23,8 +23,8 @@ namespace IntraWeb.Services.Email
 
 
         public const string LayoutTemplateName = "Layout";
-        public const string TemplateContentTag = "{content}";
-        public const string TemplateTitleTag = "{title}";
+        public const string TemplateContentTag = "{include content}";
+        public const string TemplateTitleTag = "{$title}";
 
 
         public string FormatTemplate(string templateName, IDictionary<string, string> data)
@@ -77,7 +77,7 @@ namespace IntraWeb.Services.Email
         }
 
 
-        private Regex _reTemplateKeys = new Regex(@"\{(.+?)\}");
+        private Regex _reTemplateKeys = new Regex(@"\{\$(.+?)\}");
 
         private string FillTemplate(string template, IDictionary<string, string> data, string templateName)
         {

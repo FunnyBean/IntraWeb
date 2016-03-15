@@ -17,7 +17,7 @@ namespace IntraWeb.UnitTests.Service.Email
 <html>
 <head>
     <meta charset=""utf-8"" />
-    <title>{title}</title>
+    <title>{$title}</title>
 </head>
 <body>
     <div id=""header"">
@@ -27,7 +27,7 @@ namespace IntraWeb.UnitTests.Service.Email
         </p>
     </div>
     <div id=""content"">
-        {content}
+        {include content}
     </div>
     <div id=""footer"">
         <p>
@@ -41,8 +41,8 @@ namespace IntraWeb.UnitTests.Service.Email
 
         private readonly string _testTemplate =
 @"<h1>Používateľ</h1>
-<p><b>Meno:</b> {user.Name}</p>
-<p><b>Priezvisko:</b> {user.LastName}</p>
+<p><b>Meno:</b> {$user.Name}</p>
+<p><b>Priezvisko:</b> {$user.LastName}</p>
 ";
 
 
@@ -81,10 +81,10 @@ namespace IntraWeb.UnitTests.Service.Email
 <html>
 <head>
     <meta charset=""utf-8"" />
-    <title>{title}</title>
+    <title>{$title}</title>
 </head>
 <body>
-{content}
+{include content}
 </body>
 </html>";
 
@@ -184,7 +184,7 @@ Lorem ipsum
         {
             var loader = Substitute.For<ITemplateLoader>();
             loader.GetContent(TemplateFormatter.LayoutTemplateName).Returns(this._layout);
-            loader.GetContent("test").Returns("Lorem {ipsum} dolor sit amet.");
+            loader.GetContent("test").Returns("Lorem {$ipsum} dolor sit amet.");
 
             var formatter = new TemplateFormatter(loader);
 
