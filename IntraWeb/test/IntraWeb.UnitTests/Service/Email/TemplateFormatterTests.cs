@@ -1,9 +1,8 @@
 ﻿using IntraWeb.Services.Email;
 using NSubstitute;
-using Xunit;
-using Microsoft.AspNet.Hosting;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using Xunit;
 
 namespace IntraWeb.UnitTests.Service.Email
 {
@@ -47,7 +46,7 @@ namespace IntraWeb.UnitTests.Service.Email
 ";
 
 
-        private readonly string _expectedEmail =
+        private readonly string _expectedTemplate =
 @"<!DOCTYPE html>
 <html>
 <head>
@@ -113,7 +112,7 @@ Lorem ipsum
 
 
         [Fact]
-        public void ShouldFormatEmail()
+        public void ShouldFormatTemplate()
         {
             var loader = Substitute.For<ITemplateLoader>();
             loader.GetContent(TemplateFormatter.LayoutTemplateName).Returns(this._layout);
@@ -129,7 +128,7 @@ Lorem ipsum
             };
 
             var actual = formatter.FormatTemplate("test", data);
-            Assert.Equal(this._expectedEmail, actual);
+            Assert.Equal(this._expectedTemplate, actual);
         }
 
 
@@ -148,7 +147,7 @@ Lorem ipsum
 
 
         [Fact]
-        public void ShouldThrowArgumentNullExceptionWhenNullEmailType()
+        public void ShouldThrowArgumentNullExceptionWhenNullTemplateName()
         {
             var loader = Substitute.For<ITemplateLoader>();
             var formatter = new TemplateFormatter(loader);
@@ -160,7 +159,7 @@ Lorem ipsum
 
 
         [Fact]
-        public void ShouldThrowArgumentNullExceptionWhenEmptyEmailType()
+        public void ShouldThrowArgumentNullExceptionWhenEmptyTemplateName()
         {
             var loader = Substitute.For<ITemplateLoader>();
             var formatter = new TemplateFormatter(loader);
@@ -172,7 +171,7 @@ Lorem ipsum
 
 
         [Fact]
-        public void ShouldThrowArgumentNullExceptionWhenWhiteSpaceEmailType()
+        public void ShouldThrowArgumentNullExceptionWhenWhiteSpaceTemplateName()
         {
             var loader = Substitute.For<ITemplateLoader>();
             var formatter = new TemplateFormatter(loader);
