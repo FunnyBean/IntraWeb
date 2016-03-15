@@ -33,16 +33,19 @@ namespace IntraWeb.Models.Users
             item.UserRoles = null;
             base.Edit(item);
 
-            var oldRoles = _dbContext.Set<UserRole>().Where(p => p.UserId == item.Id);
-
-            foreach (var role in userRoles.Where(p => !HasUserRole(item.Id, p.RoleId)))
+            if (userRoles != null)
             {
-                _dbContext.Entry(role).State = EntityState.Added;
-            }
+                var oldRoles = _dbContext.Set<UserRole>().Where(p => p.UserId == item.Id);
 
-            foreach (var role in oldRoles.Where((r) => !userRoles.Any(p => (p.RoleId == r.RoleId))))
-            {
-                _dbContext.Entry(role).State = EntityState.Deleted;
+                foreach (var role in userRoles.Where(p => !HasUserRole(item.Id, p.RoleId)))
+                {
+                    _dbContext.Entry(role).State = EntityState.Added;
+                }
+
+                foreach (var role in oldRoles.Where((r) => !userRoles.Any(p => (p.RoleId == r.RoleId))))
+                {
+                    _dbContext.Entry(role).State = EntityState.Deleted;
+                } 
             }
 
         }
