@@ -1,18 +1,20 @@
-﻿namespace IntraWeb.Services.Email
+﻿using System;
+
+namespace IntraWeb.Services.Email
 {
     public class UnknownKeyException
-        : FormatEmailException
+        : Exception
     {
 
-        public UnknownKeyException(string emailType, string key)
+        public UnknownKeyException(string templateName, string key)
             : base("Neznámy kľúč v šablóne.")
         {
-            EmailType = emailType;
-            Key = key;
+            this.TemplateName = templateName;
+            this.Key = key;
         }
 
 
-        public string EmailType { get; }
+        public string TemplateName { get; }
         public string Key { get; }
     }
 }

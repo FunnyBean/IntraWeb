@@ -194,7 +194,7 @@ Lorem ipsum
             {
                 formatter.FormatTemplate("test", null);
             });
-            Assert.Equal("test", ex.EmailType);
+            Assert.Equal("test", ex.TemplateName);
             Assert.Equal("ipsum", ex.Key);
         }
     }
