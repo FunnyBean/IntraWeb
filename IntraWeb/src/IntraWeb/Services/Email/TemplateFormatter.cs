@@ -27,17 +27,17 @@ namespace IntraWeb.Services.Email
         public const string TemplateTitleTag = "{title}";
 
 
-        public string FormatEmail(string emailType, IDictionary<string, string> data)
+        public string FormatTemplate(string templateName, IDictionary<string, string> data)
         {
-            if (string.IsNullOrWhiteSpace(emailType))
+            if (string.IsNullOrWhiteSpace(templateName))
             {
-                throw new ArgumentNullException(nameof(emailType));
+                throw new ArgumentNullException(nameof(templateName));
             }
 
-            var template = LoadTemplate(emailType);
+            var template = LoadTemplate(templateName);
             if ((template != null) && (data != null))
             {
-                template = FillTemplate(template, data, emailType);
+                template = FillTemplate(template, data, templateName);
             }
 
             return template;
@@ -79,7 +79,7 @@ namespace IntraWeb.Services.Email
 
         private Regex _reTemplateKeys = new Regex(@"\{(.+?)\}");
 
-        private string FillTemplate(string template, IDictionary<string, string> data, string emailType)
+        private string FillTemplate(string template, IDictionary<string, string> data, string templateName)
         {
             return _reTemplateKeys.Replace(template,
                 (m) =>
@@ -91,7 +91,7 @@ namespace IntraWeb.Services.Email
                     }
                     else
                     {
-                        throw new UnknownKeyException(emailType, key);
+                        throw new UnknownKeyException(templateName, key);
                     }
                 }
             );

@@ -23,7 +23,7 @@ namespace IntraWeb.Services.Email
 
         public MimeMessage CreateEmail(string emailType, IDictionary<string, string> data)
         {
-            var htmlBody = _formatter.FormatEmail(emailType, data);
+            var htmlBody = _formatter.FormatTemplate(emailType, data);
 
             var msg = new MimeMessage();
             SetAddresses(msg, data);

@@ -44,7 +44,7 @@ Paragraph 2.";
             var env = Substitute.For<IHostingEnvironment>();
             env.WebRootPath.Returns(string.Empty);
             var formatter = Substitute.For<ITemplateFormatter>();
-            formatter.FormatEmail(emailType, data).Returns(_htmlBody);
+            formatter.FormatTemplate(emailType, data).Returns(_htmlBody);
 
             var creator = new HtmlEmailCreator(env, formatter);
             var msg = creator.CreateEmail(emailType, data);
@@ -85,7 +85,7 @@ Paragraph 2.";
             var env = Substitute.For<IHostingEnvironment>();
             env.WebRootPath.Returns(string.Empty);
             var formatter = Substitute.For<ITemplateFormatter>();
-            formatter.FormatEmail(emailType, data).Returns(_htmlBody);
+            formatter.FormatTemplate(emailType, data).Returns(_htmlBody);
 
             var creator = new HtmlEmailCreator(env, formatter);
             var msg = creator.CreateEmail(emailType, data);

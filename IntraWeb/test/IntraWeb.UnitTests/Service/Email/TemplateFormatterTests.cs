@@ -125,7 +125,7 @@ Lorem ipsum
                 {"user.LastName", "Archanjel"}
             };
 
-            var actual = formatter.FormatEmail("test", data);
+            var actual = formatter.FormatTemplate("test", data);
             Assert.Equal(this._expectedEmail, actual);
         }
 
@@ -139,7 +139,7 @@ Lorem ipsum
 
             var formatter = Substitute.For<TemplateFormatter>(loader);
 
-            var actual = formatter.FormatEmail("test", null);
+            var actual = formatter.FormatTemplate("test", null);
             Assert.Equal(_expectedTitleTemplate, actual);
         }
 
@@ -151,7 +151,7 @@ Lorem ipsum
             var formatter = new TemplateFormatter(loader);
             Assert.Throws<ArgumentNullException>(() =>
             {
-                formatter.FormatEmail(null, null);
+                formatter.FormatTemplate(null, null);
             });
         }
 
@@ -163,7 +163,7 @@ Lorem ipsum
             var formatter = new TemplateFormatter(loader);
             Assert.Throws<ArgumentNullException>(() =>
             {
-                formatter.FormatEmail(string.Empty, null);
+                formatter.FormatTemplate(string.Empty, null);
             });
         }
 
@@ -175,7 +175,7 @@ Lorem ipsum
             var formatter = new TemplateFormatter(loader);
             Assert.Throws<ArgumentNullException>(() =>
             {
-                formatter.FormatEmail("   ", null);
+                formatter.FormatTemplate("   ", null);
             });
         }
 
@@ -190,7 +190,7 @@ Lorem ipsum
 
             var ex = Assert.Throws<UnknownKeyException>(() =>
             {
-                formatter.FormatEmail("test", null);
+                formatter.FormatTemplate("test", null);
             });
             Assert.Equal("test", ex.EmailType);
             Assert.Equal("ipsum", ex.Key);
