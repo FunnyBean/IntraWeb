@@ -12,7 +12,7 @@ namespace IntraWeb.Services.Email
 
         public BaseEmailData(string emailType)
         {
-            this.EmailType = EmailType;
+            this.EmailType = emailType;
         }
 
         #endregion
@@ -26,9 +26,9 @@ namespace IntraWeb.Services.Email
 
         public string EmailType { get; set; }
         public string From { get; set; }
-        public IEnumerable<string> To { get { return _to; } }
-        public IEnumerable<string> Cc { get { return _cc; } }
-        public IEnumerable<string> Bcc { get { return _bcc; } }
+        public ICollection<string> To { get { return _to; } }
+        public ICollection<string> Cc { get { return _cc; } }
+        public ICollection<string> Bcc { get { return _bcc; } }
         public string ReplyTo { get; set; }
 
         #endregion

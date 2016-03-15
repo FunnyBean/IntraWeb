@@ -8,9 +8,9 @@ namespace IntraWeb.Services.Email
         string EmailType { get; set; }
 
         string From { get; }
-        IEnumerable<string> To { get; }
-        IEnumerable<string> Cc { get; }
-        IEnumerable<string> Bcc { get; }
+        ICollection<string> To { get; }
+        ICollection<string> Cc { get; }
+        ICollection<string> Bcc { get; }
         string ReplyTo { get; }
 
     }
