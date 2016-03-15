@@ -43,6 +43,7 @@ namespace IntraWeb.UnitTests.Service.Email
 @"<h1>Používateľ</h1>
 <p><b>Meno:</b> {$user.Name}</p>
 <p><b>Priezvisko:</b> {$user.LastName}</p>
+<p><b>Vek:</b> {$user.Age}</p>
 ";
 
 
@@ -64,6 +65,7 @@ namespace IntraWeb.UnitTests.Service.Email
         <h1>Používateľ</h1>
 <p><b>Meno:</b> Gabriel</p>
 <p><b>Priezvisko:</b> Archanjel</p>
+<p><b>Vek:</b> 37</p>
 
     </div>
     <div id=""footer"">
@@ -119,10 +121,11 @@ Lorem ipsum
 
             var formatter = Substitute.For<TemplateFormatter>(loader);
 
-            var data = new Dictionary<string, string>() {
+            var data = new Dictionary<string, object>() {
                 {"title", "Lorem ipsum"},
                 {"user.Name", "Gabriel"},
-                {"user.LastName", "Archanjel"}
+                {"user.LastName", "Archanjel"},
+                {"user.Age", 37}
             };
 
             var actual = formatter.FormatTemplate("test", data);

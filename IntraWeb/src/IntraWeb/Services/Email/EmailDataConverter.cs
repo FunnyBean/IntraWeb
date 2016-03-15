@@ -7,9 +7,9 @@ namespace IntraWeb.Services.Email
     public class EmailDataConverter
     {
 
-        public virtual IDictionary<string, string> Convert(IEmailData data)
+        public virtual IDictionary<string, object> Convert(IEmailData data)
         {
-            var result = new Dictionary<string, string>();
+            var result = new Dictionary<string, object>();
 
             if (data != null)
             {
@@ -24,15 +24,14 @@ namespace IntraWeb.Services.Email
         }
 
 
-        private void ConvertProperty(IDictionary<string, string> result, IEmailData data, PropertyInfo prop)
+        private void ConvertProperty(IDictionary<string, object> result, IEmailData data, PropertyInfo prop)
         {
             foreach (var attr in prop.GetCustomAttributes<TemplateVariableAttribute>(true))
             {
                 if (result.ContainsKey(attr.Name)) {
                     throw new InvalidOperationException($"Kľúč {attr.Name} je definovaný viackrát.");
                 }
-                var value = prop.GetValue(data);
-                result.Add(attr.Name, (value == null) ? string.Empty : value.ToString());
+                result.Add(attr.Name, prop.GetValue(data));
             }
         }
 

@@ -27,7 +27,7 @@ namespace IntraWeb.Services.Email
         public const string TemplateTitleTag = "{$title}";
 
 
-        public string FormatTemplate(string templateName, IDictionary<string, string> data)
+        public string FormatTemplate(string templateName, IDictionary<string, object> data)
         {
             if (string.IsNullOrWhiteSpace(templateName))
             {
@@ -79,7 +79,7 @@ namespace IntraWeb.Services.Email
 
         private Regex _reTemplateKeys = new Regex(@"\{\$(.+?)\}");
 
-        private string FillTemplate(string template, IDictionary<string, string> data, string templateName)
+        private string FillTemplate(string template, IDictionary<string, object> data, string templateName)
         {
             return _reTemplateKeys.Replace(template,
                 (m) =>
@@ -87,7 +87,7 @@ namespace IntraWeb.Services.Email
                     var key = m.Groups[1].Value;
                     if (data.ContainsKey(key))
                     {
-                        return data[key];
+                        return (data[key] == null) ? string.Empty : data[key].ToString();
                     }
                     else
                     {

@@ -43,7 +43,7 @@ Paragraph 2.";
             var env = Substitute.For<IHostingEnvironment>();
             env.WebRootPath.Returns(string.Empty);
             var formatter = Substitute.For<ITemplateFormatter>();
-            formatter.FormatTemplate(emailType, Arg.Any<IDictionary<string, string>>()).Returns(_htmlBody);
+            formatter.FormatTemplate(emailType, Arg.Any<IDictionary<string, object>>()).Returns(_htmlBody);
 
             var creator = new HtmlEmailCreator(env, formatter);
             var msg = creator.CreateEmail(emailType, new BaseEmailData());
@@ -77,7 +77,7 @@ Paragraph 2.";
             var env = Substitute.For<IHostingEnvironment>();
             env.WebRootPath.Returns(string.Empty);
             var formatter = Substitute.For<ITemplateFormatter>();
-            formatter.FormatTemplate(emailType, Arg.Any<IDictionary<string, string>>()).Returns(_htmlBody);
+            formatter.FormatTemplate(emailType, Arg.Any<IDictionary<string, object>>()).Returns(_htmlBody);
 
             var creator = new HtmlEmailCreator(env, formatter);
 
