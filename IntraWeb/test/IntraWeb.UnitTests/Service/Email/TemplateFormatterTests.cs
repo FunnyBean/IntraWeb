@@ -7,7 +7,7 @@ using System;
 
 namespace IntraWeb.UnitTests.Service.Email
 {
-    public class FileEmailFormatterTests
+    public class TemplateFormatterTests
     {
 
         #region Input and expected values
@@ -113,12 +113,11 @@ Lorem ipsum
         [Fact]
         public void ShouldFormatEmail()
         {
-            var env = Substitute.For<IHostingEnvironment>();
-            env.WebRootPath.Returns(string.Empty);
+            var loader = Substitute.For<ITemplateLoader>();
+            loader.GetContent(TemplateFormatter.LayoutTemplateName).Returns(this._layout);
+            loader.GetContent("test").Returns(this._testTemplate);
 
-            var formatter = Substitute.For<FileEmailFormatter>(env);
-            formatter.GetTemplateText(FileEmailFormatter.LayoutTemplateName).Returns(this._layout);
-            formatter.GetTemplateText("test").Returns(this._testTemplate);
+            var formatter = Substitute.For<TemplateFormatter>(loader);
 
             var data = new Dictionary<string, string>() {
                 {"title", "Lorem ipsum"},
@@ -134,15 +133,13 @@ Lorem ipsum
         [Fact]
         public void ShouldGetTitleFromTemplate()
         {
-            const string templateName = "test";
-            var env = Substitute.For<IHostingEnvironment>();
-            env.WebRootPath.Returns(string.Empty);
+            var loader = Substitute.For<ITemplateLoader>();
+            loader.GetContent(TemplateFormatter.LayoutTemplateName).Returns(_testTitleLayout);
+            loader.GetContent("test").Returns(_testTitleContent);
 
-            var formatter = Substitute.For<FileEmailFormatter>(env);
-            formatter.GetTemplateText(FileEmailFormatter.LayoutTemplateName).Returns(_testTitleLayout);
-            formatter.GetTemplateText(templateName).Returns(_testTitleContent);
+            var formatter = Substitute.For<TemplateFormatter>(loader);
 
-            var actual = formatter.FormatEmail(templateName, null);
+            var actual = formatter.FormatEmail("test", null);
             Assert.Equal(_expectedTitleTemplate, actual);
         }
 
@@ -150,10 +147,8 @@ Lorem ipsum
         [Fact]
         public void ShouldThrowArgumentNullExceptionWhenNullEmailType()
         {
-            var env = Substitute.For<IHostingEnvironment>();
-            env.WebRootPath.Returns(string.Empty);
-
-            var formatter = new FileEmailFormatter(env);
+            var loader = Substitute.For<ITemplateLoader>();
+            var formatter = new TemplateFormatter(loader);
             Assert.Throws<ArgumentNullException>(() =>
             {
                 formatter.FormatEmail(null, null);
@@ -164,10 +159,8 @@ Lorem ipsum
         [Fact]
         public void ShouldThrowArgumentNullExceptionWhenEmptyEmailType()
         {
-            var env = Substitute.For<IHostingEnvironment>();
-            env.WebRootPath.Returns(string.Empty);
-
-            var formatter = new FileEmailFormatter(env);
+            var loader = Substitute.For<ITemplateLoader>();
+            var formatter = new TemplateFormatter(loader);
             Assert.Throws<ArgumentNullException>(() =>
             {
                 formatter.FormatEmail(string.Empty, null);
@@ -178,10 +171,8 @@ Lorem ipsum
         [Fact]
         public void ShouldThrowArgumentNullExceptionWhenWhiteSpaceEmailType()
         {
-            var env = Substitute.For<IHostingEnvironment>();
-            env.WebRootPath.Returns(string.Empty);
-
-            var formatter = new FileEmailFormatter(env);
+            var loader = Substitute.For<ITemplateLoader>();
+            var formatter = new TemplateFormatter(loader);
             Assert.Throws<ArgumentNullException>(() =>
             {
                 formatter.FormatEmail("   ", null);
@@ -191,12 +182,11 @@ Lorem ipsum
 
         public void ShouldThrowUnknownKeyExceptionOnInvalidKeyInTemplate()
         {
-            var env = Substitute.For<IHostingEnvironment>();
-            env.WebRootPath.Returns(string.Empty);
+            var loader = Substitute.For<ITemplateLoader>();
+            loader.GetContent(TemplateFormatter.LayoutTemplateName).Returns(this._layout);
+            loader.GetContent("test").Returns("Lorem {ipsum} dolor sit amet.");
 
-            var formatter = new FileEmailFormatter(env);
-            formatter.GetTemplateText(FileEmailFormatter.LayoutTemplateName).Returns(this._layout);
-            formatter.GetTemplateText("test").Returns("Lorem {ipsum} dolor sit amet.");
+            var formatter = new TemplateFormatter(loader);
 
             var ex = Assert.Throws<UnknownKeyException>(() =>
             {

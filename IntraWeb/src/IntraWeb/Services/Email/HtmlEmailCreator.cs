@@ -11,9 +11,9 @@ namespace IntraWeb.Services.Email
 
         private string _templateFolder;
         private string _imagesFolder;
-        private IEmailFormatter _formatter;
+        private ITemplateFormatter _formatter;
 
-        public HtmlEmailCreator(IHostingEnvironment env, IEmailFormatter formatter)
+        public HtmlEmailCreator(IHostingEnvironment env, ITemplateFormatter formatter)
         {
             _templateFolder = Path.Combine(env.WebRootPath, "templates", "email");
             _imagesFolder = Path.Combine(_templateFolder, "images");

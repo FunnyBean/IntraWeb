@@ -7,14 +7,18 @@ using System.Text.RegularExpressions;
 namespace IntraWeb.Services.Email
 {
 
-    public class FileEmailFormatter : IEmailFormatter
+    public class TemplateFormatter : ITemplateFormatter
     {
 
-        private string _templateFolder;
+        private ITemplateLoader _loader;
 
-        public FileEmailFormatter(IHostingEnvironment env)
+        public TemplateFormatter(ITemplateLoader loader)
         {
-            _templateFolder = Path.Combine(env.WebRootPath, "templates", "email");
+            if (loader == null)
+            {
+                throw new ArgumentNullException(nameof(loader));
+            }
+            _loader = loader;
         }
 
 
@@ -42,14 +46,14 @@ namespace IntraWeb.Services.Email
 
         private string LoadLayout()
         {
-            return GetTemplateText(LayoutTemplateName);
+            return _loader.GetContent(LayoutTemplateName);
         }
 
 
         private string LoadTemplate(string templateName)
         {
             var layout = LoadLayout();
-            var template = GetTemplateText(templateName);
+            var template = _loader.GetContent(templateName);
             SetTemplateHtmlTitle(ref layout, ref template);
 
             return layout.Replace(TemplateContentTag, template);
@@ -70,17 +74,6 @@ namespace IntraWeb.Services.Email
             {
                 layout = layout.Replace(TemplateTitleTag, title);
             }
-        }
-
-
-        public virtual string GetTemplateText(string templateName)
-        {
-            var fileName = Path.Combine(_templateFolder, $"{templateName}.html");
-            if (!File.Exists(fileName))
-            {
-                throw new UnknownEmailTemplateException(templateName);
-            }
-            return File.ReadAllText(fileName);
         }
 
 
