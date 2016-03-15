@@ -22,7 +22,7 @@ namespace IntraWeb.Services.Email
 
         #region General
 
-        [EmailDataKey("PasswordResetLink")]
+        [TemplateVariable("PasswordResetLink")]
         public string PasswordResetLink { get; set; }
 
         #endregion

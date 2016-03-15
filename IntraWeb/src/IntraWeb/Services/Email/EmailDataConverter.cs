@@ -26,13 +26,13 @@ namespace IntraWeb.Services.Email
 
         private void ConvertProperty(IDictionary<string, string> result, IEmailData data, PropertyInfo prop)
         {
-            foreach (var attr in prop.GetCustomAttributes<EmailDataKeyAttribute>(true))
+            foreach (var attr in prop.GetCustomAttributes<TemplateVariableAttribute>(true))
             {
-                if (result.ContainsKey(attr.Key)) {
-                    throw new InvalidOperationException($"Kľúč {attr.Key} je definovaný viackrát.");
+                if (result.ContainsKey(attr.Name)) {
+                    throw new InvalidOperationException($"Kľúč {attr.Name} je definovaný viackrát.");
                 }
                 var value = prop.GetValue(data);
-                result.Add(attr.Key, (value == null) ? string.Empty : value.ToString());
+                result.Add(attr.Name, (value == null) ? string.Empty : value.ToString());
             }
         }
 
