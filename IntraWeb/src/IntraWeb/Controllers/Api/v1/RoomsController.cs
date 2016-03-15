@@ -41,8 +41,7 @@ namespace IntraWeb.Controllers.Api.v1
         [HttpGet]
         public IEnumerable<RoomViewModel> Get()
         {
-            var rooms = AutoMapper.Mapper.Map<IEnumerable<RoomViewModel>>(
-                _roomRepository.GetAll().Include(p => p.Equipments));
+            var rooms = AutoMapper.Mapper.Map<IEnumerable<RoomViewModel>>(_roomRepository.GetAll());
             return rooms;
         }
 
@@ -54,7 +53,7 @@ namespace IntraWeb.Controllers.Api.v1
         [HttpGet("{roomId}", Name = "GetRoom")]
         public IActionResult Get(int roomId)
         {
-            var room = _roomRepository.GetItem(roomId, r => r.Equipments);
+            var room = _roomRepository.GetItem(roomId);
 
             if (room == null)
             {
@@ -109,7 +108,6 @@ namespace IntraWeb.Controllers.Api.v1
         //[Authorize(Roles = "Administrator")] - ToDo: Zakomentovane pokiaľ sa nespraví autorizácia
         public IActionResult Put(int roomId, [FromBody] RoomViewModel roomVm)
         {
-            //ToDo: Over editovanie miestnosti aj s requirement. (Otazka ci sa ma editovat aj zoznam equipmentov, mozno nie)
             if (roomVm.Id != roomId)
             {
                 this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
@@ -150,16 +148,11 @@ namespace IntraWeb.Controllers.Api.v1
         //[Authorize(Roles = "Administrator")] - ToDo: Zakomentovane pokia¾ sa nespraví autorizácia
         public IActionResult Delete(int roomId)
         {
-            //ToDO: Overit kaskadu ma vymaz roomequipment
             return SaveData(() =>
             {
                 _roomRepository.Delete(roomId);
             });
         }
-
-        //ToDo: Pridanie equipmentu
-
-        //ToDo: Odobrantie equipmentu.
 
         private bool ExistAnotherRoomWithName(string roomName, int roomId)
         {

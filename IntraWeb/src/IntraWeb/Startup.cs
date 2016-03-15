@@ -97,6 +97,7 @@ namespace IntraWeb
 
             if (env.IsDevelopment())
             {
+                //loggerFactory.AddDebug(LogLevel.Verbose); - Log EF7 SQL Queries
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();

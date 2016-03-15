@@ -8,14 +8,6 @@ namespace IntraWeb.ViewModels.Rooms
     public class RoomEquipmentViewModel
     {
         /// <summary>
-        /// Gets or sets the identifier.
-        /// </summary>
-        /// <value>
-        /// The identifier.
-        /// </value>
-        public int Id { get; set; }
-
-        /// <summary>
         /// Gets or sets the equipment identifier.
         /// </summary>
         /// <value>
@@ -39,7 +31,7 @@ namespace IntraWeb.ViewModels.Rooms
 
         public override string ToString()
         {
-            return $"{this.Id} - {this.Description}";
+            return $"{this.EquipmentId} - {this.Description}";
         }
     }
 }
