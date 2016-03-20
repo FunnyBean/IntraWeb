@@ -46,7 +46,7 @@ Paragraph 2.";
             formatter.FormatTemplate(emailType, Arg.Any<IDictionary<string, object>>()).Returns(_htmlBody);
 
             var creator = new HtmlEmailCreator(env, formatter);
-            var msg = creator.CreateEmail(emailType, new BaseEmailData());
+            var msg = creator.CreateEmail(new BaseEmailData(emailType));
 
             Assert.Equal("Lorem ipsum", msg.Subject);
 
@@ -81,13 +81,13 @@ Paragraph 2.";
 
             var creator = new HtmlEmailCreator(env, formatter);
 
-            var data = new BaseEmailData();
+            var data = new BaseEmailData(emailType);
             data.From = "From Email <from@example.com>";
             data.To.Add("To Email <to@example.com>");
             data.Cc.Add("Cc Email <cc@example.com>");
             data.Bcc.Add("Bcc Email <bcc@example.com>");
             data.ReplyTo = "ReplyTo Email <replyto@example.com>";
-            var msg = creator.CreateEmail(emailType, data);
+            var msg = creator.CreateEmail(data);
 
             var emailAddress = msg.From[0] as MailboxAddress;
             Assert.Equal(emailAddress.Name, "From Email");

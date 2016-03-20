@@ -5,7 +5,7 @@ namespace IntraWeb.Services.Email
     public interface IEmailData
     {
 
-        string EmailType { get; set; }
+        string EmailType { get; }
 
         string From { get; }
         ICollection<string> To { get; }

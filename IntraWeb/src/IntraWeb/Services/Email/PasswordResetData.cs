@@ -11,9 +11,9 @@ namespace IntraWeb.Services.Email
 
         #region Constructors
 
-        public PasswordResetData(string emailType, string passwordResetLink)
+        public PasswordResetData(string passwordResetLink)
+            : base("PasswordReset")
         {
-            this.EmailType = emailType;
             this.PasswordResetLink = passwordResetLink;
         }
 

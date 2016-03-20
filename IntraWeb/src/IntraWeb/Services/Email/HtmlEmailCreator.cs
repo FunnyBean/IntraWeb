@@ -21,11 +21,11 @@ namespace IntraWeb.Services.Email
         }
 
 
-        public MimeMessage CreateEmail(string emailType, IEmailData data)
+        public MimeMessage CreateEmail(IEmailData data)
         {
             var converter = new EmailDataConverter();
             var templateData = converter.Convert(data);
-            var htmlBody = _formatter.FormatTemplate(emailType, templateData);
+            var htmlBody = _formatter.FormatTemplate(data.EmailType, templateData);
 
             var msg = new MimeMessage();
             SetAddresses(msg, data);

@@ -8,8 +8,6 @@ namespace IntraWeb.Services.Email
 
         #region Constructors
 
-        public BaseEmailData() { }
-
         public BaseEmailData(string emailType)
         {
             this.EmailType = emailType;
@@ -24,7 +22,7 @@ namespace IntraWeb.Services.Email
         private List<string> _cc = new List<string>();
         private List<string> _bcc = new List<string>();
 
-        public string EmailType { get; set; }
+        public string EmailType { get; }
         public string From { get; set; }
         public ICollection<string> To { get { return _to; } }
         public ICollection<string> Cc { get { return _cc; } }

@@ -30,11 +30,11 @@ namespace IntraWeb.Controllers.Api.v1
         [Route("send/{emailType}")]
         public void Send(string emailType, string to)
         {
-            var data = new BaseEmailData();
+            var data = new BaseEmailData(emailType);
             data.From = Resources.Resources.EmailFrom;
             data.To.Add(to);
 
-            var msg = _creator.CreateEmail(emailType, data);
+            var msg = _creator.CreateEmail(data);
             _sender.SendEmail(msg);
         }
 
