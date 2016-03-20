@@ -138,6 +138,7 @@ namespace IntraWeb
 
         private void AddIntraWebServices(IServiceCollection services)
         {
+            services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IEmailSender, SmtpEmailSender>();
             services.AddScoped<IEmailCreator, HtmlEmailCreator>();
             services.AddScoped<ITemplateFormatter, TemplateFormatter>();

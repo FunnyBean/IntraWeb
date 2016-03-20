@@ -13,14 +13,16 @@ namespace IntraWeb.Controllers.Api.v1
 
         #region Private members
 
+        private IEmailService _emailService;
         private IEmailCreator _creator;
         private IEmailSender _sender;
 
         #endregion
 
 
-        public EmailController(IEmailCreator creator, IEmailSender sender)
+        public EmailController(IEmailService emailService, IEmailCreator creator, IEmailSender sender)
         {
+            _emailService = emailService;
             _creator = creator;
             _sender = sender;
         }
@@ -48,6 +50,13 @@ namespace IntraWeb.Controllers.Api.v1
 
             var msg = _creator.CreateEmail(data);
             _sender.SendEmail(msg);
+        }
+
+        [HttpGet]
+        [Route("PasswordReset2")]
+        public void PasswordReset2(string to)
+        {
+            _emailService.SendPasswordReset(to, @"http://example.com");
         }
 
     }
