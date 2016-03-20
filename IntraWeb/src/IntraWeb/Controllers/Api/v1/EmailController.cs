@@ -38,5 +38,17 @@ namespace IntraWeb.Controllers.Api.v1
             _sender.SendEmail(msg);
         }
 
+        [HttpGet]
+        [Route("PasswordReset")]
+        public void PasswordReset(string to)
+        {
+            var data = new PasswordResetData(@"http://example.com");
+            data.From = Resources.Resources.EmailFrom;
+            data.To.Add(to);
+
+            var msg = _creator.CreateEmail(data);
+            _sender.SendEmail(msg);
+        }
+
     }
 }
