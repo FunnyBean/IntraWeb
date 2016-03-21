@@ -1,15 +1,12 @@
-using System.Collections.Generic;
-using Microsoft.AspNet.Mvc;
-using IntraWeb.Models;
-using IntraWeb.ViewModels.Rooms;
-using System.Net;
 using System;
-using IntraWeb.Filters;
-using Microsoft.Extensions.Logging;
-using IntraWeb.Models.Rooms;
-using System.Linq;
-using Microsoft.Data.Entity;
+using System.Collections.Generic;
+using System.Net;
 using AutoMapper;
+using IntraWeb.Filters;
+using IntraWeb.Models.Rooms;
+using IntraWeb.ViewModels.Rooms;
+using Microsoft.AspNet.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace IntraWeb.Controllers.Api.v1
 {
