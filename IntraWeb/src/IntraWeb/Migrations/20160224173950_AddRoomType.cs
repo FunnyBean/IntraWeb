@@ -8,7 +8,6 @@ namespace IntraWeb.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-         
             migrationBuilder.AddColumn<decimal>(
                 name: "Amount",
                 table: "RoomEquipment",
@@ -17,9 +16,9 @@ namespace IntraWeb.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "Type",
                 table: "Room",
-                nullable: true);   
-            
-            //ToDo: updatnut stplec typ na nejaky default.                  
+                nullable: true);
+
+            migrationBuilder.Sql("Update Room Set Type = 'default'");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
