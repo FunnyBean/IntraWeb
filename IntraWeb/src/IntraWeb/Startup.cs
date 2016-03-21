@@ -13,6 +13,7 @@ using System.Net;
 using System;
 using IntraWeb.Models.Rooms;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace IntraWeb
 {
@@ -87,6 +88,7 @@ namespace IntraWeb
             //services.AddInstance<IRoomRepository>(new Models.Dummies.RoomDummyRepository()); //Testovacia implementacia
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<IEquipmentRepository, EquipmentRepository>();
+            InitializeAutoMapper(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -126,20 +128,20 @@ namespace IntraWeb
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
-            app.UseIdentity();
-
-            InitializeAutoMapper();
+            app.UseIdentity();            
 
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
             app.UseMvc();
         }
 
-        private static void InitializeAutoMapper()
-        {
-            AutoMapper.Mapper.Initialize(conf =>
+        private static void InitializeAutoMapper(IServiceCollection services)
+        {            
+            var config = new MapperConfiguration(cfg =>
             {
-                conf.AddProfile<RoomsMappingProfile>();
+                cfg.AddProfile<RoomsMappingProfile>();
             });
+
+            services.AddInstance<IMapper>(config.CreateMapper());
         }
 
         // Entry point for the application.

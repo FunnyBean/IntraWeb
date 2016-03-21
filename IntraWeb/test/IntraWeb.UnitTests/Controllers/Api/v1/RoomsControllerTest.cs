@@ -11,20 +11,12 @@ using IntraWeb.Controllers.Api.v1;
 using IntraWeb.Models.Rooms;
 using IntraWeb.ViewModels.Rooms;
 using System.Collections.Generic;
+using AutoMapper;
 
 namespace IntraWeb.UnitTests.Controllers.Api.v1
 {
     public class RoomsControllerTest
     {
-
-        public RoomsControllerTest()
-        {
-            AutoMapper.Mapper.Initialize(conf =>
-            {
-                conf.AddProfile<RoomsMappingProfile>();
-            });
-        }
-
         #region "Get rooms"
 
         [Fact]
@@ -265,7 +257,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PostMethodHasCheckArgumentsForNullAttribute()
         {
             // Arrange
-            var target = new IntraWeb.Controllers.Api.v1.RoomsController(null, null);
+            var target = new RoomsController(null, null, null);
             Func<RoomViewModel, IActionResult> method = target.Post;
 
             // Act
@@ -279,7 +271,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PostMethodHasValidateModelStateAttribute()
         {
             // Arrange
-            var target = new RoomsController(null, null);
+            var target = new RoomsController(null, null, null);
             Func<RoomViewModel, IActionResult> method = target.Post;
 
             // Act
@@ -478,7 +470,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PutMethodHasCheckArgumentsForNullAttribute()
         {
             // Arrange
-            var target = new RoomsController(null, null);
+            var target = new RoomsController(null, null, null);
             Func<int, RoomViewModel, IActionResult> method = target.Put;
 
             // Act
@@ -492,7 +484,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PutMethodHasValidateModelStateAttribute()
         {
             // Arrange
-            var target = new RoomsController(null, null);
+            var target = new RoomsController(null, null, null);
             Func<int, RoomViewModel, IActionResult> method = target.Put;
 
             // Act
@@ -681,7 +673,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 initRepository(roomsRepository);
             }
 
-            var target = new RoomsController(roomsRepository, logger)
+            var target = new RoomsController(roomsRepository, logger, CreateMapper())
             {
                 ActionContext = new ActionContext
                 {
@@ -690,6 +682,16 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             };
 
             return target;
+        }
+
+        private IMapper CreateMapper()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<RoomsMappingProfile>();
+            });
+
+            return config.CreateMapper();
         }
 
         #endregion

@@ -1,30 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using AutoMapper;
 using IntraWeb.Controllers.Api.v1;
-using IntraWeb.Models.Base;
+using IntraWeb.Filters;
 using IntraWeb.Models.Rooms;
+using IntraWeb.UnitTests.Filters;
 using IntraWeb.UnitTests.Service;
 using IntraWeb.ViewModels.Rooms;
 using Microsoft.AspNet.Http.Internal;
-using IntraWeb.UnitTests.Filters;
 using Microsoft.AspNet.Mvc;
 using Xunit;
-using IntraWeb.Filters;
 
 namespace IntraWeb.UnitTests.Controllers.Api.v1
 {
     public class EquipmentsControllerTest
-    {
-        public EquipmentsControllerTest()
-        {
-            AutoMapper.Mapper.Initialize(conf =>
-            {
-                conf.AddProfile<RoomsMappingProfile>();
-            });
-        }
-
+    {      
         #region "Get equipments"
 
         [Fact]
@@ -245,7 +236,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PostMethodHasCheckArgumentsForNullAttribute()
         {
             // Arrange
-            var target = new IntraWeb.Controllers.Api.v1.EquipmentsController(null, null);
+            var target = new EquipmentsController(null, null, null);
             Func<EquipmentViewModel, IActionResult> method = target.Post;
 
             // Act
@@ -259,7 +250,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PostMethodHasValidateModelStateAttribute()
         {
             // Arrange
-            var target = new EquipmentsController(null, null);
+            var target = new EquipmentsController(null, null, null);
             Func<EquipmentViewModel, IActionResult> method = target.Post;
 
             // Act
@@ -355,7 +346,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             });
 
             // Act
-            var response = target.Put(4, new EquipmentViewModel() { Id = 4, Description = "White" });
+            var response = target.Put(4, new EquipmentViewModel() { Id = 4, Description = "TV" });
 
             // Assert
             Assert.Equal((int) HttpStatusCode.NoContent, target.Response.StatusCode);
@@ -380,11 +371,11 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             });
 
             // Act
-            var response = target.Put(1, new EquipmentViewModel() { Id = 1, Description = "Equipment whit white color" });
+            var response = target.Put(1, new EquipmentViewModel() { Id = 1, Description = "TV" });
             var equipmentForTest = repository.GetItem(1);
 
             // Assert
-            Assert.Equal("Equipment whit white color", equipmentForTest.Description);
+            Assert.Equal("TV", equipmentForTest.Description);
         }
 
         [Fact]
@@ -409,7 +400,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var response = target.Put(1, new EquipmentViewModel()
             {
                 Id = 1,
-                Description = "Equipment whit white color"
+                Description = "TV"
             });
 
             // Assert
@@ -445,7 +436,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PutMethodHasCheckArgumentsForNullAttribute()
         {
             // Arrange
-            var target = new EquipmentsController(null, null);
+            var target = new EquipmentsController(null, null, null);
             Func<int, EquipmentViewModel, IActionResult> method = target.Put;
 
             // Act
@@ -459,7 +450,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PutMethodHasValidateModelStateAttribute()
         {
             // Arrange
-            var target = new EquipmentsController(null, null);
+            var target = new EquipmentsController(null, null, null);
             Func<int, EquipmentViewModel, IActionResult> method = target.Put;
 
             // Act
@@ -582,7 +573,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 initRepository(equipmentsRepository);
             }
 
-            var target = new EquipmentsController(equipmentsRepository, logger)
+            var target = new EquipmentsController(equipmentsRepository, logger, CreateMapper())
             {
                 ActionContext = new ActionContext
                 {
@@ -591,6 +582,16 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             };
 
             return target;
+        }
+
+        private IMapper CreateMapper()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<RoomsMappingProfile>();
+            });
+
+            return config.CreateMapper();
         }
 
         #endregion

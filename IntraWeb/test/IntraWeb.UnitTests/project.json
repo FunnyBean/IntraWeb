@@ -13,6 +13,7 @@
     }
   },
   "dependencies": {
+    "AutoMapper": "4.2.1",
     "IntraWeb": "1.0.0-*",
     "Microsoft.CSharp": "4.0.1-beta-23516",
     "System.Collections": "4.0.11-beta-23516",

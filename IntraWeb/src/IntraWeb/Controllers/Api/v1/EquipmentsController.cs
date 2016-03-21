@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using AutoMapper;
 using IntraWeb.Filters;
 using IntraWeb.Models.Rooms;
 using IntraWeb.ViewModels.Rooms;
@@ -16,6 +17,7 @@ namespace IntraWeb.Controllers.Api.v1
 
         private IEquipmentRepository _equipmentRepository;
         private ILogger<EquipmentsController> _logger;
+        private IMapper _mapper;
 
         #endregion
 
@@ -24,11 +26,14 @@ namespace IntraWeb.Controllers.Api.v1
         /// </summary>
         /// <param name="equipmentRepository">The equipment repository.</param>
         /// <param name="logger">The logger.</param>
+        /// <param name="mapper">Mapper for mapping domain classes to model classes and reverse.</param>
         public EquipmentsController(IEquipmentRepository equipmentRepository,
-                           ILogger<EquipmentsController> logger)
+                           ILogger<EquipmentsController> logger,
+                                                 IMapper mapper)
         {
             _equipmentRepository = equipmentRepository;
             _logger = logger;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -38,7 +43,7 @@ namespace IntraWeb.Controllers.Api.v1
         [HttpGet]
         public IEnumerable<EquipmentViewModel> Get()
         {
-            var equipments = AutoMapper.Mapper.Map<IEnumerable<EquipmentViewModel>>(_equipmentRepository.GetAll());
+            var equipments = _mapper.Map<IEnumerable<EquipmentViewModel>>(_equipmentRepository.GetAll());
 
             return equipments;
         }
@@ -60,7 +65,7 @@ namespace IntraWeb.Controllers.Api.v1
             }
             else
             {
-                return this.Json(AutoMapper.Mapper.Map<EquipmentViewModel>(equipment));
+                return this.Json(_mapper.Map<EquipmentViewModel>(equipment));
             }
         }
 
@@ -76,7 +81,7 @@ namespace IntraWeb.Controllers.Api.v1
         {
             if (!ExistEquipment(equipmentVm.Description))
             {
-                var equipment = AutoMapper.Mapper.Map<Equipment>(equipmentVm);
+                var equipment = _mapper.Map<Equipment>(equipmentVm);
 
                 return SaveData(() =>
                 {
@@ -85,7 +90,7 @@ namespace IntraWeb.Controllers.Api.v1
                 () =>
                 {
                     this.Response.StatusCode = (int) HttpStatusCode.Created;
-                    return this.Json(AutoMapper.Mapper.Map<EquipmentViewModel>(equipment));
+                    return this.Json(_mapper.Map<EquipmentViewModel>(equipment));
                 });
             }
             else
@@ -133,7 +138,7 @@ namespace IntraWeb.Controllers.Api.v1
             }
             else
             {
-                editedEquipment = AutoMapper.Mapper.Map(equipmentVm, editedEquipment);
+                editedEquipment = _mapper.Map(equipmentVm, editedEquipment);
 
                 return SaveData(() =>
                 {
