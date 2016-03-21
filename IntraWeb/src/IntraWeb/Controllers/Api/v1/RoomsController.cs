@@ -67,6 +67,16 @@ namespace IntraWeb.Controllers.Api.v1
         }
 
         /// <summary>
+        /// Get types of rooms.
+        /// </summary>
+        /// <returns>Types of rooms.</returns>
+        [HttpGet("GetTypes")]
+        public IEnumerable<string> GetTypes()
+        {            
+            return _roomRepository.GetTypes();
+        }
+
+        /// <summary>
         /// Post new room.
         /// </summary>
         /// <param name="roomVm">New room.</param>

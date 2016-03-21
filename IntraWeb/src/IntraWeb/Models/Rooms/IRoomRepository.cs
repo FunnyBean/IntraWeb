@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using IntraWeb.Models.Base;
 
 namespace IntraWeb.Models.Rooms
@@ -14,5 +14,11 @@ namespace IntraWeb.Models.Rooms
         /// <param name="name">The name.</param>
         /// <returns>Room with specific name; if doesn't exist then return null.</returns>
         Room GetItem(string name);
+
+        /// <summary>
+        /// Get types of rooms.
+        /// </summary>
+        /// <returns>Types of rooms.</returns>
+        IEnumerable<string> GetTypes();
     }
 }

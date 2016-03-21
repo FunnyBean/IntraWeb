@@ -10,6 +10,7 @@ using IntraWeb.Filters;
 using IntraWeb.Controllers.Api.v1;
 using IntraWeb.Models.Rooms;
 using IntraWeb.ViewModels.Rooms;
+using System.Collections.Generic;
 
 namespace IntraWeb.UnitTests.Controllers.Api.v1
 {
@@ -603,6 +604,65 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
 
             // Assert
             Assert.Equal((int) HttpStatusCode.OK, target.Response.StatusCode);
+        }
+
+        #endregion
+
+
+        #region "GetTypes"
+
+        [Fact]
+        public void GetDiscintTypesFromRooms()
+        {
+            // Arrange
+            var target = CreateRoomsController(rep =>
+            {
+                rep.Add(new Room()
+                {
+                    Name = "First",
+                    Type = "Meeting room",
+                    Description = "First room"
+                });
+                rep.Add(new Room()
+                {
+                    Name = "Second",
+                    Type = "Meeting room",
+                    Description = "Second room"
+                });
+                rep.Add(new Room()
+                {
+                    Name = "White training room",
+                    Type = "Training room",
+                });
+                rep.Add(new Room()
+                {
+                    Name = "Big scrum room",
+                    Type = "Scrum room",
+                });
+            });
+            var expected = new List<string>() { "Meeting room", "Training room", "Scrum room" };
+
+            // Act
+            var roomTypes = target.GetTypes().ToList();
+
+            // Assert
+            Assert.Equal(expected, roomTypes);
+        }
+
+        [Fact]
+        public void GetEmptyTypesFromRooms()
+        {
+            // Arrange
+            var target = CreateRoomsController(rep =>
+            {
+            });
+            var expected = new List<string>();
+
+            // Act
+            var roomTypes = target.GetTypes().ToList();
+
+            // Assert
+            Assert.Equal(expected, roomTypes);
         }
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using IntraWeb.Models.Base;
 using Microsoft.Data.Entity;
@@ -46,6 +47,16 @@ namespace IntraWeb.Models.Rooms
                 Include(r => r.Equipments).
                 ThenInclude(e => e.Equipment).
                 FirstOrDefault(r => r.Id == roomId);
+        }
+
+
+        /// <summary>
+        /// Get types of rooms.
+        /// </summary>
+        /// <returns>Types of rooms.</returns>
+        public IEnumerable<string> GetTypes()
+        {
+            return _dbContext.Set<Room>().Select(p => p.Type).Distinct();
         }
     }
 }
