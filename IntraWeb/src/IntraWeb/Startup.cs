@@ -15,6 +15,8 @@ using System;
 using IntraWeb.Models.Rooms;
 using IntraWeb.Models.Users;
 using IntraWeb.ViewModels.Users;
+using IntraWeb.Models.Authorization;
+using IntraWeb.Services.Authorization;
 
 namespace IntraWeb
 {
@@ -52,33 +54,34 @@ namespace IntraWeb
                 .AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(conf =>
-            {
-                //ToDo: Refaktorovat. Extrahovat do zvlast triedy, ked bude jasne ako ideme riesit autorizaciu.
-                conf.Password.RequiredLength = 8;
-                conf.Password.RequireNonLetterOrDigit = false;
-                conf.Password.RequireLowercase = false;
-                conf.Password.RequireUppercase = false;
-                conf.Cookies.ApplicationCookie.Events = new CookieAuthenticationEvents()
-                {
-                    OnRedirectToLogin = ctx =>
-                    {
-                        if (ctx.Request.Path.StartsWithSegments("/api") &&
-                            ctx.Response.StatusCode == (int) HttpStatusCode.OK)
-                        {
-                            ctx.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
-                        }
-                        else
-                        {
-                            ctx.Response.Redirect(ctx.RedirectUri);
-                        }
+            services.AddAuthentication();
+            //services.AddIdentity<ApplicationUser, IdentityRole>(conf =>
+            //{
+            //    //ToDo: Refaktorovat. Extrahovat do zvlast triedy, ked bude jasne ako ideme riesit autorizaciu.
+            //    conf.Password.RequiredLength = 8;
+            //    conf.Password.RequireNonLetterOrDigit = false;
+            //    conf.Password.RequireLowercase = false;
+            //    conf.Password.RequireUppercase = false;
+            //    conf.Cookies.ApplicationCookie.Events = new CookieAuthenticationEvents()
+            //    {
+            //        OnRedirectToLogin = ctx =>
+            //        {
+            //            if (ctx.Request.Path.StartsWithSegments("/api") &&
+            //                ctx.Response.StatusCode == (int) HttpStatusCode.OK)
+            //            {
+            //                ctx.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+            //            }
+            //            else
+            //            {
+            //                ctx.Response.Redirect(ctx.RedirectUri);
+            //            }
 
-                        return Task.FromResult(0);
-                    }
-                };
-            })
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
+            //            return Task.FromResult(0);
+            //        }
+            //    };
+            //})
+            //.AddEntityFrameworkStores<ApplicationDbContext>()
+            //.AddDefaultTokenProviders();
 
             services.AddMvc(); // ToDo: Replace with Web API when it will be done in ASP.NET Core 1.0
 
@@ -120,12 +123,18 @@ namespace IntraWeb
                 }
             }
 
+            app.UseCookieAuthentication(options =>
+            {
+                options.AutomaticAuthenticate = true;
+                options.AutomaticChallenge = false;
+            });
+
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
-            app.UseIdentity();
+            //app.UseIdentity();
 
             InitializeAutoMapper();
 
@@ -157,6 +166,10 @@ namespace IntraWeb
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+
+            services.AddScoped<ILoggingRepository, LoggingRepository>();
+            services.AddScoped<IMembershipService, MembershipService>();
+            services.AddScoped<IEncryptionService, EncryptionService>();
         }
 
 

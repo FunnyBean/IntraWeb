@@ -1,4 +1,5 @@
 ﻿using IntraWeb.Models.Base;
+using System.Collections.Generic;
 
 namespace IntraWeb.Models.Users
 {
@@ -7,5 +8,8 @@ namespace IntraWeb.Models.Users
     /// </summary>
     public interface IUserRepository : IRepository<User>
     {
+        User GetSingleByUsername(string username);
+
+        IEnumerable<Role> GetUserRoles(string username);
     }
 }

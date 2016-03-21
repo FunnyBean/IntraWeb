@@ -171,6 +171,30 @@ namespace IntraWeb.Models.Base
         }
 
         /// <summary>
+        /// Gets the single item by predicate.
+        /// </summary>
+        /// <param name="predicate"></param>
+        public T GetSingle(Expression<Func<T, bool>> predicate)
+        {
+            return _dbContext.Set<T>().FirstOrDefault(predicate);
+        }
+
+        /// <summary>
+        /// Gets unique item by predicate.
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <param name="includeProperties"></param>
+        public T GetSingle(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        {
+            IQueryable<T> query = _dbContext.Set<T>();
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+            return query.Where(predicate).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Save changes.
         /// </summary>
         public virtual void Save()
