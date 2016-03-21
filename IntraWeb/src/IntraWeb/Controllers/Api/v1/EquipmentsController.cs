@@ -60,7 +60,7 @@ namespace IntraWeb.Controllers.Api.v1
 
             if (equipment == null)
             {
-                this.Response.StatusCode = (int) HttpStatusCode.NoContent;
+                this.Response.StatusCode = (int) HttpStatusCode.NotFound;
                 return this.Json(null);
             }
             else
@@ -127,7 +127,7 @@ namespace IntraWeb.Controllers.Api.v1
             var editedEquipment = _equipmentRepository.GetItem(equipmentId);
             if (editedEquipment == null)
             {
-                this.Response.StatusCode = (int) HttpStatusCode.NoContent;
+                this.Response.StatusCode = (int) HttpStatusCode.NotFound;
                 return this.Json(null);
             }
 

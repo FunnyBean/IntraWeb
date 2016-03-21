@@ -107,7 +107,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         }
 
         [Fact]
-        public void GetRoomNoContentStatusCode()
+        public void GetRoomNotFoundStatusCode()
         {
             // Arrange
             var target = CreateRoomsController(null);
@@ -116,7 +116,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var response = target.Get(1) as JsonResult;
 
             // Assert
-            Assert.Equal((int) HttpStatusCode.NoContent, target.Response.StatusCode);
+            Assert.Equal((int) HttpStatusCode.NotFound, target.Response.StatusCode);
         }
 
         #endregion
@@ -375,7 +375,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var response = target.Put(4, new RoomViewModel() { Id = 4, Name = "White" });
 
             // Assert
-            Assert.Equal((int) HttpStatusCode.NoContent, target.Response.StatusCode);
+            Assert.Equal((int) HttpStatusCode.NotFound, target.Response.StatusCode);
         }
 
         [Fact]

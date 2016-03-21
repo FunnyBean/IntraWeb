@@ -62,7 +62,7 @@ namespace IntraWeb.Controllers.Api.v1
 
             if (room == null)
             {
-                this.Response.StatusCode = (int) HttpStatusCode.NoContent;
+                this.Response.StatusCode = (int) HttpStatusCode.NotFound;
                 return this.Json(null);
             }
             else
@@ -135,7 +135,7 @@ namespace IntraWeb.Controllers.Api.v1
             var editedRoom = _roomRepository.GetItem(roomId);
             if (editedRoom == null)
             {
-                this.Response.StatusCode = (int) HttpStatusCode.NoContent;
+                this.Response.StatusCode = (int) HttpStatusCode.NotFound;
                 return this.Json(null);
             }
 
