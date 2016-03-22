@@ -141,17 +141,17 @@ namespace IntraWeb.Controllers.Api.v1
                 var message = $"Invalid argument. Id '{userId}' and userVm.Id '{userVm.Id}' are not equal.";
                 _logger.LogWarning(message);
 
-                this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 return this.Json(new { Message = message });
             }
 
             User oldUser = _userRepository.GetItem(userId);
             if (oldUser == null)
             {
-                this.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                this.Response.StatusCode = (int) HttpStatusCode.NotFound;
                 return this.Json(null);
             }
-            
+
             if (ExistAnotherUserWithEmail(userVm.Email, userId))
             {
                 this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
@@ -160,10 +160,6 @@ namespace IntraWeb.Controllers.Api.v1
             else
             {
                 IActionResult result;
-                IEnumerable<int> newRolesIds = (userVm.UserRoles ?? new List<UserRoleViewModel>()).Select(x => x.RoleId).AsEnumerable();
-
-                // Update user values
-                userVm.UserRoles = null; // It's important for disable duplicating of roles
                 User editedUser = AutoMapper.Mapper.Map(userVm, oldUser);
 
                 result = SaveData(() =>
@@ -171,25 +167,6 @@ namespace IntraWeb.Controllers.Api.v1
                     _userRepository.Edit(editedUser);
                 });
 
-                // Update roles
-                IEnumerable<int> oldRolesIds = _userRepository.GetItemIncluding(userId, true, x => x.UserRoles).UserRoles.Select(x => x.RoleId).AsEnumerable();
-
-                if (!Enumerable.SequenceEqual(oldRolesIds, newRolesIds)) // Are role Ids the same?
-                {
-                    _userRoleRepository.Delete(x => x.UserId == oldUser.Id); // Remove old roles (new roles will be added later)
-                    _userRoleRepository.Save();
-
-                    foreach (int roleId in newRolesIds)
-                    {
-                        _userRoleRepository.Add(new UserRole()
-                        {
-                            RoleId = roleId,
-                            UserId = oldUser.Id
-                        });
-                    }
-
-                    _userRoleRepository.Save();
-                }
 
                 return result;
             }
