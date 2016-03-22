@@ -1,5 +1,5 @@
 ﻿using IntraWeb.Models;
-using IntraWeb.Services.Emails;
+using IntraWeb.Services.Email;
 using IntraWeb.ViewModels.Administration;
 
 using Microsoft.AspNet.Authentication.Cookies;
@@ -20,8 +20,13 @@ namespace IntraWeb
     public class Startup
     {
 
+        IHostingEnvironment _env;
+
+
         public Startup(IHostingEnvironment env)
         {
+            _env = env;
+
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
@@ -43,7 +48,7 @@ namespace IntraWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
-            services.Configure<EmailSettings>(Configuration.GetSection("Email"));
+            services.Configure<EmailOptions>(Configuration.GetSection("Email"));
 
             // Add framework services.
             services.AddEntityFramework()
@@ -82,8 +87,7 @@ namespace IntraWeb
             services.AddMvc(); // ToDo: Replace with Web API when it will be done in ASP.NET Core 1.0
 
             // Add application services
-            services.AddTransient<IEmailService, EmailService>();
-            services.AddTransient<IEmailFormatter, EmailFormatter>();
+            AddIntraWebServices(services);
 
             //services.AddInstance<IRoomRepository>(new Models.Dummies.RoomDummyRepository()); //Testovacia implementacia
             services.AddScoped<IRoomRepository, RoomsRepository>();
@@ -130,6 +134,18 @@ namespace IntraWeb
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
             app.UseMvc();
         }
+
+
+        private void AddIntraWebServices(IServiceCollection services)
+        {
+            services.AddScoped<IEmailSender, SmtpEmailSender>();
+            services.AddScoped<IEmailCreator, HtmlEmailCreator>();
+            services.AddScoped<ITemplateFormatter, TemplateFormatter>();
+            services.AddScoped<ITemplateLoader, FileTemplateLoader>(
+                (provider) => new FileTemplateLoader(System.IO.Path.Combine(_env.WebRootPath, "templates", "email"))
+            );
+        }
+
 
         // Entry point for the application.
         public static void Main(string[] args) => WebApplication.Run<Startup>(args);

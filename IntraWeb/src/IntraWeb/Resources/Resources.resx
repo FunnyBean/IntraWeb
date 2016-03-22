@@ -117,30 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="MailboxNameFrom" xml:space="preserve">
-    <value>Krosbook</value>
+  <data name="EmailFrom" xml:space="preserve">
+    <value>IntraWeb &lt;funnybean@kros.sk&gt;</value>
   </data>
-  <data name="MailboxNameTo" xml:space="preserve">
-    <value>Krosbook's user</value>
-  </data>
-  <data name="TemplateBodySalutation" xml:space="preserve">
-    <value>Vitaj na Krosbooku</value>
-  </data>
-  <data name="TemplateBodyText" xml:space="preserve">
-    <value>Nejhorší ze všeho je promarněná příležitost: Správně napsaný uvítací e-mail má 4x vyšší míru přečtení, 5x vyšší počet kliků a 8x vyšší návratnost přepočtenou na jeden e-mail. Jak ho tedy správně napsat?
-
-Na své webové stránce máte formulář na zasílání e-mailových zpráv. To znamená, že někdo byl na vašem webu dřív, než jste svou firmu aktivně propagovali. Kujte tedy železo, dokud je žhavé: Oslovte zákazníka, dokud vás má ještě v hlavě. Okamžitě zaslaný mail má celkem slušnou šanci, že bude otevřen.
-
-
-Krosbook tím</value>
-  </data>
-  <data name="TemplateCompanyWebSite" xml:space="preserve">
-    <value>http://funnybean.cloudapp.net</value>
-  </data>
-  <data name="TemplateFooterCopyright" xml:space="preserve">
-    <value>© 2016 Krosbook</value>
-  </data>
-  <data name="TemplateHeaderSubCaption" xml:space="preserve">
-    <value>Sleduj firemný život</value>
+  <data name="UnknownEmailTemplateException_Message" xml:space="preserve">
+    <value>Emailová šablóna "{0}" neexistuje.</value>
   </data>
 </root>
