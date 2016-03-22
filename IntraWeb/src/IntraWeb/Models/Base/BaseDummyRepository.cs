@@ -82,7 +82,10 @@ namespace IntraWeb.Models.Base
             //catch (Exception)
             //{
             //}
-            foreach (T item in this.Get(predicate))
+
+            List<T> items = this.Get(predicate).ToList();
+
+            foreach (T item in items)
             {
                 this.Delete(item);
             }
@@ -121,7 +124,7 @@ namespace IntraWeb.Models.Base
         /// </returns>
         public virtual T GetItemIncluding(int itemId, bool asNoTracking = false, params Expression<Func<T, object>>[] includeProperties)
         {
-            throw new NotImplementedException();
+            return _data.FirstOrDefault(p => p.Id == itemId);
         }
 
         /// <summary>
@@ -155,7 +158,7 @@ namespace IntraWeb.Models.Base
         /// </returns>
         public virtual IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties)
         {
-            throw new NotImplementedException();
+            return _data.AsQueryable();
         }
 
         /// <summary>

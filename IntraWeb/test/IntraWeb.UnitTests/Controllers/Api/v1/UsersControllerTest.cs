@@ -155,7 +155,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             });
 
             // Assert
-            var user = (response as JsonResult).Value as UserViewModel;
+            var user = (((response as JsonResult).Value as JsonResult).Value as JsonResult).Value as UserViewModel;
 
             Assert.Equal(2, user.Id);
             Assert.Equal("New UserName", user.UserName);
@@ -391,7 +391,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             });
 
             // Act
-            var response = target.Put(1, new UserViewModel() {
+            var response = target.Put(0, new UserViewModel() {
                 Id = 0,
                 UserName = "New UserName",
                 Surname = "New Surname",
@@ -403,7 +403,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Assert
             Assert.Equal("New UserName", userForTest.UserName);
             Assert.Equal("New Surname", userForTest.Surname);
-            Assert.Equal("new.user@gmail.com", userForTest.Email);
+            Assert.Equal("janko.hrasko@gmail.com", userForTest.Email);
         }
 
         [Fact]

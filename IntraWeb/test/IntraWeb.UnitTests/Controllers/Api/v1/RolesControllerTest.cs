@@ -172,7 +172,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         }
 
         [Fact()]
-        public void PostRoleBadRequestIfRoleWithEmailExist()
+        public void PostRoleBadRequestIfRoleWithNameExist()
         {
             // Arrange
             var target = CreateRolesController((rep) =>
@@ -193,7 +193,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var response = target.Post(new RoleViewModel()
             {
                 Id = 2,
-                Name = "ReadOnly"
+                Name = "User"
             });
 
             // Assert
@@ -276,7 +276,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         }
 
         [Fact]
-        public void PutEmailWhichAlreadyExist()
+        public void PutNameWhichAlreadyExist()
         {
             // Arrange
             var target = CreateRolesController(rep =>
@@ -294,7 +294,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             });
 
             // Act
-            var response = target.Put(1, new RoleViewModel() { Id = 1, Name = "User" });
+            var response = target.Put(1, new RoleViewModel() { Id = 1, Name = "Admin" });
 
             // Assert
             Assert.Equal((int) HttpStatusCode.BadRequest, target.Response.StatusCode);
@@ -319,7 +319,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             });
 
             // Act
-            var response = target.Put(3, new RoleViewModel() { Id = 2, Name = "ReadOnly" });
+            var response = target.Put(3, new RoleViewModel() { Id = 3, Name = "ReadOnly" });
 
             // Assert
             Assert.Equal((int) HttpStatusCode.NotFound, target.Response.StatusCode);
@@ -347,7 +347,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             });
 
             // Act
-            var response = target.Put(1, new RoleViewModel() {
+            var response = target.Put(0, new RoleViewModel() {
                 Id = 0,
                 Name = "NewAdmin"
             });
@@ -380,7 +380,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             });
 
             // Act
-            var response = target.Put(1, new RoleViewModel()
+            var response = target.Put(0, new RoleViewModel()
             {
                 Id = 0,
                 Name = "NewAdmin"
@@ -406,7 +406,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             });
 
             // Act
-            var response = target.Put(1, new RoleViewModel()
+            var response = target.Put(0, new RoleViewModel()
             {
                 Id = 0,
                 Name = "NewAdmin"

@@ -79,18 +79,25 @@ namespace IntraWeb.Controllers.Api.v1
                 () =>
                 {
                     this.Response.StatusCode = (int)HttpStatusCode.Created;
-                    return this.Json(new
+
+                    return this.Json(new JsonResult(this.Json(AutoMapper.Mapper.Map<UserViewModel>(user)))
                     {
-                        Data = this.Json(AutoMapper.Mapper.Map<UserViewModel>(user)),
                         StatusCode = this.Response.StatusCode
                     });
+
+                    //return this.Json(new
+                    //{
+                    //    Data = this.Json(AutoMapper.Mapper.Map<UserViewModel>(user)),
+                    //    StatusCode = this.Response.StatusCode
+                    //});
                 });
             }
             else
             {
                 this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return this.Json(new {
-                    Message = $"User with email '{userVm.Email}' already exist.",
+
+                return this.Json(new JsonResult($"User with email '{userVm.Email}' already exist.")
+                {
                     StatusCode = this.Response.StatusCode
                 });
             }

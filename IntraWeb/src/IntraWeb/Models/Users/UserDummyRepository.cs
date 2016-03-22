@@ -29,7 +29,7 @@ namespace IntraWeb.Models.Users
         /// <param name="user">The user.</param>
         public override void Add(User user)
         {
-            if (this.GetAll().Any(p => p.Name.Equals(user.Email, System.StringComparison.CurrentCultureIgnoreCase)))
+            if (this.GetAll().Any(p => p.Email.Equals(user.Email, System.StringComparison.CurrentCultureIgnoreCase)))
             {
                 throw new System.InvalidProgramException($"User with email {user.Name}, already exist.");
             }
