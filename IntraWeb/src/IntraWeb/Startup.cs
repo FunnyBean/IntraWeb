@@ -21,8 +21,13 @@ namespace IntraWeb
     public class Startup
     {
 
+        IHostingEnvironment _env;
+
+
         public Startup(IHostingEnvironment env)
         {
+            _env = env;
+
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
@@ -149,7 +154,10 @@ namespace IntraWeb
         {
             services.AddScoped<IEmailSender, SmtpEmailSender>();
             services.AddScoped<IEmailCreator, HtmlEmailCreator>();
-            services.AddScoped<IEmailFormatter, FileEmailFormatter>();
+            services.AddScoped<ITemplateFormatter, TemplateFormatter>();
+            services.AddScoped<ITemplateLoader, FileTemplateLoader>(
+                (provider) => new FileTemplateLoader(System.IO.Path.Combine(_env.WebRootPath, "templates", "email"))
+            );
 
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<IEquipmentRepository, EquipmentRepository>();

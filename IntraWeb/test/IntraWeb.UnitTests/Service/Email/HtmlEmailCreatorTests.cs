@@ -87,7 +87,7 @@ Paragraph 2.";
             var formatter = Substitute.For<ITemplateFormatter>();
             formatter.FormatEmail(emailType, data).Returns(_htmlBody);
 
-            var creator = new HtmlEmailCreator(env, formatter);
+            var creator = new HtmlEmailCreator(formatter);
             var msg = creator.CreateEmail(emailType, data);
 
             var emailAddress = msg.From[0] as MailboxAddress;
