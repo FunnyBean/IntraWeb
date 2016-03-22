@@ -1,4 +1,5 @@
 ﻿using IntraWeb.Services.Email;
+using Microsoft.AspNet.Hosting;
 using MimeKit;
 using NSubstitute;
 using System.Collections.Generic;
@@ -40,10 +41,12 @@ Paragraph 2.";
             const string emailType = "test";
             var data = new Dictionary<string, string>();
 
-            var formatter = Substitute.For<IEmailFormatter>();
+            var env = Substitute.For<IHostingEnvironment>();
+            env.WebRootPath.Returns(string.Empty);
+            var formatter = Substitute.For<ITemplateFormatter>();
             formatter.FormatEmail(emailType, data).Returns(_htmlBody);
 
-            var creator = new HtmlEmailCreator(formatter);
+            var creator = new HtmlEmailCreator(env, formatter);
             var msg = creator.CreateEmail(emailType, data);
 
             Assert.Equal("Lorem ipsum", msg.Subject);
@@ -55,9 +58,10 @@ Paragraph 2.";
                 if (part.ContentType.IsMimeType("text", "html"))
                 {
                     htmlPart = part as TextPart;
-                } else if (part.ContentType.IsMimeType("text", "plain"))
+                }
+                else if (part.ContentType.IsMimeType("text", "plain"))
                 {
-                    textPart  = part as TextPart;
+                    textPart = part as TextPart;
                 }
             }
 
@@ -78,10 +82,12 @@ Paragraph 2.";
                 {EmailDataKeys.ReplyTo, "ReplyTo Email <replyto@example.com>"}
             };
 
-            var formatter = Substitute.For<IEmailFormatter>();
+            var env = Substitute.For<IHostingEnvironment>();
+            env.WebRootPath.Returns(string.Empty);
+            var formatter = Substitute.For<ITemplateFormatter>();
             formatter.FormatEmail(emailType, data).Returns(_htmlBody);
 
-            var creator = new HtmlEmailCreator(formatter);
+            var creator = new HtmlEmailCreator(env, formatter);
             var msg = creator.CreateEmail(emailType, data);
 
             var emailAddress = msg.From[0] as MailboxAddress;
