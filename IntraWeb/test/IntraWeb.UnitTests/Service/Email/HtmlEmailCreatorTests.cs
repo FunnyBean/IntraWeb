@@ -39,15 +39,14 @@ Paragraph 2.";
         public void ShouldCreateMessage()
         {
             const string emailType = "test";
-            var data = new Dictionary<string, string>();
 
             var env = Substitute.For<IHostingEnvironment>();
             env.WebRootPath.Returns(string.Empty);
             var formatter = Substitute.For<ITemplateFormatter>();
-            formatter.FormatEmail(emailType, data).Returns(_htmlBody);
+            formatter.FormatTemplate(emailType, Arg.Any<IDictionary<string, object>>()).Returns(_htmlBody);
 
             var creator = new HtmlEmailCreator(env, formatter);
-            var msg = creator.CreateEmail(emailType, data);
+            var msg = creator.CreateEmail(new BaseEmailData(emailType));
 
             Assert.Equal("Lorem ipsum", msg.Subject);
 
@@ -74,21 +73,21 @@ Paragraph 2.";
         public void ShouldHaveCorrectAddresses()
         {
             const string emailType = "test";
-            var data = new Dictionary<string, string>() {
-                {EmailDataKeys.From, "From Email <from@example.com>"},
-                {EmailDataKeys.To, "To Email <to@example.com>"},
-                {EmailDataKeys.Cc, "Cc Email <cc@example.com>"},
-                {EmailDataKeys.Bcc, "Bcc Email <bcc@example.com>"},
-                {EmailDataKeys.ReplyTo, "ReplyTo Email <replyto@example.com>"}
-            };
 
             var env = Substitute.For<IHostingEnvironment>();
             env.WebRootPath.Returns(string.Empty);
             var formatter = Substitute.For<ITemplateFormatter>();
-            formatter.FormatEmail(emailType, data).Returns(_htmlBody);
+            formatter.FormatTemplate(emailType, Arg.Any<IDictionary<string, object>>()).Returns(_htmlBody);
 
-            var creator = new HtmlEmailCreator(formatter);
-            var msg = creator.CreateEmail(emailType, data);
+            var creator = new HtmlEmailCreator(env, formatter);
+
+            var data = new BaseEmailData(emailType);
+            data.From = "From Email <from@example.com>";
+            data.To.Add("To Email <to@example.com>");
+            data.Cc.Add("Cc Email <cc@example.com>");
+            data.Bcc.Add("Bcc Email <bcc@example.com>");
+            data.ReplyTo = "ReplyTo Email <replyto@example.com>";
+            var msg = creator.CreateEmail(data);
 
             var emailAddress = msg.From[0] as MailboxAddress;
             Assert.Equal(emailAddress.Name, "From Email");

@@ -16,9 +16,11 @@ namespace IntraWeb.Services.Email
         }
 
 
-        public MimeMessage CreateEmail(string emailType, IDictionary<string, string> data)
+        public MimeMessage CreateEmail(IEmailData data)
         {
-            var htmlBody = _formatter.FormatEmail(emailType, data);
+            var converter = new EmailDataConverter();
+            var templateData = converter.Convert(data);
+            var htmlBody = _formatter.FormatTemplate(data.EmailType, templateData);
 
             var msg = new MimeMessage();
             SetAddresses(msg, data);
@@ -34,21 +36,26 @@ namespace IntraWeb.Services.Email
         }
 
 
-        private void SetAddresses(MimeMessage msg, IDictionary<string, string> data)
+        private void SetAddresses(MimeMessage msg, IEmailData data)
         {
-            SetAddress(msg.From, data, EmailDataKeys.From);
-            SetAddress(msg.To, data, EmailDataKeys.To);
-            SetAddress(msg.Cc, data, EmailDataKeys.Cc);
-            SetAddress(msg.Bcc, data, EmailDataKeys.Bcc);
-            SetAddress(msg.ReplyTo, data, EmailDataKeys.ReplyTo);
+            if (!string.IsNullOrWhiteSpace(data.From))
+            {
+                msg.From.Add(data.From);
+            }
+            SetAddress(msg.To, data.To);
+            SetAddress(msg.Cc, data.Cc);
+            SetAddress(msg.Bcc, data.Bcc);
+            if (!string.IsNullOrWhiteSpace(data.ReplyTo))
+            {
+                msg.ReplyTo.Add(data.ReplyTo);
+            }
         }
 
-        private void SetAddress(InternetAddressList addresses, IDictionary<string, string> data, string key)
+        private void SetAddress(InternetAddressList addressList, IEnumerable<string> emails)
         {
-            string address = null;
-            if (data.TryGetValue(key, out address))
+            foreach (var email in emails)
             {
-                addresses.Add(address);
+                addressList.Add(email);
             }
         }
 

@@ -5,7 +5,7 @@ namespace IntraWeb.Services.Email
     public interface ITemplateFormatter
     {
 
-        string FormatEmail(string templateName, IDictionary<string, string> data);
+        string FormatTemplate(string templateName, IDictionary<string, object> data);
 
     }
 }

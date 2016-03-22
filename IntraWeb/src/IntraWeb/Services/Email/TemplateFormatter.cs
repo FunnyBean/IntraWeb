@@ -23,21 +23,21 @@ namespace IntraWeb.Services.Email
 
 
         public const string LayoutTemplateName = "Layout";
-        public const string TemplateContentTag = "{content}";
-        public const string TemplateTitleTag = "{title}";
+        public const string TemplateContentTag = "{include content}";
+        public const string TemplateTitleTag = "{$title}";
 
 
-        public string FormatEmail(string emailType, IDictionary<string, string> data)
+        public string FormatTemplate(string templateName, IDictionary<string, object> data)
         {
-            if (string.IsNullOrWhiteSpace(emailType))
+            if (string.IsNullOrWhiteSpace(templateName))
             {
-                throw new ArgumentNullException(nameof(emailType));
+                throw new ArgumentNullException(nameof(templateName));
             }
 
-            var template = LoadTemplate(emailType);
+            var template = LoadTemplate(templateName);
             if ((template != null) && (data != null))
             {
-                template = FillTemplate(template, data, emailType);
+                template = FillTemplate(template, data, templateName);
             }
 
             return template;
@@ -77,9 +77,9 @@ namespace IntraWeb.Services.Email
         }
 
 
-        private Regex _reTemplateKeys = new Regex(@"\{(.+?)\}");
+        private Regex _reTemplateKeys = new Regex(@"\{\$(.+?)\}");
 
-        private string FillTemplate(string template, IDictionary<string, string> data, string emailType)
+        private string FillTemplate(string template, IDictionary<string, object> data, string templateName)
         {
             return _reTemplateKeys.Replace(template,
                 (m) =>
@@ -87,11 +87,11 @@ namespace IntraWeb.Services.Email
                     var key = m.Groups[1].Value;
                     if (data.ContainsKey(key))
                     {
-                        return data[key];
+                        return (data[key] == null) ? string.Empty : data[key].ToString();
                     }
                     else
                     {
-                        throw new UnknownKeyException(emailType, key);
+                        throw new UnknownKeyException(templateName, key);
                     }
                 }
             );

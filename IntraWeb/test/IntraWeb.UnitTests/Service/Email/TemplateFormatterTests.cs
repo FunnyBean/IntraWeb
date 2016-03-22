@@ -1,9 +1,8 @@
 ﻿using IntraWeb.Services.Email;
 using NSubstitute;
-using Xunit;
-using Microsoft.AspNet.Hosting;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using Xunit;
 
 namespace IntraWeb.UnitTests.Service.Email
 {
@@ -17,7 +16,7 @@ namespace IntraWeb.UnitTests.Service.Email
 <html>
 <head>
     <meta charset=""utf-8"" />
-    <title>{title}</title>
+    <title>{$title}</title>
 </head>
 <body>
     <div id=""header"">
@@ -27,7 +26,7 @@ namespace IntraWeb.UnitTests.Service.Email
         </p>
     </div>
     <div id=""content"">
-        {content}
+        {include content}
     </div>
     <div id=""footer"">
         <p>
@@ -41,12 +40,13 @@ namespace IntraWeb.UnitTests.Service.Email
 
         private readonly string _testTemplate =
 @"<h1>Používateľ</h1>
-<p><b>Meno:</b> {user.Name}</p>
-<p><b>Priezvisko:</b> {user.LastName}</p>
+<p><b>Meno:</b> {$user.Name}</p>
+<p><b>Priezvisko:</b> {$user.LastName}</p>
+<p><b>Vek:</b> {$user.Age}</p>
 ";
 
 
-        private readonly string _expectedEmail =
+        private readonly string _expectedTemplate =
 @"<!DOCTYPE html>
 <html>
 <head>
@@ -64,6 +64,7 @@ namespace IntraWeb.UnitTests.Service.Email
         <h1>Používateľ</h1>
 <p><b>Meno:</b> Gabriel</p>
 <p><b>Priezvisko:</b> Archanjel</p>
+<p><b>Vek:</b> 37</p>
 
     </div>
     <div id=""footer"">
@@ -81,10 +82,10 @@ namespace IntraWeb.UnitTests.Service.Email
 <html>
 <head>
     <meta charset=""utf-8"" />
-    <title>{title}</title>
+    <title>{$title}</title>
 </head>
 <body>
-{content}
+{include content}
 </body>
 </html>";
 
@@ -111,7 +112,7 @@ Lorem ipsum
 
 
         [Fact]
-        public void ShouldFormatEmail()
+        public void ShouldFormatTemplate()
         {
             var loader = Substitute.For<ITemplateLoader>();
             loader.GetContent(TemplateFormatter.LayoutTemplateName).Returns(this._layout);
@@ -119,14 +120,15 @@ Lorem ipsum
 
             var formatter = Substitute.For<TemplateFormatter>(loader);
 
-            var data = new Dictionary<string, string>() {
+            var data = new Dictionary<string, object>() {
                 {"title", "Lorem ipsum"},
                 {"user.Name", "Gabriel"},
-                {"user.LastName", "Archanjel"}
+                {"user.LastName", "Archanjel"},
+                {"user.Age", 37}
             };
 
-            var actual = formatter.FormatEmail("test", data);
-            Assert.Equal(this._expectedEmail, actual);
+            var actual = formatter.FormatTemplate("test", data);
+            Assert.Equal(this._expectedTemplate, actual);
         }
 
 
@@ -139,43 +141,43 @@ Lorem ipsum
 
             var formatter = Substitute.For<TemplateFormatter>(loader);
 
-            var actual = formatter.FormatEmail("test", null);
+            var actual = formatter.FormatTemplate("test", null);
             Assert.Equal(_expectedTitleTemplate, actual);
         }
 
 
         [Fact]
-        public void ShouldThrowArgumentNullExceptionWhenNullEmailType()
+        public void ShouldThrowArgumentNullExceptionWhenNullTemplateName()
         {
             var loader = Substitute.For<ITemplateLoader>();
             var formatter = new TemplateFormatter(loader);
             Assert.Throws<ArgumentNullException>(() =>
             {
-                formatter.FormatEmail(null, null);
+                formatter.FormatTemplate(null, null);
             });
         }
 
 
         [Fact]
-        public void ShouldThrowArgumentNullExceptionWhenEmptyEmailType()
+        public void ShouldThrowArgumentNullExceptionWhenEmptyTemplateName()
         {
             var loader = Substitute.For<ITemplateLoader>();
             var formatter = new TemplateFormatter(loader);
             Assert.Throws<ArgumentNullException>(() =>
             {
-                formatter.FormatEmail(string.Empty, null);
+                formatter.FormatTemplate(string.Empty, null);
             });
         }
 
 
         [Fact]
-        public void ShouldThrowArgumentNullExceptionWhenWhiteSpaceEmailType()
+        public void ShouldThrowArgumentNullExceptionWhenWhiteSpaceTemplateName()
         {
             var loader = Substitute.For<ITemplateLoader>();
             var formatter = new TemplateFormatter(loader);
             Assert.Throws<ArgumentNullException>(() =>
             {
-                formatter.FormatEmail("   ", null);
+                formatter.FormatTemplate("   ", null);
             });
         }
 
@@ -184,15 +186,15 @@ Lorem ipsum
         {
             var loader = Substitute.For<ITemplateLoader>();
             loader.GetContent(TemplateFormatter.LayoutTemplateName).Returns(this._layout);
-            loader.GetContent("test").Returns("Lorem {ipsum} dolor sit amet.");
+            loader.GetContent("test").Returns("Lorem {$ipsum} dolor sit amet.");
 
             var formatter = new TemplateFormatter(loader);
 
             var ex = Assert.Throws<UnknownKeyException>(() =>
             {
-                formatter.FormatEmail("test", null);
+                formatter.FormatTemplate("test", null);
             });
-            Assert.Equal("test", ex.EmailType);
+            Assert.Equal("test", ex.TemplateName);
             Assert.Equal("ipsum", ex.Key);
         }
     }
