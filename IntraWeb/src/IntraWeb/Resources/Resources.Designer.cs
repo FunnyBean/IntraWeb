@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace IntraWeb.Resources.Email {
+namespace IntraWeb.Resources {
     using System;
     using System.Reflection;
     
@@ -22,13 +22,13 @@ namespace IntraWeb.Resources.Email {
     // with the /str option, or rebuild your VS project.
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class EmailHTMLTemplate {
+    internal class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
-        internal EmailHTMLTemplate() {
+        internal Resources() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace IntraWeb.Resources.Email {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("IntraWeb.Resources.Email.EmailHTMLTemplate", typeof(EmailHTMLTemplate).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("IntraWeb.Resources.Resources", typeof(Resources).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,24 +60,20 @@ namespace IntraWeb.Resources.Email {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to  &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
-        ///&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
-        ///&lt;head&gt;
-        ///  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
-        ///  &lt;title&gt;[SUBJECT]&lt;/title&gt;
-        ///  &lt;style type=&quot;text/css&quot;&gt;
-        ///  body {
-        ///   padding-top: 0 !important;
-        ///   padding-bottom: 0 !important;
-        ///   padding-top: 0 !important;
-        ///   padding-bottom: 0 !important;
-        ///   margin:0 !important;
-        ///   width: 100% !important;
-        ///   -webkit-text [rest of string was truncated]&quot;;.
+        ///    Looks up a localized string similar to IntraWeb &lt;funnybean@kros.sk&gt;.
         /// </summary>
-        internal static string HTMLTextResponsive {
+        internal static string EmailFrom {
             get {
-                return ResourceManager.GetString("HTMLTextResponsive", resourceCulture);
+                return ResourceManager.GetString("EmailFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Emailová šablóna &quot;{0}&quot; neexistuje..
+        /// </summary>
+        internal static string UnknownEmailTemplateException_Message {
+            get {
+                return ResourceManager.GetString("UnknownEmailTemplateException_Message", resourceCulture);
             }
         }
     }
