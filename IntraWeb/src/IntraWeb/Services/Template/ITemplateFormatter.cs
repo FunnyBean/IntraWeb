@@ -18,13 +18,5 @@ namespace IntraWeb.Services.Template
         /// <returns>Formatted and filled template.</returns>
         string FormatTemplate(string templateName, object data);
 
-        /// <summary>
-        /// Formats and fills a template <paramref name="templateName" />.
-        /// </summary>
-        /// <param name="templateName">Template name.</param>
-        /// <param name="data">Data for the template.</param>
-        /// <returns>Formatted and filled template.</returns>
-        string FormatTemplate(string templateName, IDictionary<string, object> data);
-
     }
 }
