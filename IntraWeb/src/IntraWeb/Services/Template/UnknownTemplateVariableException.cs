@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IntraWeb.Services.Templating
+namespace IntraWeb.Services.Template
 {
     /// <summary>
     /// Exception for template formatter (<see cref="ITemplateFormatter">ITemplateFormatter</see>), when there is a variable

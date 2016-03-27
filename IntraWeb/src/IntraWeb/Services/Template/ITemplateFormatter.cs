@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace IntraWeb.Services.Templating
+namespace IntraWeb.Services.Template
 {
     /// <summary>
     /// Represents a mechanism for formatting templates and filling them with data.

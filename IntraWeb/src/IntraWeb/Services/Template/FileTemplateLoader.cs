@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace IntraWeb.Services.Templating
+namespace IntraWeb.Services.Template
 {
     /// <summary>
     /// Implementation of <see cref="ITemplateLoader">ITemplateLoader</see> which loads templates from HTML files.

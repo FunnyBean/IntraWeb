@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace IntraWeb.Services.Templating
+namespace IntraWeb.Services.Template
 {
 
     /// <summary>

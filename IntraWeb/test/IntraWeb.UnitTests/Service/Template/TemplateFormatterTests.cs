@@ -1,10 +1,10 @@
-﻿using IntraWeb.Services.Templating;
+﻿using IntraWeb.Services.Template;
 using NSubstitute;
 using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace IntraWeb.UnitTests.Service.Templating
+namespace IntraWeb.UnitTests.Service.Template
 {
     public class TemplateFormatterTests
     {

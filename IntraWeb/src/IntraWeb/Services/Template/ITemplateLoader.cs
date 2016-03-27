@@ -1,4 +1,4 @@
-﻿namespace IntraWeb.Services.Templating
+﻿namespace IntraWeb.Services.Template
 {
     /// <summary>
     /// Represents a mechanism to get a template.

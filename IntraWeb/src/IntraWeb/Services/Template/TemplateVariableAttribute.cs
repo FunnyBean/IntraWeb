@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IntraWeb.Services.Templating
+namespace IntraWeb.Services.Template
 {
     /// <summary>
     /// Indicates that a public property represents a data for template variable.

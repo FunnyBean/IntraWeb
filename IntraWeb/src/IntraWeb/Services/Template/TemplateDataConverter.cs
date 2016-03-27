@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace IntraWeb.Services.Templating
+namespace IntraWeb.Services.Template
 {
     /// <summary>
     /// Class for converting strongly typed data classes to data dictionaries.
