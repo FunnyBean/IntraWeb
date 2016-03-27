@@ -3,7 +3,7 @@ using Xunit;
 
 namespace IntraWeb.UnitTests.Service.Template
 {
-    public class TemplateDataConverterTests
+    public class TemplateDataConverterShould
     {
 
         private class TestData
@@ -19,7 +19,7 @@ namespace IntraWeb.UnitTests.Service.Template
 
 
         [Fact]
-        public void ShouldGetPropertyValues()
+        public void GetPropertyValues()
         {
             var data = new TestData();
             data.TextValue = "Lorem ipsum";
