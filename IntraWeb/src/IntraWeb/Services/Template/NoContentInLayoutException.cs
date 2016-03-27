@@ -19,6 +19,6 @@ namespace IntraWeb.Services.Template
         /// <summary>
         /// Name of the layout template.
         /// </summary>
-        string LayoutName { get; }
+        public string LayoutName { get; }
     }
 }
