@@ -25,6 +25,12 @@ namespace IntraWeb.Services.Email
         }
 
 
+        /// <summary>
+        /// Creates an email message with specified <paramref name="data" />.
+        /// </summary>
+        /// <param name="data">Data for the email.</param>
+        /// <returns>Created message, which can be sent. Message is a HTML email. It also has plain text part, which is
+        /// automatically created from HTML part.</returns>
         public MimeMessage CreateEmail(IEmailData data)
         {
             var htmlBody = _formatter.FormatTemplate(data.EmailType, data);
