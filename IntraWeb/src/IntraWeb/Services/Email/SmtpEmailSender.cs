@@ -1,26 +1,34 @@
-﻿using Microsoft.Extensions.OptionsModel;
-
-using System;
-
-using MimeKit;
-using MailKit.Net.Smtp;
+﻿using MailKit.Net.Smtp;
 using MailKit.Security;
-
+using Microsoft.Extensions.OptionsModel;
+using MimeKit;
+using System;
 
 namespace IntraWeb.Services.Email
 {
+    /// <summary>
+    /// Sends email messages using SMTP server.
+    /// </summary>
     public class SmtpEmailSender : IEmailSender
     {
 
 
         EmailOptions _options;
 
+        /// <summary>
+        /// Creates an instance of <c>SmtpEmailSender</c> with options specified in <paramref name="options" />.
+        /// </summary>
+        /// <param name="options">Options for the sender.</param>
         public SmtpEmailSender(IOptions<EmailOptions> options)
         {
             _options = options.Value;
         }
 
 
+        /// <summary>
+        /// Sends an email <paramref name="msg" />.
+        /// </summary>
+        /// <param name="msg">Message to send.</param>
         public void SendEmail(MimeMessage msg)
         {
             if (msg == null) {

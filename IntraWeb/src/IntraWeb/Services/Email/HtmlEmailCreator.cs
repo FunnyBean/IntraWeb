@@ -1,24 +1,39 @@
-﻿using MimeKit;
-using System;
+﻿using IntraWeb.Services.Template;
+using Microsoft.AspNet.Hosting;
+using MimeKit;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace IntraWeb.Services.Email
 {
+    /// <summary>
+    /// Implementation of <see cref="IEmailCreator" />, which creates HTML email messages. Resulting message has also
+    /// plain text part, which is automatically created from HTML part.
+    /// </summary>
     public class HtmlEmailCreator : IEmailCreator
     {
 
-        IEmailFormatter _formatter;
+        private string _imagesFolder;
+        private ITemplateFormatter _formatter;
 
-        public HtmlEmailCreator(IEmailFormatter formatter)
+        public HtmlEmailCreator(IHostingEnvironment env, ITemplateFormatter formatter)
         {
+            var templateFolder = Path.Combine(env.WebRootPath, "templates", "email");
+            _imagesFolder = Path.Combine(templateFolder, "images");
             _formatter = formatter;
         }
 
 
-        public MimeMessage CreateEmail(string emailType, IDictionary<string, string> data)
+        /// <summary>
+        /// Creates an email message with specified <paramref name="data" />.
+        /// </summary>
+        /// <param name="data">Data for the email.</param>
+        /// <returns>Created message, which can be sent. Message is a HTML email. It also has plain text part, which is
+        /// automatically created from HTML part.</returns>
+        public MimeMessage CreateEmail(IEmailData data)
         {
-            var htmlBody = _formatter.FormatEmail(emailType, data);
+            var htmlBody = _formatter.FormatTemplate(data.EmailType, data);
 
             var msg = new MimeMessage();
             SetAddresses(msg, data);
@@ -27,6 +42,7 @@ namespace IntraWeb.Services.Email
             var builder = new BodyBuilder();
             builder.HtmlBody = htmlBody;
             builder.TextBody = CreateTextBody(htmlBody);
+            AddLocalImages(builder, htmlBody);
 
             msg.Body = builder.ToMessageBody();
 
@@ -34,21 +50,26 @@ namespace IntraWeb.Services.Email
         }
 
 
-        private void SetAddresses(MimeMessage msg, IDictionary<string, string> data)
+        private void SetAddresses(MimeMessage msg, IEmailData data)
         {
-            SetAddress(msg.From, data, EmailDataKeys.From);
-            SetAddress(msg.To, data, EmailDataKeys.To);
-            SetAddress(msg.Cc, data, EmailDataKeys.Cc);
-            SetAddress(msg.Bcc, data, EmailDataKeys.Bcc);
-            SetAddress(msg.ReplyTo, data, EmailDataKeys.ReplyTo);
+            if (!string.IsNullOrWhiteSpace(data.From))
+            {
+                msg.From.Add(data.From);
+            }
+            SetAddress(msg.To, data.To);
+            SetAddress(msg.Cc, data.Cc);
+            SetAddress(msg.Bcc, data.Bcc);
+            if (!string.IsNullOrWhiteSpace(data.ReplyTo))
+            {
+                msg.ReplyTo.Add(data.ReplyTo);
+            }
         }
 
-        private void SetAddress(InternetAddressList addresses, IDictionary<string, string> data, string key)
+        private void SetAddress(InternetAddressList addressList, IEnumerable<string> emails)
         {
-            string address = null;
-            if (data.TryGetValue(key, out address))
+            foreach (var email in emails)
             {
-                addresses.Add(address);
+                addressList.Add(email);
             }
         }
 
@@ -62,6 +83,47 @@ namespace IntraWeb.Services.Email
             {
                 msg.Subject = System.Net.WebUtility.HtmlDecode(titleMatch.Groups[1].Value);
             }
+        }
+
+
+        private void AddLocalImages(BodyBuilder builder, string htmlBody)
+        {
+            foreach (var img in GetLocalImagesFromHtml(htmlBody))
+            {
+                var filePath = Path.Combine(_imagesFolder, img);
+                if (File.Exists(filePath))
+                {
+                    builder.LinkedResources.Add(filePath);
+                } else
+                {
+                    // Todo: Log invalid image in template.
+                }
+            }
+        }
+
+
+        private Regex _reImageSources = new Regex(
+            @"<img [^>]*src=((""(?<src1>[^""]+)"")|('(?<src2>[^']+)'))", RegexOptions.IgnoreCase);
+        private Regex _reImageProtocol = new Regex(@"^(https?://|/)", RegexOptions.IgnoreCase);
+
+        private IEnumerable<string> GetLocalImagesFromHtml(string htmlBody)
+        {
+            var images = new HashSet<string>();
+
+            foreach (Match m in _reImageSources.Matches(htmlBody))
+            {
+                var src = m.Groups["src1"].Value.Trim();
+                if (src == "")
+                {
+                    src = m.Groups["src2"].Value.Trim();
+                }
+                if (!_reImageProtocol.IsMatch(src))
+                {
+                    images.Add(src);
+                }
+            }
+
+            return images;
         }
 
 

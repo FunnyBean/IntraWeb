@@ -1,4 +1,6 @@
-﻿using IntraWeb.Services.Email;
+﻿using IntraWeb.Models;
+using IntraWeb.Services.Email;
+using IntraWeb.Services.Template;
 using Microsoft.AspNet.Authentication.Cookies;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
@@ -8,7 +10,6 @@ using Microsoft.Data.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using IntraWeb.Models;
 using IntraWeb.ViewModels.Rooms;
 using System.Net;
 using System;
@@ -23,8 +24,13 @@ namespace IntraWeb
     public class Startup
     {
 
+        IHostingEnvironment _env;
+
+
         public Startup(IHostingEnvironment env)
         {
+            _env = env;
+
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
@@ -144,6 +150,7 @@ namespace IntraWeb
             DbInitializer.Initialize(app.ApplicationServices);
         }
 
+
         private static void InitializeAutoMapper()
         {
             AutoMapper.Mapper.Initialize(conf =>
@@ -156,10 +163,6 @@ namespace IntraWeb
 
         private void AddIntraWebServices(IServiceCollection services)
         {
-            services.AddScoped<IEmailSender, SmtpEmailSender>();
-            services.AddScoped<IEmailCreator, HtmlEmailCreator>();
-            services.AddScoped<IEmailFormatter, FileEmailFormatter>();
-
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<IEquipmentRepository, EquipmentRepository>();
 
@@ -170,6 +173,14 @@ namespace IntraWeb
             services.AddScoped<ILoggingRepository, LoggingRepository>();
             services.AddScoped<IMembershipService, MembershipService>();
             services.AddScoped<IEncryptionService, EncryptionService>();
+
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IEmailSender, SmtpEmailSender>();
+            services.AddScoped<IEmailCreator, HtmlEmailCreator>();
+            services.AddScoped<ITemplateFormatter, TemplateFormatter>();
+            services.AddScoped<ITemplateLoader, FileTemplateLoader>(
+                (provider) => new FileTemplateLoader(System.IO.Path.Combine(_env.WebRootPath, "templates", "email"))
+            );
         }
 
 

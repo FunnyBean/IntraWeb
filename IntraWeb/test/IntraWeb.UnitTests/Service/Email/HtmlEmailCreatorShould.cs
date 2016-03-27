@@ -1,4 +1,6 @@
 ﻿using IntraWeb.Services.Email;
+using IntraWeb.Services.Template;
+using Microsoft.AspNet.Hosting;
 using MimeKit;
 using NSubstitute;
 using System.Collections.Generic;
@@ -6,7 +8,7 @@ using Xunit;
 
 namespace IntraWeb.UnitTests.Service.Email
 {
-    public class HtmlEmailCreatorTests
+    public class HtmlEmailCreatorShould
     {
 
         private readonly string _htmlBody =
@@ -38,13 +40,14 @@ Paragraph 2.";
         public void ShouldCreateMessage()
         {
             const string emailType = "test";
-            var data = new Dictionary<string, string>();
 
-            var formatter = Substitute.For<IEmailFormatter>();
-            formatter.FormatEmail(emailType, data).Returns(_htmlBody);
+            var env = Substitute.For<IHostingEnvironment>();
+            env.WebRootPath.Returns(string.Empty);
+            var formatter = Substitute.For<ITemplateFormatter>();
+            formatter.FormatTemplate(emailType, Arg.Any<object>()).Returns(_htmlBody);
 
-            var creator = new HtmlEmailCreator(formatter);
-            var msg = creator.CreateEmail(emailType, data);
+            var creator = new HtmlEmailCreator(env, formatter);
+            var msg = creator.CreateEmail(new BaseEmailData(emailType));
 
             Assert.Equal("Lorem ipsum", msg.Subject);
 
@@ -55,9 +58,10 @@ Paragraph 2.";
                 if (part.ContentType.IsMimeType("text", "html"))
                 {
                     htmlPart = part as TextPart;
-                } else if (part.ContentType.IsMimeType("text", "plain"))
+                }
+                else if (part.ContentType.IsMimeType("text", "plain"))
                 {
-                    textPart  = part as TextPart;
+                    textPart = part as TextPart;
                 }
             }
 
@@ -67,22 +71,24 @@ Paragraph 2.";
 
 
         [Fact]
-        public void ShouldHaveCorrectAddresses()
+        public void HaveCorrectAddresses()
         {
             const string emailType = "test";
-            var data = new Dictionary<string, string>() {
-                {EmailDataKeys.From, "From Email <from@example.com>"},
-                {EmailDataKeys.To, "To Email <to@example.com>"},
-                {EmailDataKeys.Cc, "Cc Email <cc@example.com>"},
-                {EmailDataKeys.Bcc, "Bcc Email <bcc@example.com>"},
-                {EmailDataKeys.ReplyTo, "ReplyTo Email <replyto@example.com>"}
-            };
 
-            var formatter = Substitute.For<IEmailFormatter>();
-            formatter.FormatEmail(emailType, data).Returns(_htmlBody);
+            var env = Substitute.For<IHostingEnvironment>();
+            env.WebRootPath.Returns(string.Empty);
+            var formatter = Substitute.For<ITemplateFormatter>();
+            formatter.FormatTemplate(emailType, Arg.Any<object>()).Returns(_htmlBody);
 
-            var creator = new HtmlEmailCreator(formatter);
-            var msg = creator.CreateEmail(emailType, data);
+            var creator = new HtmlEmailCreator(env, formatter);
+
+            var data = new BaseEmailData(emailType);
+            data.From = "From Email <from@example.com>";
+            data.To.Add("To Email <to@example.com>");
+            data.Cc.Add("Cc Email <cc@example.com>");
+            data.Bcc.Add("Bcc Email <bcc@example.com>");
+            data.ReplyTo = "ReplyTo Email <replyto@example.com>";
+            var msg = creator.CreateEmail(data);
 
             var emailAddress = msg.From[0] as MailboxAddress;
             Assert.Equal(emailAddress.Name, "From Email");
