@@ -1,12 +1,16 @@
 ﻿using IntraWeb.Services.Template;
 using Microsoft.AspNet.Hosting;
 using MimeKit;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace IntraWeb.Services.Email
 {
+    /// <summary>
+    /// Implementation of <see cref="IEmailCreator" />, which creates HTML email messages. Resulting message has also
+    /// plain text part, which is automatically created from HTML part.
+    /// </summary>
     public class HtmlEmailCreator : IEmailCreator
     {
 
@@ -94,7 +98,7 @@ namespace IntraWeb.Services.Email
 
         private Regex _reImageSources = new Regex(
             @"<img [^>]*src=((""(?<src1>[^""]+)"")|('(?<src2>[^']+)'))", RegexOptions.IgnoreCase);
-        private Regex _reImageProtocol = new Regex(@"^(http://|https://|/)", RegexOptions.IgnoreCase);
+        private Regex _reImageProtocol = new Regex(@"^(https?://|/)", RegexOptions.IgnoreCase);
 
         private IEnumerable<string> GetLocalImagesFromHtml(string htmlBody)
         {
