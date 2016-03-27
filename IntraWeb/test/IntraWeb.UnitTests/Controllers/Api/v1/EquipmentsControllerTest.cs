@@ -15,7 +15,7 @@ using Xunit;
 namespace IntraWeb.UnitTests.Controllers.Api.v1
 {
     public class EquipmentsControllerTest
-    {      
+    {
         #region "Get equipments"
 
         [Fact]
@@ -27,7 +27,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Act
             var equipmentsCount = target.Get().Count();
 
-            // Assert            
+            // Assert
             Assert.Equal(0, equipmentsCount);
         }
 
@@ -47,7 +47,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 });
             });
 
-            // Act 
+            // Act
             var equipments = target.Get().ToList();
 
             // Assert
@@ -557,7 +557,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             Assert.Equal((int) HttpStatusCode.OK, target.Response.StatusCode);
         }
 
-        #endregion        
+        #endregion
 
 
         #region "Helpers"

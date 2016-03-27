@@ -28,7 +28,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Act
             var roomsCount = target.Get().Count();
 
-            // Assert            
+            // Assert
             Assert.Equal(0, roomsCount);
         }
 
@@ -50,7 +50,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 });
             });
 
-            // Act 
+            // Act
             var rooms = target.Get().ToList();
 
             // Assert

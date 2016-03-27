@@ -74,7 +74,7 @@ namespace IntraWeb.Controllers.Api.v1
         /// <returns>Types of rooms.</returns>
         [HttpGet("GetTypes")]
         public IEnumerable<string> GetTypes()
-        {            
+        {
             return _roomRepository.GetTypes();
         }
 

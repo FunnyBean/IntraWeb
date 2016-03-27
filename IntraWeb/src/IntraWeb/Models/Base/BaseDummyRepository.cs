@@ -39,7 +39,7 @@ namespace IntraWeb.Models.Base
         /// </summary>
         /// <param name="item">The item for add.</param>
         public virtual void Add(T item)
-        {          
+        {
             item.Id = _data?.Count > 0 ? _data.Max(p => p.Id) + 1 : 0;
 
             _data.Add(item);

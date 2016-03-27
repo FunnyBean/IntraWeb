@@ -8,7 +8,7 @@ namespace IntraWeb.Migrations
     public partial class AddRoomEquipments : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
-        {           
+        {
             migrationBuilder.CreateTable(
                 name: "Equipment",
                 columns: table => new
@@ -20,7 +20,7 @@ namespace IntraWeb.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Equipment", x => x.Id);
-                });         
+                });
             migrationBuilder.CreateTable(
                 name: "RoomEquipment",
                 columns: table => new
@@ -45,7 +45,7 @@ namespace IntraWeb.Migrations
                         principalTable: "Room",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });        
+                });
             migrationBuilder.CreateIndex(
                 name: "IX_Equipment_Description",
                 table: "Equipment",

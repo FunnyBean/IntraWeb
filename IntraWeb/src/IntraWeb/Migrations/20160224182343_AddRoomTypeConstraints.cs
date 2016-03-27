@@ -7,7 +7,7 @@ namespace IntraWeb.Migrations
     public partial class AddRoomTypeConstraints : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
-        {                       
+        {
             migrationBuilder.AlterColumn<string>(
                 name: "Type",
                 table: "Room",
@@ -16,11 +16,11 @@ namespace IntraWeb.Migrations
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
-        {         
+        {
             migrationBuilder.AlterColumn<string>(
                 name: "Type",
                 table: "Room",
-                nullable: true);       
+                nullable: true);
         }
     }
 }

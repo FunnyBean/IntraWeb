@@ -9,7 +9,7 @@ namespace IntraWeb.Models
         public ApplicationDbContext()
         {
             Database.EnsureCreated();
-        }       
+        }
 
         /// <summary>
         /// DbSet for rooms.
