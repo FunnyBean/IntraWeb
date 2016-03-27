@@ -7,7 +7,7 @@ namespace IntraWeb.Services.Template
     /// in template, for which there are no data.
     /// </summary>
     public class UnknownTemplateVariableException
-        : Exception
+        : TemplateException
     {
 
         public UnknownTemplateVariableException(string templateName, string variableName)
