@@ -42,7 +42,6 @@ namespace IntraWeb.Services.Template
 
         public const string LayoutTemplateName = "Layout";
         private const string TemplateContentTag = "{include content}";
-        private const string TemplateTitleTag = "{$title}";
 
 
         /// <summary>
@@ -96,7 +95,7 @@ namespace IntraWeb.Services.Template
                 data = new Dictionary<string, object>();
             }
             var template = LoadTemplate(templateName, data);
-            if ((template != null) && (data != null))
+            if (template != null)
             {
                 template = FillTemplate(template, data, templateName);
             }
