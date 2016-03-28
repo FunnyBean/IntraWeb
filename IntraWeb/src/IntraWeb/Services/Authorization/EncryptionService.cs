@@ -13,9 +13,9 @@ namespace IntraWeb.Services.Authorization
         {
             var data = new byte[0x10];
 #if DNXCORE50
-            var cryptoServiceProvider = System.Security.Cryptography.RandomNumberGenerator.Create();
-                cryptoServiceProvider.GetBytes(data);
-                return Convert.ToBase64String(data);
+            var cryptoServiceProvider = RandomNumberGenerator.Create();
+            cryptoServiceProvider.GetBytes(data);
+            return Convert.ToBase64String(data);
 #endif
 #if DNX451
             using (var cryptoServiceProvider = new RNGCryptoServiceProvider())
