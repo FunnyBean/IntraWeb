@@ -86,7 +86,7 @@ namespace IntraWeb.Models.Base
         /// </returns>
         public virtual T GetItem(Expression<Func<T, bool>> predicate)
         {
-            return _dbContext.Set<T>().FirstOrDefault(predicate);
+            return _dbContext.Set<T>().AsNoTracking().FirstOrDefault(predicate);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace IntraWeb.Models.Base
                 query = query.Include(includeProperty);
             }
 
-            return query.FirstOrDefault(predicate);
+            return query.AsNoTracking().FirstOrDefault(predicate);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace IntraWeb.Models.Base
         /// </returns>
         public virtual IQueryable<T> GetAll()
         {
-            return _dbContext.Set<T>();
+            return _dbContext.Set<T>().AsNoTracking();
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace IntraWeb.Models.Base
         /// </returns>
         public virtual IQueryable<T> Get(Expression<Func<T, bool>> predicate)
         {
-            return _dbContext.Set<T>().Where(predicate);
+            return _dbContext.Set<T>().AsNoTracking().Where(predicate);
         }
 
         /// <summary>

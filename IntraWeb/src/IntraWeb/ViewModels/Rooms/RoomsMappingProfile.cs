@@ -12,7 +12,14 @@ namespace IntraWeb.ViewModels.Rooms
 
         protected override void Configure()
         {
-            this.CreateMap<Room, RoomViewModel>().ReverseMap();
+            this.CreateMap<Room, RoomViewModel>().ReverseMap().
+                AfterMap((m, vm) =>
+                {
+                    foreach (var equipment in vm.Equipments)
+                    {
+                        equipment.RoomId = m.Id;
+                    }
+                });
             this.CreateMap<Equipment, EquipmentViewModel>().ReverseMap();
             this.CreateMap<RoomEquipment, RoomEquipmentViewModel>().
                 ForMember(vm => vm.Description, map => map.MapFrom(m => m.Equipment.Description)).
