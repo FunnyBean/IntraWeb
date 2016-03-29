@@ -8,9 +8,10 @@ using IntraWeb.Models;
 namespace IntraWeb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160224182343_AddTypeConstraints")]
+    partial class AddRoomTypeConstraints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -103,13 +104,16 @@ namespace IntraWeb.Migrations
 
             modelBuilder.Entity("IntraWeb.Models.Rooms.RoomEquipment", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("Amount");
+
                     b.Property<int>("EquipmentId");
 
                     b.Property<int>("RoomId");
 
-                    b.Property<decimal>("Amount");
-
-                    b.HasKey("EquipmentId", "RoomId");
+                    b.HasKey("Id");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRole", b =>

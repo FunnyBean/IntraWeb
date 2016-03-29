@@ -8,9 +8,10 @@ using IntraWeb.Models;
 namespace IntraWeb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160224173950_AddRoomType")]
+    partial class AddRoomType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -91,9 +92,7 @@ namespace IntraWeb.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 50);
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 25);
+                    b.Property<string>("Type");
 
                     b.HasKey("Id");
 
@@ -103,13 +102,16 @@ namespace IntraWeb.Migrations
 
             modelBuilder.Entity("IntraWeb.Models.Rooms.RoomEquipment", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("Amount");
+
                     b.Property<int>("EquipmentId");
 
                     b.Property<int>("RoomId");
 
-                    b.Property<decimal>("Amount");
-
-                    b.HasKey("EquipmentId", "RoomId");
+                    b.HasKey("Id");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRole", b =>
