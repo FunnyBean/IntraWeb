@@ -5,6 +5,7 @@ using AutoMapper;
 using IntraWeb.Controllers.Api.v1;
 using IntraWeb.Filters;
 using IntraWeb.Models.Rooms;
+using IntraWeb.Models.Rooms.Dummies;
 using IntraWeb.UnitTests.Filters;
 using IntraWeb.UnitTests.Service;
 using IntraWeb.ViewModels.Rooms;

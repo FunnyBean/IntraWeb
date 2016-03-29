@@ -12,6 +12,7 @@ using IntraWeb.Models.Rooms;
 using IntraWeb.ViewModels.Rooms;
 using System.Collections.Generic;
 using AutoMapper;
+using IntraWeb.Models.Rooms.Dummies;
 
 namespace IntraWeb.UnitTests.Controllers.Api.v1
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using IntraWeb.Models.Base;
 
-namespace IntraWeb.Models.Rooms
+namespace IntraWeb.Models.Rooms.Dummies
 {
     /// <summary>
     /// Room dummy repository for testing
