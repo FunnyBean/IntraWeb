@@ -7,15 +7,6 @@ namespace IntraWeb.Models.Rooms
     /// </summary>
     public class RoomEquipment
     {
-
-        /// <summary>
-        /// Gets or sets the identifier.
-        /// </summary>
-        /// <value>
-        /// The identifier.
-        /// </value>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the room identifier.
         /// </summary>

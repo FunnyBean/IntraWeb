@@ -103,16 +103,13 @@ namespace IntraWeb.Migrations
 
             modelBuilder.Entity("IntraWeb.Models.Rooms.RoomEquipment", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<decimal>("Amount");
-
                     b.Property<int>("EquipmentId");
 
                     b.Property<int>("RoomId");
 
-                    b.HasKey("Id");
+                    b.Property<decimal>("Amount");
+
+                    b.HasKey("EquipmentId", "RoomId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRole", b =>

@@ -24,7 +24,7 @@ namespace IntraWeb.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(name: "Amount", table: "RoomEquipment");
-            migrationBuilder.DropColumn(name: "Type", table: "Room");          
+            migrationBuilder.DropColumn(name: "Type", table: "Room");
         }
     }
 }

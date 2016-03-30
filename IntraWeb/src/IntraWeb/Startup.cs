@@ -141,16 +141,6 @@ namespace IntraWeb
             DbInitializer.Initialize(app.ApplicationServices);
         }
 
-        private static void InitializeAutoMapper()
-        {
-            AutoMapper.Mapper.Initialize(conf =>
-            {
-                conf.AddProfile<RoomsMappingProfile>();
-                conf.AddProfile<UsersMappingProfile>();
-            });
-        }
-
-
         private void AddIntraWebServices(IServiceCollection services)
         {
             services.AddScoped<IEmailService, EmailService>();
