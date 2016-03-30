@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace IntraWeb.Services.Email
+﻿namespace IntraWeb.Services.Email
 {
+    /// <summary>
+    /// Service for sending all email types.
+    /// </summary>
     public class EmailService
         : IEmailService
     {
@@ -30,13 +28,18 @@ namespace IntraWeb.Services.Email
 
         #region Common
 
-        public string EmailFrom { get { return Resources.Resources.EmailFrom;  } }
+        public string EmailFrom { get; set; } = Resources.Resources.EmailFrom;
 
         #endregion
 
 
         #region IEmailService
 
+        /// <summary>
+        /// Sends an email for resetting user's password.
+        /// </summary>
+        /// <param name="to">Email address of recepient.</param>
+        /// <param name="resetLink">Link, where user can reset his password.</param>
         public void SendPasswordReset(string to, string resetLink)
         {
             var data = new PasswordResetData(resetLink);

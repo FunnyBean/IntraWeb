@@ -1,31 +1,39 @@
-﻿using Microsoft.AspNet.Hosting;
+﻿using IntraWeb.Services.Template;
+using Microsoft.AspNet.Hosting;
 using MimeKit;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace IntraWeb.Services.Email
 {
+    /// <summary>
+    /// Implementation of <see cref="IEmailCreator" />, which creates HTML email messages. Resulting message has also
+    /// plain text part, which is automatically created from HTML part.
+    /// </summary>
     public class HtmlEmailCreator : IEmailCreator
     {
 
-        private string _templateFolder;
         private string _imagesFolder;
         private ITemplateFormatter _formatter;
 
         public HtmlEmailCreator(IHostingEnvironment env, ITemplateFormatter formatter)
         {
-            _templateFolder = Path.Combine(env.WebRootPath, "templates", "email");
-            _imagesFolder = Path.Combine(_templateFolder, "images");
+            var templateFolder = Path.Combine(env.WebRootPath, "templates", "email");
+            _imagesFolder = Path.Combine(templateFolder, "images");
             _formatter = formatter;
         }
 
 
+        /// <summary>
+        /// Creates an email message with specified <paramref name="data" />.
+        /// </summary>
+        /// <param name="data">Data for the email.</param>
+        /// <returns>Created message, which can be sent. Message is a HTML email. It also has plain text part, which is
+        /// automatically created from HTML part.</returns>
         public MimeMessage CreateEmail(IEmailData data)
         {
-            var converter = new EmailDataConverter();
-            var templateData = converter.Convert(data);
-            var htmlBody = _formatter.FormatTemplate(data.EmailType, templateData);
+            var htmlBody = _formatter.FormatTemplate(data.EmailType, data);
 
             var msg = new MimeMessage();
             SetAddresses(msg, data);
@@ -86,8 +94,7 @@ namespace IntraWeb.Services.Email
                 if (File.Exists(filePath))
                 {
                     builder.LinkedResources.Add(filePath);
-                }
-                else
+                } else
                 {
                     // Todo: Log invalid image in template.
                 }
@@ -97,7 +104,7 @@ namespace IntraWeb.Services.Email
 
         private Regex _reImageSources = new Regex(
             @"<img [^>]*src=((""(?<src1>[^""]+)"")|('(?<src2>[^']+)'))", RegexOptions.IgnoreCase);
-        private Regex _reImageProtocol = new Regex(@"^(http://|https://|/)", RegexOptions.IgnoreCase);
+        private Regex _reImageProtocol = new Regex(@"^(https?://|/)", RegexOptions.IgnoreCase);
 
         private IEnumerable<string> GetLocalImagesFromHtml(string htmlBody)
         {
