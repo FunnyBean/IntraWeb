@@ -17569,7 +17569,7 @@
     },
     "MimeKit/1.3.0-beta5": {
       "type": "package",
-      "sha512": "Nu7zrdHnyWUhqPDBs7dMSOXL/ZfMxV+uU4ZZkatbMocPmGQX5C/JF/DNQnzk1ohvj6m5+kyMu17INjVDvC0nxA==",
+      "sha512": "CKMxARXboEt16mNFHxTrv2hMCyQHvAcN8WBI6NoRz/rPzEehNhhc6rczX+j1XFQPFCf5EWNdHwur8WjrQLyhOw==",
       "files": [
         "lib/dnxcore50/MimeKit.dll",
         "lib/dnxcore50/MimeKit.xml",

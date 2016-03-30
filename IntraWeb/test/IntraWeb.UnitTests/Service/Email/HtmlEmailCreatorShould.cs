@@ -1,4 +1,5 @@
 ﻿using IntraWeb.Services.Email;
+using IntraWeb.Services.Template;
 using Microsoft.AspNet.Hosting;
 using MimeKit;
 using NSubstitute;
@@ -7,7 +8,7 @@ using Xunit;
 
 namespace IntraWeb.UnitTests.Service.Email
 {
-    public class HtmlEmailCreatorTests
+    public class HtmlEmailCreatorShould
     {
 
         private readonly string _htmlBody =
@@ -43,7 +44,7 @@ Paragraph 2.";
             var env = Substitute.For<IHostingEnvironment>();
             env.WebRootPath.Returns(string.Empty);
             var formatter = Substitute.For<ITemplateFormatter>();
-            formatter.FormatTemplate(emailType, Arg.Any<IDictionary<string, object>>()).Returns(_htmlBody);
+            formatter.FormatTemplate(emailType, Arg.Any<object>()).Returns(_htmlBody);
 
             var creator = new HtmlEmailCreator(env, formatter);
             var msg = creator.CreateEmail(new BaseEmailData(emailType));
@@ -70,14 +71,14 @@ Paragraph 2.";
 
 
         [Fact]
-        public void ShouldHaveCorrectAddresses()
+        public void HaveCorrectAddresses()
         {
             const string emailType = "test";
 
             var env = Substitute.For<IHostingEnvironment>();
             env.WebRootPath.Returns(string.Empty);
             var formatter = Substitute.For<ITemplateFormatter>();
-            formatter.FormatTemplate(emailType, Arg.Any<IDictionary<string, object>>()).Returns(_htmlBody);
+            formatter.FormatTemplate(emailType, Arg.Any<object>()).Returns(_htmlBody);
 
             var creator = new HtmlEmailCreator(env, formatter);
 

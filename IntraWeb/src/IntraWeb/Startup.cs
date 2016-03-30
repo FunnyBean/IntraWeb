@@ -1,4 +1,6 @@
-﻿using IntraWeb.Services.Email;
+using IntraWeb.Models;
+using IntraWeb.Services.Email;
+using IntraWeb.Services.Template;
 using Microsoft.AspNet.Authentication.Cookies;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
@@ -8,7 +10,6 @@ using Microsoft.Data.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using IntraWeb.Models;
 using IntraWeb.ViewModels.Rooms;
 using System.Net;
 using System;

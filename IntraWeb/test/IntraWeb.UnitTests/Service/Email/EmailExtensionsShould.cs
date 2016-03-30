@@ -3,14 +3,13 @@ using Xunit;
 
 using IntraWeb.Services.Email;
 
-
 namespace IntraWeb.UnitTests.Service.Email
 {
-    public class EmailExtensionsTests
+    public class EmailExtensionsShould
     {
 
         [Fact]
-        public void ShouldAddEmailAddress()
+        public void AddEmailAddress()
         {
             var addresses = new InternetAddressList();
             addresses.Add("alice@example.com", "Alice Wonderland");
@@ -21,7 +20,7 @@ namespace IntraWeb.UnitTests.Service.Email
         }
 
         [Fact]
-        public void ShouldParseEmailAddress()
+        public void ParseEmailAddress()
         {
             var addresses = new InternetAddressList();
             addresses.Add("Alice Wonderland <alice@example.com>");
