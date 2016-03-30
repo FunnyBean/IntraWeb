@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using IntraWeb.Models.Users;
 using IntraWeb.ViewModels.Users;
 using IntraWeb.Models;
-using System.Linq;
+using AutoMapper;
 
 namespace IntraWeb.Controllers.Api.v1
 {
@@ -19,6 +19,7 @@ namespace IntraWeb.Controllers.Api.v1
         private IUserRepository _userRepository;
         private IUserRoleRepository _userRoleRepository;
         private ILogger<UsersController> _logger;
+        private IMapper _mapper;
 
         #endregion
 
@@ -27,13 +28,16 @@ namespace IntraWeb.Controllers.Api.v1
         /// </summary>
         /// <param name="userRepository">The user repository.</param>
         /// <param name="logger">Logger.</param>
+        /// <param name="mapper">Mapper for mapping domain classes to model classes and reverse.</param>
         public UsersController(IUserRepository userRepository,
                            IUserRoleRepository userRoleRepository,
-                      ILogger<UsersController> logger)
+                      ILogger<UsersController> logger,
+                                       IMapper mapper)
         {
             _userRepository = userRepository;
             _userRoleRepository = userRoleRepository;
             _logger = logger;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -43,7 +47,7 @@ namespace IntraWeb.Controllers.Api.v1
         [HttpGet]
         public IEnumerable<UserViewModel> Get()
         {
-            return AutoMapper.Mapper.Map<IEnumerable<UserViewModel>>(_userRepository.GetAllIncluding(x => x.UserRoles));
+            return _mapper.Map<IEnumerable<UserViewModel>>(_userRepository.GetAll());
         }
 
         /// <summary>
@@ -68,7 +72,7 @@ namespace IntraWeb.Controllers.Api.v1
         {
             if (_userRepository.GetItem(u => u.Email == userVm.Email) == null)
             {
-                User user = AutoMapper.Mapper.Map<User>(userVm);
+                User user = _mapper.Map<User>(userVm);
                 user.DateCreated = DateTime.Now;
                 user.Photo = DbInitializer.GetDefaultAvatar();
 
@@ -80,14 +84,14 @@ namespace IntraWeb.Controllers.Api.v1
                 {
                     this.Response.StatusCode = (int)HttpStatusCode.Created;
 
-                    return this.Json(new JsonResult(this.Json(AutoMapper.Mapper.Map<UserViewModel>(user)))
+                    return this.Json(new JsonResult(this.Json(_mapper.Map<UserViewModel>(user)))
                     {
                         StatusCode = this.Response.StatusCode
                     });
 
                     //return this.Json(new
                     //{
-                    //    Data = this.Json(AutoMapper.Mapper.Map<UserViewModel>(user)),
+                    //    Data = this.Json(_mapper.Map<UserViewModel>(user)),
                     //    StatusCode = this.Response.StatusCode
                     //});
                 });
@@ -160,7 +164,7 @@ namespace IntraWeb.Controllers.Api.v1
             else
             {
                 IActionResult result;
-                User editedUser = AutoMapper.Mapper.Map(userVm, oldUser);
+                User editedUser = _mapper.Map(userVm, oldUser);
 
                 result = SaveData(() =>
                 {

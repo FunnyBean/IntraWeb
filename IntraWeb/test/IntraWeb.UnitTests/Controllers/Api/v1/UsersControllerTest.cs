@@ -11,6 +11,7 @@ using IntraWeb.Controllers.Api.v1;
 using IntraWeb.ViewModels.Users;
 using IntraWeb.Models.Users;
 using System.Collections.Generic;
+using AutoMapper;
 
 namespace IntraWeb.UnitTests.Controllers.Api.v1
 {
@@ -37,7 +38,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Act
             var usersCount = target.Get().Count();
 
-            // Assert            
+            // Assert
             Assert.Equal(0, usersCount);
         }
 
@@ -63,7 +64,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 });
             });
 
-            // Act 
+            // Act
             var users = target.Get().ToList();
 
             // Assert
@@ -235,7 +236,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PostMethodHasCheckArgumentsForNullAttribute()
         {
             // Arrange
-            var target = new UsersController(null, null, null);
+            var target = new UsersController(null, null, null, null);
             Func<UserViewModel, IActionResult> method = target.Post;
 
             // Act
@@ -249,7 +250,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PostMethodHasValidateModelStateAttribute()
         {
             // Arrange
-            var target = new UsersController(null, null, null);
+            var target = new UsersController(null, null, null, null);
             Func<UserViewModel, IActionResult> method = target.Post;
 
             // Act
@@ -407,7 +408,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         }
 
         [Fact]
-        public void PutUserWithRolesCorrectUpdate()
+        public void PutUserAndRemoveRoleCorrectUpdate()
         {
             // Arrange
             UserDummyRepository repository = null;
@@ -458,6 +459,60 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Assert
             Assert.Equal(1, userForTest.UserRoles.Count());
             Assert.Equal(0, userForTest.UserRoles.First().RoleId);
+        }
+
+        [Fact]
+        public void PutUserAndAddRoleCorrectUpdate()
+        {
+            // Arrange
+            UserDummyRepository repository = null;
+            var target = CreateUsersController(rep =>
+            {
+                rep.Add(new User()
+                {
+                    Id = 0,
+                    UserName = "Janko",
+                    Surname = "Hraško",
+                    Email = "janko.hrasko@gmail.com",
+                    UserRoles = new List<UserRole>()
+                    {
+                        new UserRole()
+                        {
+                            RoleId = 0,
+                            UserId = 0
+                        }
+                    }
+                });
+
+                repository = rep;
+            });
+
+            // Act
+            var response = target.Put(0, new UserViewModel()
+            {
+                Id = 0,
+                UserName = "Janko",
+                Surname = "Hraško",
+                Email = "janko.hrasko@gmail.com",
+                UserRoles = new List<UserRoleViewModel>()
+                {
+                    new UserRoleViewModel()
+                    {
+                        RoleId = 0
+                    },
+                    new UserRoleViewModel()
+                    {
+                        RoleId = 1
+                    }
+                }
+            });
+
+            var userForTest = repository.GetAll().First();
+
+            // Assert
+            Assert.Equal(2, userForTest.UserRoles.Count());
+            Assert.Equal(0, userForTest.UserRoles.First().RoleId);
+            Assert.Equal(1, userForTest.UserRoles.Last().RoleId);
         }
 
         [Fact]
@@ -532,7 +587,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PutMethodHasCheckArgumentsForNullAttribute()
         {
             // Arrange
-            var target = new UsersController(null, null, null);
+            var target = new UsersController(null, null, null, null);
             Func<int, UserViewModel, IActionResult> method = target.Put;
 
             // Act
@@ -546,7 +601,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PutMethodHasValidateModelStateAttribute()
         {
             // Arrange
-            var target = new UsersController(null, null, null);
+            var target = new UsersController(null, null, null, null);
             Func<int, UserViewModel, IActionResult> method = target.Put;
 
             // Act
@@ -693,7 +748,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 initRepository(usersRepository);
             }
 
-            var target = new UsersController(usersRepository, userRolesRepository, logger)
+            var target = new UsersController(usersRepository, userRolesRepository, logger, CreateMapper())
             {
                 ActionContext = new ActionContext
                 {
@@ -702,6 +757,16 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             };
 
             return target;
+        }
+
+        private IMapper CreateMapper()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<UsersMappingProfile>();
+            });
+
+            return config.CreateMapper();
         }
 
         #endregion

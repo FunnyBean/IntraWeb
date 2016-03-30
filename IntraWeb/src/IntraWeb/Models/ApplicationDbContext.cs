@@ -60,6 +60,8 @@ namespace IntraWeb.Models
             builder.Entity<Room>().HasIndex(r => r.Name).IsUnique();
             builder.Entity<Equipment>().HasIndex(e => e.Description).IsUnique();
 
+            builder.Entity<RoomEquipment>().HasKey(re => new { re.EquipmentId, re.RoomId });
+
             builder.Entity<RoomEquipment>()
                 .HasOne(re => re.Equipment)
                 .WithMany(e => e.Rooms)

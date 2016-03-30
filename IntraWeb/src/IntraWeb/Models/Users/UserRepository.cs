@@ -23,6 +23,34 @@ namespace IntraWeb.Models.Users
         }
 
         /// <summary>
+        /// Gets the user by Id with roles.
+        /// </summary>
+        /// <param name="userId">The user identifier</param>
+        /// <returns>
+        /// Return user with roles; otherwise null.
+        /// </returns>
+        public override User GetItem(int userId)
+        {
+            return _dbContext.Set<User>().
+                Include(r => r.UserRoles).
+                AsNoTracking().
+                FirstOrDefault(r => r.Id == userId);
+        }
+
+        /// <summary>
+        /// Gets all users with roles.
+        /// </summary>
+        /// <returns>
+        /// Return all users with roles; otherwise null.
+        /// </returns>
+        public override IQueryable<User> GetAll()
+        {
+            return _dbContext.Set<User>().
+                Include(r => r.UserRoles).
+                AsNoTracking();
+        }
+
+        /// <summary>
         /// Edits the specified item.
         /// </summary>
         /// <param name="item">The item.</param>
@@ -45,7 +73,7 @@ namespace IntraWeb.Models.Users
                 foreach (var role in oldRoles.Where((r) => !userRoles.Any(p => (p.RoleId == r.RoleId))))
                 {
                     _dbContext.Entry(role).State = EntityState.Deleted;
-                } 
+                }
             }
 
         }

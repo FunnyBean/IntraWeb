@@ -117,7 +117,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var response = target.Get(1) as JsonResult;
 
             // Assert
-            Assert.Equal((int) HttpStatusCode.NotFound, target.Response.StatusCode);
+            Assert.Equal((int)HttpStatusCode.NotFound, target.Response.StatusCode);
         }
 
         #endregion
@@ -221,7 +221,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             });
 
             // Assert
-            Assert.Equal((int) HttpStatusCode.Created, target.Response.StatusCode);
+            Assert.Equal((int)HttpStatusCode.Created, target.Response.StatusCode);
         }
 
         [Fact()]
@@ -251,7 +251,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             });
 
             // Assert
-            Assert.Equal((int) HttpStatusCode.BadRequest, target.Response.StatusCode);
+            Assert.Equal((int)HttpStatusCode.BadRequest, target.Response.StatusCode);
         }
 
         [Fact()]
@@ -300,7 +300,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             });
 
             // Assert
-            Assert.Equal((int) HttpStatusCode.InternalServerError, target.Response.StatusCode);
+            Assert.Equal((int)HttpStatusCode.InternalServerError, target.Response.StatusCode);
         }
 
 
@@ -326,7 +326,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var response = target.Put(1, new RoomViewModel() { Id = 5, Name = "First" });
 
             // Assert
-            Assert.Equal((int) HttpStatusCode.BadRequest, target.Response.StatusCode);
+            Assert.Equal((int)HttpStatusCode.BadRequest, target.Response.StatusCode);
         }
 
         [Fact]
@@ -351,7 +351,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var response = target.Put(1, new RoomViewModel() { Id = 1, Name = "First" });
 
             // Assert
-            Assert.Equal((int) HttpStatusCode.BadRequest, target.Response.StatusCode);
+            Assert.Equal((int)HttpStatusCode.BadRequest, target.Response.StatusCode);
         }
 
         [Fact]
@@ -376,7 +376,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var response = target.Put(4, new RoomViewModel() { Id = 4, Name = "White" });
 
             // Assert
-            Assert.Equal((int) HttpStatusCode.NotFound, target.Response.StatusCode);
+            Assert.Equal((int)HttpStatusCode.NotFound, target.Response.StatusCode);
         }
 
         [Fact]
@@ -437,7 +437,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             });
 
             // Assert
-            Assert.Equal((int) HttpStatusCode.OK, target.Response.StatusCode);
+            Assert.Equal((int)HttpStatusCode.OK, target.Response.StatusCode);
         }
 
         [Fact]
@@ -464,7 +464,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             });
 
             // Assert
-            Assert.Equal((int) HttpStatusCode.InternalServerError, target.Response.StatusCode);
+            Assert.Equal((int)HttpStatusCode.InternalServerError, target.Response.StatusCode);
         }
 
         [Fact()]
@@ -522,7 +522,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var response = target.Delete(0);
 
             // Assert
-            Assert.Equal((int) HttpStatusCode.OK, target.Response.StatusCode);
+            Assert.Equal((int)HttpStatusCode.OK, target.Response.StatusCode);
         }
 
         [Fact]
@@ -571,7 +571,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var response = target.Delete(0);
 
             // Assert
-            Assert.Equal((int) HttpStatusCode.InternalServerError, target.Response.StatusCode);
+            Assert.Equal((int)HttpStatusCode.InternalServerError, target.Response.StatusCode);
         }
 
         [Fact]
@@ -596,7 +596,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var response = target.Delete(6);
 
             // Assert
-            Assert.Equal((int) HttpStatusCode.OK, target.Response.StatusCode);
+            Assert.Equal((int)HttpStatusCode.OK, target.Response.StatusCode);
         }
 
         #endregion

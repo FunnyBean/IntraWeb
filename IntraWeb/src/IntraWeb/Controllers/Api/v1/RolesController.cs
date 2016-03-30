@@ -6,7 +6,7 @@ using IntraWeb.Filters;
 using Microsoft.Extensions.Logging;
 using IntraWeb.Models.Users;
 using IntraWeb.ViewModels.Users;
-using IntraWeb.Models;
+using AutoMapper;
 
 namespace IntraWeb.Controllers.Api.v1
 {
@@ -18,6 +18,7 @@ namespace IntraWeb.Controllers.Api.v1
         private IRoleRepository _roleRepository;
         private IUserRoleRepository _userRoleRepository;
         private ILogger<RolesController> _logger;
+        private IMapper _mapper;
 
         #endregion
 
@@ -26,13 +27,16 @@ namespace IntraWeb.Controllers.Api.v1
         /// </summary>
         /// <param name="roleRepository">The role repository.</param>
         /// <param name="logger">Logger.</param>
+        /// <param name="mapper">Mapper for mapping domain classes to model classes and reverse.</param>
         public RolesController(IRoleRepository roleRepository,
                            IUserRoleRepository userRoleRepository,
-                      ILogger<RolesController> logger)
+                      ILogger<RolesController> logger,
+                                       IMapper mapper)
         {
             _roleRepository = roleRepository;
             _userRoleRepository = userRoleRepository;
             _logger = logger;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -42,7 +46,7 @@ namespace IntraWeb.Controllers.Api.v1
         [HttpGet]
         public IEnumerable<RoleViewModel> Get()
         {
-            return AutoMapper.Mapper.Map<IEnumerable<RoleViewModel>>(_roleRepository.GetAll());
+            return _mapper.Map<IEnumerable<RoleViewModel>>(_roleRepository.GetAll());
         }
 
         /// <summary>
@@ -57,7 +61,7 @@ namespace IntraWeb.Controllers.Api.v1
         {
             if (_roleRepository.GetItem(u => u.Name == roleVm.Name) == null)
             {
-                Role role = AutoMapper.Mapper.Map<Role>(roleVm);
+                Role role = _mapper.Map<Role>(roleVm);
 
                 return SaveData(() =>
                 {
@@ -66,7 +70,7 @@ namespace IntraWeb.Controllers.Api.v1
                 () =>
                 {
                     this.Response.StatusCode = (int) HttpStatusCode.Created;
-                    return this.Json(AutoMapper.Mapper.Map<RoleViewModel>(role));
+                    return this.Json(_mapper.Map<RoleViewModel>(role));
                 });
             }
             else
@@ -101,7 +105,7 @@ namespace IntraWeb.Controllers.Api.v1
                 this.Response.StatusCode = (int) HttpStatusCode.NotFound;
                 return this.Json(null);
             }
-            
+
             if (this.ExistAnotherRoleWithName(roleVm.Name, roleId))
             {
                 this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
@@ -109,7 +113,7 @@ namespace IntraWeb.Controllers.Api.v1
             }
             else
             {
-                editedRole = AutoMapper.Mapper.Map(roleVm, editedRole);
+                editedRole = _mapper.Map(roleVm, editedRole);
 
                 return SaveData(() =>
                 {

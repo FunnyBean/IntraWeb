@@ -10,22 +10,13 @@ namespace IntraWeb.Models.Base
     /// <typeparam name="T">
     /// Type of model. <seealso cref="IntraWeb.Models.Base.IModel"/>
     /// </typeparam>
-    public interface IRepository<T> where T:class, IModel, new()
+    public interface IRepository<T> where T : class, IModel, new()
     {
         /// <summary>
         /// Gets all items.
         /// </summary>
         /// <returns>Queryalble for obtain all items.</returns>
         IQueryable<T> GetAll();
-
-        /// <summary>
-        /// Gets all items with includings.
-        /// </summary>
-        /// <param name="includeProperties">A function for all includes.</param>
-        /// <returns>
-        /// Queryalble for obtain all items.
-        /// </returns>
-        IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties);
 
         /// <summary>
         /// Gets the items by predicate.
@@ -46,15 +37,14 @@ namespace IntraWeb.Models.Base
         T GetItem(int itemId);
 
         /// <summary>
-        /// Gets the item by Id with includings.
+        /// Gets the item by Id.
         /// </summary>
         /// <param name="itemId">The item identifier.</param>
-        /// <param name="asNoTracking">The returned entities will not be cached in the DbContext.</param>
-        /// <param name="includeProperties">A function for all includes.</param>
+        /// <param name="includeProperties">The include properties.</param>
         /// <returns>
         /// Return item with specific id; otherwise null.
         /// </returns>
-        T GetItemIncluding(int itemId, bool asNoTracking = false, params Expression<Func<T, object>>[] includeProperties);
+        T GetItem(int itemId, params Expression<Func<T, object>>[] includeProperties);
 
         /// <summary>
         /// Gets the item by predicate.
@@ -64,6 +54,16 @@ namespace IntraWeb.Models.Base
         /// Return item, which match the predicate; otherwise null.
         /// </returns>
         T GetItem(Expression<Func<T, bool>> predicate);
+
+        /// <summary>
+        /// Gets the item by predicate.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <param name="includeProperties">The include properties.</param>
+        /// <returns>
+        /// Return item, which match the predicate; otherwise null.
+        /// </returns>
+        T GetItem(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
 
         /// <summary>
         /// Adds the item.

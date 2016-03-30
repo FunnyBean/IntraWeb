@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Microsoft.Data.Entity.Migrations;
 using Microsoft.Data.Entity.Metadata;
 
-namespace intraweb.Migrations
+namespace IntraWeb.Migrations
 {
-    public partial class newUsers : Migration
+    public partial class InitialDatabaseSetup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,7 +28,8 @@ namespace intraweb.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: false)
+                    Name = table.Column<string>(nullable: false),
+                    Type = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,15 +71,13 @@ namespace intraweb.Migrations
                 name: "RoomEquipment",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Count = table.Column<int>(nullable: false),
                     EquipmentId = table.Column<int>(nullable: false),
-                    RoomId = table.Column<int>(nullable: false)
+                    RoomId = table.Column<int>(nullable: false),
+                    Amount = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoomEquipment", x => x.Id);
+                    table.PrimaryKey("PK_RoomEquipment", x => new { x.EquipmentId, x.RoomId });
                     table.ForeignKey(
                         name: "FK_RoomEquipment_Equipment_EquipmentId",
                         column: x => x.EquipmentId,

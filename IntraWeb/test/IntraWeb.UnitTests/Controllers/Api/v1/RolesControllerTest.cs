@@ -10,6 +10,7 @@ using IntraWeb.Filters;
 using IntraWeb.Controllers.Api.v1;
 using IntraWeb.ViewModels.Users;
 using IntraWeb.Models.Users;
+using AutoMapper;
 
 namespace IntraWeb.UnitTests.Controllers.Api.v1
 {
@@ -36,7 +37,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Act
             var rolesCount = target.Get().Count();
 
-            // Assert            
+            // Assert
             Assert.Equal(0, rolesCount);
         }
 
@@ -204,7 +205,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PostMethodHasCheckArgumentsForNullAttribute()
         {
             // Arrange
-            var target = new RolesController(null, null, null);
+            var target = new RolesController(null, null, null, null);
             Func<RoleViewModel, IActionResult> method = target.Post;
 
             // Act
@@ -218,7 +219,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PostMethodHasValidateModelStateAttribute()
         {
             // Arrange
-            var target = new RolesController(null, null, null);
+            var target = new RolesController(null, null, null, null);
             Func<RoleViewModel, IActionResult> method = target.Post;
 
             // Act
@@ -420,7 +421,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PutMethodHasCheckArgumentsForNullAttribute()
         {
             // Arrange
-            var target = new RolesController(null, null, null);
+            var target = new RolesController(null, null, null, null);
             Func<int, RoleViewModel, IActionResult> method = target.Put;
 
             // Act
@@ -434,7 +435,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PutMethodHasValidateModelStateAttribute()
         {
             // Arrange
-            var target = new RolesController(null, null, null);
+            var target = new RolesController(null, null, null, null);
             Func<int, RoleViewModel, IActionResult> method = target.Put;
 
             // Act
@@ -567,7 +568,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 initRepository(rolesRepository);
             }
 
-            var target = new RolesController(rolesRepository, userRolesRepository, logger)
+            var target = new RolesController(rolesRepository, userRolesRepository, logger, CreateMapper())
             {
                 ActionContext = new ActionContext
                 {
@@ -576,6 +577,16 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             };
 
             return target;
+        }
+
+        private IMapper CreateMapper()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<UsersMappingProfile>();
+            });
+
+            return config.CreateMapper();
         }
 
         #endregion
