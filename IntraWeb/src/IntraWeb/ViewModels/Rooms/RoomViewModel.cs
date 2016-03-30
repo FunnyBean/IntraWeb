@@ -37,11 +37,26 @@ namespace IntraWeb.ViewModels.Rooms
         public string Description { get; set; }
 
         /// <summary>
+        /// Gets or sets the type of room.
+        /// </summary>
+        /// <value>
+        /// The room type.
+        /// </value>
+        [MaxLength(25)]
+        [Required()]
+        public string Type { get; set; }
+
+        /// <summary>
         /// Gets or sets the equipments.
         /// </summary>
         /// <value>
         /// The equipments.
         /// </value>
-        public ICollection<EquipmentViewModel> Equipments { get; set; }
+        public ICollection<RoomEquipmentViewModel> Equipments { get; set; }
+
+        public override string ToString()
+        {
+            return $"{this.Id} - {this.Name}";
+        }
     }
 }

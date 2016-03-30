@@ -7,7 +7,7 @@ namespace IntraWeb.Models.Rooms
     /// <summary>
     /// Model, which represent Equipment.
     /// </summary>
-    public class Equipment: IModel
+    public class Equipment : IModel
     {
 
         /// <summary>

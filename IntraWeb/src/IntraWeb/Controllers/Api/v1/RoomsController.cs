@@ -55,7 +55,7 @@ namespace IntraWeb.Controllers.Api.v1
 
             if (room == null)
             {
-                this.Response.StatusCode = (int) HttpStatusCode.NoContent;
+                this.Response.StatusCode = (int)HttpStatusCode.NoContent;
                 return this.Json(null);
             }
             else
@@ -85,13 +85,13 @@ namespace IntraWeb.Controllers.Api.v1
                 },
                 () =>
                 {
-                    this.Response.StatusCode = (int) HttpStatusCode.Created;
+                    this.Response.StatusCode = (int)HttpStatusCode.Created;
                     return this.Json(AutoMapper.Mapper.Map<RoomViewModel>(room));
                 });
             }
             else
             {
-                this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return this.Json(new { Message = $"Room with name '{roomVm.Name}' already exist." });
             }
         }
@@ -108,7 +108,7 @@ namespace IntraWeb.Controllers.Api.v1
         {
             if (roomVm.Id != roomId)
             {
-                this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 var message = $"Invalid argument. Id '{roomId}' and roomVm.Id '{roomVm.Id}' are not equal.";
                 _logger.LogWarning(message);
 
@@ -118,17 +118,17 @@ namespace IntraWeb.Controllers.Api.v1
             var editedRoom = _roomRepository.GetItem(roomId);
             if (editedRoom == null)
             {
-                this.Response.StatusCode = (int) HttpStatusCode.NoContent;
+                this.Response.StatusCode = (int)HttpStatusCode.NoContent;
                 return this.Json(null);
             }
-            
+
             if (ExistAnotherRoomWithName(roomVm.Name, roomId))
             {
-                this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return this.Json(new { Message = $"Room with name '{roomVm.Name}' already exist." });
             }
             else
-            {               
+            {
                 editedRoom = AutoMapper.Mapper.Map(roomVm, editedRoom);
 
                 return SaveData(() =>
@@ -176,7 +176,7 @@ namespace IntraWeb.Controllers.Api.v1
             catch (Exception ex)
             {
                 _logger.LogError("Exception occured when saving data.", ex);
-                this.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                this.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 return this.Json(new { Message = $"Saving data throw Exception '{ex.Message}'" });
             }
         }

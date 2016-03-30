@@ -29,5 +29,10 @@ namespace IntraWeb.ViewModels.Rooms
         [Required()]
         [MaxLength(100)]
         public string Description { get; set; }
+
+        public override string ToString()
+        {
+            return $"{this.Id} - {this.Description}";
+        }
     }
 }

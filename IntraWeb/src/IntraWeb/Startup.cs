@@ -15,6 +15,7 @@ using System;
 using IntraWeb.Models.Rooms;
 using IntraWeb.Models.Users;
 using IntraWeb.ViewModels.Users;
+using AutoMapper;
 
 namespace IntraWeb
 {
@@ -91,7 +92,7 @@ namespace IntraWeb
             AddIntraWebServices(services);
 
             //services.AddInstance<IRoomRepository>(new Models.Dummies.RoomDummyRepository()); //Testovacia implementacia
-
+            InitializeAutoMapper(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -102,6 +103,7 @@ namespace IntraWeb
 
             if (env.IsDevelopment())
             {
+                //loggerFactory.AddDebug(LogLevel.Verbose); - Log EF7 SQL Queries
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
@@ -122,7 +124,7 @@ namespace IntraWeb
                 }
                 catch (Exception)
                 {
-                }
+            }
             }
 
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
@@ -131,8 +133,6 @@ namespace IntraWeb
             app.UseStaticFiles();
 
             app.UseIdentity();
-
-            InitializeAutoMapper();
 
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
             app.UseMvc();
@@ -168,6 +168,16 @@ namespace IntraWeb
             services.AddScoped<IUserRoleRepository, UserRoleRepository>();
         }
 
+        private static void InitializeAutoMapper(IServiceCollection services)
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<RoomsMappingProfile>();
+                cfg.AddProfile<UsersMappingProfile>();
+            });
+
+            services.AddInstance<IMapper>(config.CreateMapper());
+        }
 
         // Entry point for the application.
         public static void Main(string[] args) => WebApplication.Run<Startup>(args);

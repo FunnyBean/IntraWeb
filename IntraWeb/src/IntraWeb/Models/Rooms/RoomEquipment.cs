@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace IntraWeb.Models.Rooms
 {
     /// <summary>
     /// Model, which represent join table between Room and equipment.
     /// </summary>
-    /// <remarks>
-    /// Many-to-many relationships without an entity class to represent the join table are not yet supported. 
-    /// <see href="http://ef.readthedocs.org/en/latest/modeling/relationships.html#many-to-many"/>
-    /// </remarks>
     public class RoomEquipment
     {
 
@@ -60,9 +52,9 @@ namespace IntraWeb.Models.Rooms
         public Equipment Equipment { get; set; }
 
         /// <summary>
-        /// Count.
+        /// Amount.
         /// </summary>
-        [Range(0, Int32.MaxValue)]
-        public int Count { get; set; }
+        [Range(0, double.MaxValue)]
+        public decimal Amount { get; set; }
     }
 }

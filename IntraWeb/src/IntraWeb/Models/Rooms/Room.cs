@@ -7,7 +7,7 @@ namespace IntraWeb.Models.Rooms
     /// <summary>
     /// Model, which represent Room.
     /// </summary>
-    public class Room: IModel
+    public class Room : IModel
     {
         /// <summary>
         /// Gets or sets the identifier.
