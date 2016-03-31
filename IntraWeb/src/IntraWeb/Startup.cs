@@ -2,6 +2,7 @@
 using IntraWeb.Services.Email;
 using IntraWeb.Services.Template;
 using IntraWeb.ViewModels.Administration;
+using IntraWeb.Middleware.ErrorHandling;
 
 using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Builder;
@@ -103,7 +104,6 @@ namespace IntraWeb
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
-                app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
             else
@@ -131,6 +131,8 @@ namespace IntraWeb
             app.UseIdentity();
 
             AdministrationModelMapping.ConfigureRoomMapping();
+
+            app.UseGlobalErrorHandling();
 
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
             app.UseMvc();
