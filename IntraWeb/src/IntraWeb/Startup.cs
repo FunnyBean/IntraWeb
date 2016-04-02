@@ -125,15 +125,15 @@ namespace IntraWeb
 
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
 
+            app.UseGlobalErrorHandling();
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseIdentity();
-
+                        
             AdministrationModelMapping.ConfigureRoomMapping();
-
-            app.UseGlobalErrorHandling();
-
+                        
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
             app.UseMvc();
         }
@@ -148,6 +148,9 @@ namespace IntraWeb
             services.AddScoped<ITemplateLoader, FileTemplateLoader>(
                 (provider) => new FileTemplateLoader(System.IO.Path.Combine(_env.WebRootPath, "templates", "email"))
             );
+
+            services.AddScoped<IUnhandledExceptionLogger, UnhandledExceptionLogger>();
+            services.AddScoped<IUnhandledExceptionResponseFormatter, UnhandledExceptionResponseFormatter>();
         }
 
 

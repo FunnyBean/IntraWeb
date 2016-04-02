@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace IntraWeb.Middleware.ErrorHandling
 {
     public static class GlobalErrorHandlingExtensions
@@ -13,7 +14,7 @@ namespace IntraWeb.Middleware.ErrorHandling
         /// Captures all unhandled exceptions
         /// </summary>
         public static IApplicationBuilder UseGlobalErrorHandling(this IApplicationBuilder builder)
-        {
+        {            
             return builder.UseMiddleware<GlobalErrorHandling>();
         }
     }
