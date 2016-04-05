@@ -21,9 +21,8 @@ namespace IntraWeb.Controllers.Api.v1
         private readonly IUserRepository _userRepository;
         private ILogger<AuthenticationController> _logger;
 
-        public AuthenticationController(IMembershipService membershipService,
-            IUserRepository userRepository,
-                      ILogger<AuthenticationController> logger)
+        public AuthenticationController(IMembershipService membershipService, IUserRepository userRepository,
+            ILogger<AuthenticationController> logger)
         {
             _membershipService = membershipService;
             _userRepository = userRepository;

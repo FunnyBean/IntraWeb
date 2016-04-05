@@ -61,33 +61,6 @@ namespace IntraWeb
                     options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
             services.AddAuthentication();
-            //services.AddIdentity<ApplicationUser, IdentityRole>(conf =>
-            //{
-            //    //ToDo: Refaktorovat. Extrahovat do zvlast triedy, ked bude jasne ako ideme riesit autorizaciu.
-            //    conf.Password.RequiredLength = 8;
-            //    conf.Password.RequireNonLetterOrDigit = false;
-            //    conf.Password.RequireLowercase = false;
-            //    conf.Password.RequireUppercase = false;
-            //    conf.Cookies.ApplicationCookie.Events = new CookieAuthenticationEvents()
-            //    {
-            //        OnRedirectToLogin = ctx =>
-            //        {
-            //            if (ctx.Request.Path.StartsWithSegments("/api") &&
-            //                ctx.Response.StatusCode == (int) HttpStatusCode.OK)
-            //            {
-            //                ctx.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
-            //            }
-            //            else
-            //            {
-            //                ctx.Response.Redirect(ctx.RedirectUri);
-            //            }
-
-            //            return Task.FromResult(0);
-            //        }
-            //    };
-            //})
-            //.AddEntityFrameworkStores<ApplicationDbContext>()
-            //.AddDefaultTokenProviders();
 
             services.AddMvc(); // ToDo: Replace with Web API when it will be done in ASP.NET Core 1.0
 
@@ -170,7 +143,6 @@ namespace IntraWeb
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 
-            services.AddScoped<ILoggingRepository, LoggingRepository>();
             services.AddScoped<IMembershipService, MembershipService>();
             services.AddScoped<IEncryptionService, EncryptionService>();
 
