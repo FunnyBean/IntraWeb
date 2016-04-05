@@ -46,43 +46,6 @@ namespace IntraWeb.Services.Authorization
             return membershipCtx;
         }
 
-        //public User CreateUser(string username, string email, string password, int[] roles)
-        //{
-        //    var existingUser = _userRepository.GetSingleByUsername(username);
-
-        //    if (existingUser != null)
-        //    {
-        //        throw new Exception("Username is already in use");
-        //    }
-
-        //    var passwordSalt = _encryptionService.CreateSalt();
-
-        //    var user = new User()
-        //    {
-        //        Username = username,
-        //        Salt = passwordSalt,
-        //        Email = email,
-        //        IsLocked = false,
-        //        HashedPassword = _encryptionService.EncryptPassword(password, passwordSalt),
-        //        DateCreated = DateTime.Now
-        //    };
-
-        //    _userRepository.Add(user);
-
-        //    _userRepository.Commit();
-
-        //    if (roles != null || roles.Length > 0)
-        //    {
-        //        foreach (var role in roles)
-        //        {
-        //            addUserToRole(user, role);
-        //        }
-        //    }
-
-        //    _userRepository.Commit();
-
-        //    return user;
-        //}
 
         public User GetUser(int userId)
         {
