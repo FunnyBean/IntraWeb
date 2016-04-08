@@ -14,18 +14,8 @@ namespace IntraWeb.Middleware.ErrorHandling
         /// <summary>
         /// Action that formats response with requested format
         /// </summary>
-        /// <param name="requestedFormat">Requested response format</param>
         /// <param name="response">Response instance to be modified</param>
         /// <param name="exception">Exception instance</param>
-        void FormatResponse(UnhandledExceptionResponseFormat requestedFormat, HttpResponse response, Exception exception);
-    }
-
-    /// <summary>
-    /// Unhandled Exception Response format options
-    /// </summary>
-    public enum UnhandledExceptionResponseFormat
-    {
-        HtmlPage,
-        JsonObject
-    }
+        void FormatResponse(HttpResponse response, Exception exception);
+    }        
 }

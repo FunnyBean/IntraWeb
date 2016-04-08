@@ -17,22 +17,11 @@ namespace IntraWeb.Middleware.ErrorHandling
         /// <summary>
         /// Action that formats response with requested format
         /// </summary>
-        /// <param name="requestedFormat">Requested response format</param>
         /// <param name="response">Response instance to be modified</param>
         /// <param name="exception">Exception instance</param>
-        public void FormatResponse(UnhandledExceptionResponseFormat requestedFormat, HttpResponse response, Exception exception)
+        public void FormatResponse(HttpResponse response, Exception exception)
         {
-            switch (requestedFormat)
-            {
-                case UnhandledExceptionResponseFormat.HtmlPage:
-                    FormatHtmlResponse(response, exception);
-                    break;
-                case UnhandledExceptionResponseFormat.JsonObject:
-                    FormatJsonResponse(response, exception);
-                    break;
-                default:
-                    throw new ArgumentException();
-            }                        
+            FormatJsonResponse(response, exception);            
         }
 
 
@@ -49,19 +38,6 @@ namespace IntraWeb.Middleware.ErrorHandling
             };
 
             await response.WriteAsync(JsonConvert.SerializeObject(errorInfo));
-        }
-
-
-        private async void FormatHtmlResponse(HttpResponse response, Exception exception)
-        {
-            response.Clear();
-            response.StatusCode = 500;
-            response.ContentType = "text/html";
-            await response.WriteAsync("<html><body>\r\n");
-            await response.WriteAsync("We're sorry, we encountered an un-expected issue with your application.<br>\r\n");
-            await response.WriteAsync("<br><a href=\"/\">Home</a><br>\r\n");
-            await response.WriteAsync("</body></html>\r\n");
-            await response.WriteAsync(new string(' ', 512)); // Padding for IE
-        }
+        }                        
     }
 }

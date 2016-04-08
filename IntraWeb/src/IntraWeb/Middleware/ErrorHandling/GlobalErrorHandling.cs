@@ -50,22 +50,22 @@ namespace IntraWeb.Middleware.ErrorHandling
                 
                 if (IsApiRequest(context))
                 {
-                    _responseFormatter.FormatResponse(
-                        UnhandledExceptionResponseFormat.JsonObject, context.Response, ex);
+                    _responseFormatter.FormatResponse(context.Response, ex);
                 }
                 else
-                {
-                    _responseFormatter.FormatResponse(
-                        UnhandledExceptionResponseFormat.HtmlPage, context.Response, ex);
+                {                    
+                    // TODO: redirect to ERROR page
+                    
                 }
             }
         }
                                        
   
         private bool IsApiRequest(HttpContext context)
-        {            
+        {
             // TODO: Rozlíšiť request na API od hlavného requestu na zobrazenie stránky
-            return true;
+            var path = context.Request.Path.Value ?? string.Empty;
+            return path.Contains("/api/");
         }
 
     }
