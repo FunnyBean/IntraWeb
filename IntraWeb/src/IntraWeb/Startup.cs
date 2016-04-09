@@ -101,6 +101,8 @@ namespace IntraWeb
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            app.UseGlobalErrorHandling("/serverError.html");
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
@@ -120,12 +122,9 @@ namespace IntraWeb
                 }
                 catch { }
             }
-
+                        
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
-
-            // app.UseExceptionHandler("/Home/Error");
-            app.UseGlobalErrorHandling();
-
+                                                
             app.UseDefaultFiles();
             app.UseStaticFiles();
 

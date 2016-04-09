@@ -13,9 +13,11 @@ namespace IntraWeb.Middleware.ErrorHandling
         /// <summary>
         /// Captures all unhandled exceptions
         /// </summary>
-        public static IApplicationBuilder UseGlobalErrorHandling(this IApplicationBuilder builder)
-        {            
-            return builder.UseMiddleware<GlobalErrorHandling>();
+        public static IApplicationBuilder UseGlobalErrorHandling(this IApplicationBuilder builder, string errorPagePath)
+        {
+            return builder
+                .UseExceptionHandler(errorPagePath)
+                .UseMiddleware<GlobalErrorHandling>();
         }
     }
 }

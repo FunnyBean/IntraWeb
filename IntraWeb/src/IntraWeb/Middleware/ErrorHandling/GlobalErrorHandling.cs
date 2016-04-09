@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Http;
 using Microsoft.Extensions.Logging;
-
+using System.Diagnostics;
 
 namespace IntraWeb.Middleware.ErrorHandling
 {
@@ -41,7 +41,7 @@ namespace IntraWeb.Middleware.ErrorHandling
         public async Task Invoke(HttpContext context)
         {            
             try
-            {
+            {                
                 await _next.Invoke(context);
             }
             catch (Exception ex)
@@ -49,13 +49,12 @@ namespace IntraWeb.Middleware.ErrorHandling
                 _exceptionLogger.LogException(ex);
                 
                 if (IsApiRequest(context))
-                {
+                {                    
                     _responseFormatter.FormatResponse(context.Response, ex);
                 }
                 else
-                {                    
-                    // TODO: redirect to ERROR page
-                    
+                {
+                    throw ex;
                 }
             }
         }
@@ -64,8 +63,8 @@ namespace IntraWeb.Middleware.ErrorHandling
         private bool IsApiRequest(HttpContext context)
         {
             // TODO: Rozlíšiť request na API od hlavného requestu na zobrazenie stránky
-            var path = context.Request.Path.Value ?? string.Empty;
-            return path.Contains("/api/");
+            var requestPath = context.Request.Path.Value ?? string.Empty;
+            return requestPath.Contains("/api/");
         }
 
     }
