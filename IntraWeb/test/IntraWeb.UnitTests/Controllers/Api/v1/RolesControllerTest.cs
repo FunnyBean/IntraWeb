@@ -205,7 +205,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PostMethodHasCheckArgumentsForNullAttribute()
         {
             // Arrange
-            var target = new RolesController(null, null, null, null);
+            var target = new RolesController(null, null, null);
             Func<RoleViewModel, IActionResult> method = target.Post;
 
             // Act
@@ -219,7 +219,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PostMethodHasValidateModelStateAttribute()
         {
             // Arrange
-            var target = new RolesController(null, null, null, null);
+            var target = new RolesController(null, null, null);
             Func<RoleViewModel, IActionResult> method = target.Post;
 
             // Act
@@ -421,7 +421,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PutMethodHasCheckArgumentsForNullAttribute()
         {
             // Arrange
-            var target = new RolesController(null, null, null, null);
+            var target = new RolesController(null, null, null);
             Func<int, RoleViewModel, IActionResult> method = target.Put;
 
             // Act
@@ -435,7 +435,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PutMethodHasValidateModelStateAttribute()
         {
             // Arrange
-            var target = new RolesController(null, null, null, null);
+            var target = new RolesController(null, null, null);
             Func<int, RoleViewModel, IActionResult> method = target.Put;
 
             // Act
@@ -560,7 +560,6 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         {
             var logger = new StubLogger<RolesController>();
             var rolesRepository = new RoleDummyRepository();
-            var userRolesRepository = new UserRoleDummyRepository();
             rolesRepository.ClearAll();
 
             if (initRepository != null)
@@ -568,7 +567,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 initRepository(rolesRepository);
             }
 
-            var target = new RolesController(rolesRepository, userRolesRepository, logger, CreateMapper())
+            var target = new RolesController(rolesRepository, logger, CreateMapper())
             {
                 ActionContext = new ActionContext
                 {

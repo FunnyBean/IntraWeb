@@ -156,7 +156,6 @@ namespace IntraWeb
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
-            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
         }
 
         private static void InitializeAutoMapper(IServiceCollection services)

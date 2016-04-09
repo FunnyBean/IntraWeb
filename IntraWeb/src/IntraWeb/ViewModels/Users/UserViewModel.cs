@@ -14,12 +14,12 @@ namespace IntraWeb.ViewModels.Users
         [Required()]
         public int Id { get; set; }
 
-        [MaxLength(100)]
-        public string UserName { get; set; }
-
         [Required()]
-        [MaxLength(200)]
+        [MaxLength(100)]
         public string Email { get; set; }
+
+        [MaxLength(100)]
+        public string Nickname { get; set; }
 
         [MaxLength(100)]
         public string Name { get; set; }
@@ -50,6 +50,6 @@ namespace IntraWeb.ViewModels.Users
             }
         }
 
-        public ICollection<UserRoleViewModel> UserRoles { get; set; }
+        public ICollection<UserRoleViewModel> Roles { get; set; }
     }
 }

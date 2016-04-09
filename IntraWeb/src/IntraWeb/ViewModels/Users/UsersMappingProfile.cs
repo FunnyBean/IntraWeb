@@ -15,7 +15,7 @@ namespace IntraWeb.ViewModels.Users
             this.CreateMap<User, UserViewModel>().ReverseMap().
                 AfterMap((m, vm) =>
                 {
-                    foreach (var role in vm.UserRoles)
+                    foreach (var role in vm.Roles)
                     {
                         role.UserId = m.Id;
                     }

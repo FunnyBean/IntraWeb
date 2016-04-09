@@ -17,7 +17,6 @@ namespace IntraWeb.Controllers.Api.v1
         #region Private Fields
 
         private IUserRepository _userRepository;
-        private IUserRoleRepository _userRoleRepository;
         private ILogger<UsersController> _logger;
         private IMapper _mapper;
 
@@ -30,12 +29,10 @@ namespace IntraWeb.Controllers.Api.v1
         /// <param name="logger">Logger.</param>
         /// <param name="mapper">Mapper for mapping domain classes to model classes and reverse.</param>
         public UsersController(IUserRepository userRepository,
-                           IUserRoleRepository userRoleRepository,
                       ILogger<UsersController> logger,
                                        IMapper mapper)
         {
             _userRepository = userRepository;
-            _userRoleRepository = userRoleRepository;
             _logger = logger;
             _mapper = mapper;
         }
@@ -74,7 +71,14 @@ namespace IntraWeb.Controllers.Api.v1
             {
                 User user = _mapper.Map<User>(userVm);
                 user.DateCreated = DateTime.Now;
-                user.Photo = DbInitializer.GetDefaultAvatar();
+
+                if (userVm.Photo != null)
+                {
+                    user.Photo = userVm.Photo;
+                } else
+                {
+                    user.Photo = DbInitializer.GetDefaultAvatar();
+                }
 
                 return SaveData(() =>
                 {
@@ -88,12 +92,6 @@ namespace IntraWeb.Controllers.Api.v1
                     {
                         StatusCode = this.Response.StatusCode
                     });
-
-                    //return this.Json(new
-                    //{
-                    //    Data = this.Json(_mapper.Map<UserViewModel>(user)),
-                    //    StatusCode = this.Response.StatusCode
-                    //});
                 });
             }
             else

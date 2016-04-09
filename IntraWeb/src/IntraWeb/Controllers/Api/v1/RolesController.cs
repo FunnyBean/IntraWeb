@@ -16,7 +16,6 @@ namespace IntraWeb.Controllers.Api.v1
         #region Private Fields
 
         private IRoleRepository _roleRepository;
-        private IUserRoleRepository _userRoleRepository;
         private ILogger<RolesController> _logger;
         private IMapper _mapper;
 
@@ -29,12 +28,10 @@ namespace IntraWeb.Controllers.Api.v1
         /// <param name="logger">Logger.</param>
         /// <param name="mapper">Mapper for mapping domain classes to model classes and reverse.</param>
         public RolesController(IRoleRepository roleRepository,
-                           IUserRoleRepository userRoleRepository,
                       ILogger<RolesController> logger,
                                        IMapper mapper)
         {
             _roleRepository = roleRepository;
-            _userRoleRepository = userRoleRepository;
             _logger = logger;
             _mapper = mapper;
         }
@@ -132,7 +129,6 @@ namespace IntraWeb.Controllers.Api.v1
         {
             return SaveData(() =>
             {
-                _userRoleRepository.Delete(x => x.RoleId == roleId);
                 _roleRepository.Delete(roleId);
             });
         }

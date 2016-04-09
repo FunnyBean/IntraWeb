@@ -76,20 +76,24 @@ namespace IntraWeb.Models
         private void OnUserModelCreating(ModelBuilder builder)
         {
             // User
-            builder.Entity<User>().Property(u => u.UserName).HasMaxLength(100);
+            builder.Entity<User>().Property(u => u.Nickname).HasMaxLength(100);
             builder.Entity<User>().Property(u => u.Email).IsRequired().HasMaxLength(200);
             builder.Entity<User>().Property(u => u.Name).HasMaxLength(100);
             builder.Entity<User>().Property(u => u.Surname).HasMaxLength(100);
             builder.Entity<User>().Property(u => u.HashedPassword).HasMaxLength(200);
             builder.Entity<User>().Property(u => u.Salt).HasMaxLength(50);
 
-            // Role
-            builder.Entity<Role>().Property(r => r.Name).IsRequired().HasMaxLength(50);
-
             // UserRole
-            builder.Entity<UserRole>().Property(ur => ur.UserId).IsRequired();
-            builder.Entity<UserRole>().Property(ur => ur.RoleId).IsRequired();
             builder.Entity<UserRole>().HasKey(x => new { x.UserId, x.RoleId });
+
+            builder.Entity<UserRole>()
+                .HasOne(ur => ur.User)
+                .WithMany(ur => ur.Roles)
+                .HasForeignKey(ur => ur.UserId);
+            builder.Entity<UserRole>()
+                .HasOne(ur => ur.Role)
+                .WithMany(ur => ur.Users)
+                .HasForeignKey(ur => ur.RoleId);
         }
     }
 }

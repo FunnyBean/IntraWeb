@@ -51,14 +51,14 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 rep.Add(new User()
                 {
                     Id = 0,
-                    UserName = "Janko",
+                    Nickname = "Janko",
                     Surname = "Hraško",
                     Email = "janko.hrasko@gmail.com"
                 });
                 rep.Add(new User()
                 {
                     Id = 1,
-                    UserName = "Juraj",
+                    Nickname = "Juraj",
                     Surname = "Dlhý",
                     Email = "dlhy@gmail.com"
                 });
@@ -71,7 +71,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             Assert.Equal(2, users.Count);
 
             Assert.Equal(0, users[0].Id);
-            Assert.Equal("Janko", users[0].UserName);
+            Assert.Equal("Janko", users[0].Nickname);
             Assert.Equal("Hraško", users[0].Surname);
             Assert.Equal("janko.hrasko@gmail.com", users[0].Email);
         }
@@ -91,14 +91,14 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 rep.Add(new User()
                 {
                     Id = 0,
-                    UserName = "Janko",
+                    Nickname = "Janko",
                     Surname = "Hraško",
                     Email = "janko.hrasko@gmail.com"
                 });
                 rep.Add(new User()
                 {
                     Id = 1,
-                    UserName = "Juraj",
+                    Nickname = "Juraj",
                     Surname = "Dlhý",
                     Email = "dlhy@gmail.com"
                 });
@@ -109,7 +109,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Act
             var response = target.Post(new UserViewModel()
             {
-                UserName = "New UserName",
+                Nickname = "New UserName",
                 Surname = "New Surname",
                 Email = "new.user@gmail.com"
             });
@@ -120,7 +120,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var user = repository.GetAll().Last();
 
             Assert.Equal(2, user.Id);
-            Assert.Equal("New UserName", user.UserName);
+            Assert.Equal("New UserName", user.Nickname);
             Assert.Equal("New Surname", user.Surname);
             Assert.Equal("new.user@gmail.com", user.Email);
         }
@@ -134,14 +134,14 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 rep.Add(new User()
                 {
                     Id = 0,
-                    UserName = "Janko",
+                    Nickname = "Janko",
                     Surname = "Hraško",
                     Email = "janko.hrasko@gmail.com"
                 });
                 rep.Add(new User()
                 {
                     Id = 1,
-                    UserName = "Juraj",
+                    Nickname = "Juraj",
                     Surname = "Dlhý",
                     Email = "dlhy@gmail.com"
                 });
@@ -150,7 +150,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Act
             var response = target.Post(new UserViewModel()
             {
-                UserName = "New UserName",
+                Nickname = "New UserName",
                 Surname = "New Surname",
                 Email = "new.user@gmail.com"
             });
@@ -159,7 +159,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var user = (((response as JsonResult).Value as JsonResult).Value as JsonResult).Value as UserViewModel;
 
             Assert.Equal(2, user.Id);
-            Assert.Equal("New UserName", user.UserName);
+            Assert.Equal("New UserName", user.Nickname);
             Assert.Equal("New Surname", user.Surname);
             Assert.Equal("new.user@gmail.com", user.Email);
         }
@@ -173,14 +173,14 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 rep.Add(new User()
                 {
                     Id = 0,
-                    UserName = "Janko",
+                    Nickname = "Janko",
                     Surname = "Hraško",
                     Email = "janko.hrasko@gmail.com"
                 });
                 rep.Add(new User()
                 {
                     Id = 1,
-                    UserName = "Juraj",
+                    Nickname = "Juraj",
                     Surname = "Dlhý",
                     Email = "dlhy@gmail.com"
                 });
@@ -189,7 +189,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Act
             var response = target.Post(new UserViewModel()
             {
-                UserName = "New UserName",
+                Nickname = "New UserName",
                 Surname = "New Surname",
                 Email = "new.user@gmail.com"
             });
@@ -207,14 +207,14 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 rep.Add(new User()
                 {
                     Id = 0,
-                    UserName = "Janko",
+                    Nickname = "Janko",
                     Surname = "Hraško",
                     Email = "janko.hrasko@gmail.com"
                 });
                 rep.Add(new User()
                 {
                     Id = 1,
-                    UserName = "Juraj",
+                    Nickname = "Juraj",
                     Surname = "Dlhý",
                     Email = "dlhy@gmail.com"
                 });
@@ -223,7 +223,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Act
             var response = target.Post(new UserViewModel()
             {
-                UserName = "New UserName",
+                Nickname = "New UserName",
                 Surname = "New Surname",
                 Email = "janko.hrasko@gmail.com"
             });
@@ -236,7 +236,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PostMethodHasCheckArgumentsForNullAttribute()
         {
             // Arrange
-            var target = new UsersController(null, null, null, null);
+            var target = new UsersController(null, null, null);
             Func<UserViewModel, IActionResult> method = target.Post;
 
             // Act
@@ -250,7 +250,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PostMethodHasValidateModelStateAttribute()
         {
             // Arrange
-            var target = new UsersController(null, null, null, null);
+            var target = new UsersController(null, null, null);
             Func<UserViewModel, IActionResult> method = target.Post;
 
             // Act
@@ -273,7 +273,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Act
             var response = target.Post(new UserViewModel()
             {
-                UserName = "New UserName",
+                Nickname = "New UserName",
                 Surname = "New Surname",
                 Email = "janko.hrasko@gmail.com"
             });
@@ -317,14 +317,14 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 rep.Add(new User()
                 {
                     Id = 0,
-                    UserName = "Janko",
+                    Nickname = "Janko",
                     Surname = "Hraško",
                     Email = "janko.hrasko@gmail.com"
                 });
                 rep.Add(new User()
                 {
                     Id = 1,
-                    UserName = "Juraj",
+                    Nickname = "Juraj",
                     Surname = "Dlhý",
                     Email = "dlhy@gmail.com"
                 });
@@ -346,14 +346,14 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 rep.Add(new User()
                 {
                     Id = 0,
-                    UserName = "Janko",
+                    Nickname = "Janko",
                     Surname = "Hraško",
                     Email = "janko.hrasko@gmail.com"
                 });
                 rep.Add(new User()
                 {
                     Id = 1,
-                    UserName = "Juraj",
+                    Nickname = "Juraj",
                     Surname = "Dlhý",
                     Email = "dlhy@gmail.com"
                 });
@@ -376,14 +376,14 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 rep.Add(new User()
                 {
                     Id = 0,
-                    UserName = "Janko",
+                    Nickname = "Janko",
                     Surname = "Hraško",
                     Email = "janko.hrasko@gmail.com"
                 });
                 rep.Add(new User()
                 {
                     Id = 1,
-                    UserName = "Juraj",
+                    Nickname = "Juraj",
                     Surname = "Dlhý",
                     Email = "dlhy@gmail.com"
                 });
@@ -394,7 +394,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Act
             var response = target.Put(0, new UserViewModel() {
                 Id = 0,
-                UserName = "New UserName",
+                Nickname = "New UserName",
                 Surname = "New Surname",
                 Email = "janko.hrasko@gmail.com"
             });
@@ -402,7 +402,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var userForTest = repository.GetAll().First();
 
             // Assert
-            Assert.Equal("New UserName", userForTest.UserName);
+            Assert.Equal("New UserName", userForTest.Nickname);
             Assert.Equal("New Surname", userForTest.Surname);
             Assert.Equal("janko.hrasko@gmail.com", userForTest.Email);
         }
@@ -417,10 +417,10 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 rep.Add(new User()
                 {
                     Id = 0,
-                    UserName = "Janko",
+                    Nickname = "Janko",
                     Surname = "Hraško",
                     Email = "janko.hrasko@gmail.com",
-                    UserRoles = new List<UserRole>()
+                    Roles = new List<UserRole>()
                     {
                         new UserRole()
                         {
@@ -442,10 +442,10 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var response = target.Put(0, new UserViewModel()
             {
                 Id = 0,
-                UserName = "Janko",
+                Nickname = "Janko",
                 Surname = "Hraško",
                 Email = "janko.hrasko@gmail.com",
-                UserRoles = new List<UserRoleViewModel>()
+                Roles = new List<UserRoleViewModel>()
                 {
                     new UserRoleViewModel()
                     {
@@ -457,8 +457,8 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var userForTest = repository.GetAll().First();
 
             // Assert
-            Assert.Equal(1, userForTest.UserRoles.Count());
-            Assert.Equal(0, userForTest.UserRoles.First().RoleId);
+            Assert.Equal(1, userForTest.Roles.Count());
+            Assert.Equal(0, userForTest.Roles.First().RoleId);
         }
 
         [Fact]
@@ -471,10 +471,10 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 rep.Add(new User()
                 {
                     Id = 0,
-                    UserName = "Janko",
+                    Nickname = "Janko",
                     Surname = "Hraško",
                     Email = "janko.hrasko@gmail.com",
-                    UserRoles = new List<UserRole>()
+                    Roles = new List<UserRole>()
                     {
                         new UserRole()
                         {
@@ -491,10 +491,10 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var response = target.Put(0, new UserViewModel()
             {
                 Id = 0,
-                UserName = "Janko",
+                Nickname = "Janko",
                 Surname = "Hraško",
                 Email = "janko.hrasko@gmail.com",
-                UserRoles = new List<UserRoleViewModel>()
+                Roles = new List<UserRoleViewModel>()
                 {
                     new UserRoleViewModel()
                     {
@@ -510,9 +510,9 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var userForTest = repository.GetAll().First();
 
             // Assert
-            Assert.Equal(2, userForTest.UserRoles.Count());
-            Assert.Equal(0, userForTest.UserRoles.First().RoleId);
-            Assert.Equal(1, userForTest.UserRoles.Last().RoleId);
+            Assert.Equal(2, userForTest.Roles.Count());
+            Assert.Equal(0, userForTest.Roles.First().RoleId);
+            Assert.Equal(1, userForTest.Roles.Last().RoleId);
         }
 
         [Fact]
@@ -525,14 +525,14 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 rep.Add(new User()
                 {
                     Id = 0,
-                    UserName = "Janko",
+                    Nickname = "Janko",
                     Surname = "Hraško",
                     Email = "janko.hrasko@gmail.com"
                 });
                 rep.Add(new User()
                 {
                     Id = 1,
-                    UserName = "Juraj",
+                    Nickname = "Juraj",
                     Surname = "Dlhý",
                     Email = "dlhy@gmail.com"
                 });
@@ -544,7 +544,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var response = target.Put(0, new UserViewModel()
             {
                 Id = 0,
-                UserName = "New UserName",
+                Nickname = "New UserName",
                 Surname = "New Surname",
                 Email = "janko.hrasko@gmail.com"
             });
@@ -562,7 +562,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 rep.Add(new User()
                 {
                     Id = 0,
-                    UserName = "Janko",
+                    Nickname = "Janko",
                     Surname = "Hraško",
                     Email = "janko.hrasko@gmail.com"
                 });
@@ -574,7 +574,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var response = target.Put(0, new UserViewModel()
             {
                 Id = 0,
-                UserName = "New UserName",
+                Nickname = "New UserName",
                 Surname = "New Surname",
                 Email = "janko.hrasko@gmail.com"
             });
@@ -587,7 +587,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PutMethodHasCheckArgumentsForNullAttribute()
         {
             // Arrange
-            var target = new UsersController(null, null, null, null);
+            var target = new UsersController(null, null, null);
             Func<int, UserViewModel, IActionResult> method = target.Put;
 
             // Act
@@ -601,7 +601,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PutMethodHasValidateModelStateAttribute()
         {
             // Arrange
-            var target = new UsersController(null, null, null, null);
+            var target = new UsersController(null, null, null);
             Func<int, UserViewModel, IActionResult> method = target.Put;
 
             // Act
@@ -625,14 +625,14 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 rep.Add(new User()
                 {
                     Id = 0,
-                    UserName = "Janko",
+                    Nickname = "Janko",
                     Surname = "Hraško",
                     Email = "janko.hrasko@gmail.com"
                 });
                 rep.Add(new User()
                 {
                     Id = 1,
-                    UserName = "Juraj",
+                    Nickname = "Juraj",
                     Surname = "Dlhý",
                     Email = "dlhy@gmail.com"
                 });
@@ -655,14 +655,14 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 rep.Add(new User()
                 {
                     Id = 0,
-                    UserName = "Janko",
+                    Nickname = "Janko",
                     Surname = "Hraško",
                     Email = "janko.hrasko@gmail.com"
                 });
                 rep.Add(new User()
                 {
                     Id = 1,
-                    UserName = "Juraj",
+                    Nickname = "Juraj",
                     Surname = "Dlhý",
                     Email = "dlhy@gmail.com"
                 });
@@ -686,7 +686,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 rep.Add(new User()
                 {
                     Id = 0,
-                    UserName = "Janko",
+                    Nickname = "Janko",
                     Surname = "Hraško",
                     Email = "janko.hrasko@gmail.com"
                 });
@@ -711,14 +711,14 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 rep.Add(new User()
                 {
                     Id = 0,
-                    UserName = "Janko",
+                    Nickname = "Janko",
                     Surname = "Hraško",
                     Email = "janko.hrasko@gmail.com"
                 });
                 rep.Add(new User()
                 {
                     Id = 1,
-                    UserName = "Juraj",
+                    Nickname = "Juraj",
                     Surname = "Dlhý",
                     Email = "dlhy@gmail.com"
                 });
@@ -740,7 +740,6 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         {
             var logger = new StubLogger<UsersController>();
             var usersRepository = new UserDummyRepository();
-            var userRolesRepository = new UserRoleDummyRepository();
             usersRepository.ClearAll();
 
             if (initRepository != null)
@@ -748,7 +747,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 initRepository(usersRepository);
             }
 
-            var target = new UsersController(usersRepository, userRolesRepository, logger, CreateMapper())
+            var target = new UsersController(usersRepository, logger, CreateMapper())
             {
                 ActionContext = new ActionContext
                 {

@@ -32,7 +32,7 @@ namespace IntraWeb.Models.Users
         public override User GetItem(int userId)
         {
             return _dbContext.Set<User>().
-                Include(r => r.UserRoles).
+                Include(r => r.Roles).
                 AsNoTracking().
                 FirstOrDefault(r => r.Id == userId);
         }
@@ -46,7 +46,7 @@ namespace IntraWeb.Models.Users
         public override IQueryable<User> GetAll()
         {
             return _dbContext.Set<User>().
-                Include(r => r.UserRoles).
+                Include(r => r.Roles).
                 AsNoTracking();
         }
 
@@ -56,9 +56,9 @@ namespace IntraWeb.Models.Users
         /// <param name="item">The item.</param>
         public override void Edit(User item)
         {
-            var userRoles = item.UserRoles;
+            var userRoles = item.Roles;
 
-            item.UserRoles = null;
+            item.Roles = null;
             base.Edit(item);
 
             if (userRoles != null)

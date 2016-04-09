@@ -95,15 +95,15 @@ namespace IntraWeb.Migrations
                     b.Property<string>("Name")
                         .HasAnnotation("MaxLength", 100);
 
+                    b.Property<string>("Nickname")
+                        .HasAnnotation("MaxLength", 100);
+
                     b.Property<byte[]>("Photo");
 
                     b.Property<string>("Salt")
                         .HasAnnotation("MaxLength", 50);
 
                     b.Property<string>("Surname")
-                        .HasAnnotation("MaxLength", 100);
-
-                    b.Property<string>("UserName")
                         .HasAnnotation("MaxLength", 100);
 
                     b.HasKey("Id");
@@ -114,9 +114,6 @@ namespace IntraWeb.Migrations
                     b.Property<int>("UserId");
 
                     b.Property<int>("RoleId");
-
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
 
                     b.HasKey("UserId", "RoleId");
                 });

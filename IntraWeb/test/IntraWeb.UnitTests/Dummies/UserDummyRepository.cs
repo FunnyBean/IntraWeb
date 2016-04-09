@@ -45,10 +45,10 @@ namespace IntraWeb.Models.Users
         {
             base.InitDummyData(dummyData);
 
-            dummyData.Add(new User() { Id = 0, UserName = "Janko", Surname = "Hraško", Email = "janko.hrasko@gmail.com" });
-            dummyData.Add(new User() { Id = 1, UserName = "Juraj", Surname = "Dlhý", Email = "dlhy@gmail.com" });
-            dummyData.Add(new User() { Id = 2, UserName = "Ďurko", Surname = "Široký", Email = "sikory@gmail.com" });
-            dummyData.Add(new User() { Id = 3, UserName = "Jožko", Surname = "Bistrozraký", Email = "bistrozraky@gmail.com" });
+            dummyData.Add(new User() { Id = 0, Nickname = "Janko", Surname = "Hraško", Email = "janko.hrasko@gmail.com" });
+            dummyData.Add(new User() { Id = 1, Nickname = "Juraj", Surname = "Dlhý", Email = "dlhy@gmail.com" });
+            dummyData.Add(new User() { Id = 2, Nickname = "Ďurko", Surname = "Široký", Email = "sikory@gmail.com" });
+            dummyData.Add(new User() { Id = 3, Nickname = "Jožko", Surname = "Bistrozraký", Email = "bistrozraky@gmail.com" });
         }
     }
 }
