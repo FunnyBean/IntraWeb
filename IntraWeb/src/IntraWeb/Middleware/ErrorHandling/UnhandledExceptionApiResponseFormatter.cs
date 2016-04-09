@@ -11,7 +11,7 @@ namespace IntraWeb.Middleware.ErrorHandling
     /// <summary>
     /// Response Formatter for Unhandled Exceptions catched by <see cref="GlobalErrorHandling"/>.
     /// </summary>
-    public class UnhandledExceptionResponseFormatter : IUnhandledExceptionResponseFormatter
+    public class UnhandledExceptionApiResponseFormatter : IUnhandledExceptionApiResponseFormatter
     {
 
         /// <summary>
@@ -19,15 +19,8 @@ namespace IntraWeb.Middleware.ErrorHandling
         /// </summary>
         /// <param name="response">Response instance to be modified</param>
         /// <param name="exception">Exception instance</param>
-        public void FormatResponse(HttpResponse response, Exception exception)
+        public async void FormatResponse(HttpResponse response, Exception exception)
         {
-            FormatJsonResponse(response, exception);            
-        }
-
-
-        private async void FormatJsonResponse(HttpResponse response, Exception exception)
-        {
-            response.Clear();
             response.StatusCode = 500;
             response.ContentType = "application/json";
 
@@ -38,6 +31,6 @@ namespace IntraWeb.Middleware.ErrorHandling
             };
 
             await response.WriteAsync(JsonConvert.SerializeObject(errorInfo));
-        }                        
+        }        
     }
 }

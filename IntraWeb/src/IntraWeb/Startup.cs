@@ -101,7 +101,7 @@ namespace IntraWeb
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseGlobalErrorHandling("/serverError.html");
+            app.UseGlobalErrorHandling("/api/", "/serverError.html");
 
             if (env.IsDevelopment())
             {
@@ -146,9 +146,8 @@ namespace IntraWeb
             services.AddScoped<ITemplateLoader, FileTemplateLoader>(
                 (provider) => new FileTemplateLoader(System.IO.Path.Combine(_env.WebRootPath, "templates", "email"))
             );
-
-            services.AddScoped<IUnhandledExceptionLogger, UnhandledExceptionLogger>();
-            services.AddScoped<IUnhandledExceptionResponseFormatter, UnhandledExceptionResponseFormatter>();
+                        
+            services.AddScoped<IUnhandledExceptionApiResponseFormatter, UnhandledExceptionApiResponseFormatter>();
         }
 
 

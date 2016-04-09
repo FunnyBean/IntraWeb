@@ -13,11 +13,18 @@ namespace IntraWeb.Middleware.ErrorHandling
         /// <summary>
         /// Captures all unhandled exceptions
         /// </summary>
-        public static IApplicationBuilder UseGlobalErrorHandling(this IApplicationBuilder builder, string errorPagePath)
+        /// <param name="apiRoute">
+        /// Route for Api Controllers
+        /// </param>
+        /// <param name="nonApiExceptionPath">
+        /// Error Path for unhandled non-api exceptions
+        /// </param>
+        public static IApplicationBuilder UseGlobalErrorHandling(this IApplicationBuilder builder, 
+                string apiRoute, string nonApiExceptionPath)
         {
-            return builder
-                .UseExceptionHandler(errorPagePath)
-                .UseMiddleware<GlobalErrorHandling>();
+            var options = new GlobalErrorHandlingOptions { NonApiExceptionPath = nonApiExceptionPath,
+                                                           ApiRoute = apiRoute };
+            return builder.UseMiddleware<GlobalErrorHandling>(options);
         }
     }
 }

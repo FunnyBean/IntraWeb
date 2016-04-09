@@ -9,7 +9,7 @@ namespace IntraWeb.Middleware.ErrorHandling
     /// <summary>
     /// Response Formatter for Unhandled Exceptions catched by <see cref="GlobalErrorHandling"/>.
     /// </summary>
-    public interface IUnhandledExceptionResponseFormatter
+    public interface IUnhandledExceptionApiResponseFormatter
     {
         /// <summary>
         /// Action that formats response with requested format
