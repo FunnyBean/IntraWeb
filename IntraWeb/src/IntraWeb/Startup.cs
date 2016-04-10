@@ -3,6 +3,7 @@ using IntraWeb.Services.Email;
 using IntraWeb.Services.Template;
 using IntraWeb.ViewModels.Administration;
 using IntraWeb.Middleware.ErrorHandling;
+using IntraWeb.Middleware.ErrorHandling.DebugTools;
 
 using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Builder;
@@ -124,7 +125,11 @@ namespace IntraWeb
             }
                         
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
-                                                
+
+            // !!! ERROR GENERATOR !!!
+            // app.UseErrorGenerator(FakeErrorTimingOptions.BeforeRequestDelegated, "/index.html", 3);
+            // !!!!!!!!!!!!!!!!!!!!!!!
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
 

@@ -38,7 +38,7 @@ namespace IntraWeb.Middleware.ErrorHandling
                                    GlobalErrorHandlingOptions options,
                                    DiagnosticSource diagnosticSource)
         {
-            _next = next;            
+            _next = next;
             _exceptionLogger = loggerFactory.CreateLogger<GlobalErrorHandling>();
             _responseFormatter = responseFormatter;
             _options = options;
@@ -125,8 +125,7 @@ namespace IntraWeb.Middleware.ErrorHandling
 
 
         private bool IsApiRequest(HttpContext context)
-        {
-            // TODO: Rozlíšiť request na API od hlavného requestu na zobrazenie stránky
+        {            
             var requestPath = context.Request.Path.Value ?? string.Empty;
             return requestPath.Contains("/api/");
         }
