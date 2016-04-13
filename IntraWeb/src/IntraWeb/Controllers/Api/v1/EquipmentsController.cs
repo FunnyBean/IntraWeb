@@ -10,25 +10,25 @@ using Microsoft.Extensions.Logging;
 
 namespace IntraWeb.Controllers.Api.v1
 {
-    [Route("api/equipments")]
-    public class EquipmentsController : BaseController
+    [Route("api/equipment")]
+    public class EquipmentController : BaseController
     {
         #region Private Field
 
         private IEquipmentRepository _equipmentRepository;
-        private ILogger<EquipmentsController> _logger;
+        private ILogger<EquipmentController> _logger;
         private IMapper _mapper;
 
         #endregion
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EquipmentsController"/> class.
+        /// Initializes a new instance of the <see cref="EquipmentController"/> class.
         /// </summary>
         /// <param name="equipmentRepository">The equipment repository.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="mapper">Mapper for mapping domain classes to model classes and reverse.</param>
-        public EquipmentsController(IEquipmentRepository equipmentRepository,
-                           ILogger<EquipmentsController> logger,
+        public EquipmentController(IEquipmentRepository equipmentRepository,
+                           ILogger<EquipmentController> logger,
                                                  IMapper mapper)
         {
             _equipmentRepository = equipmentRepository;
@@ -37,15 +37,13 @@ namespace IntraWeb.Controllers.Api.v1
         }
 
         /// <summary>
-        /// Gets all equipments.
+        /// Gets all equipment.
         /// </summary>
-        /// <returns>All equipments</returns>
+        /// <returns>All equipment</returns>
         [HttpGet]
         public IEnumerable<EquipmentViewModel> Get()
         {
-            var equipments = _mapper.Map<IEnumerable<EquipmentViewModel>>(_equipmentRepository.GetAll());
-
-            return equipments;
+            return _mapper.Map<IEnumerable<EquipmentViewModel>>(_equipmentRepository.GetAll());
         }
 
         /// <summary>
@@ -79,7 +77,7 @@ namespace IntraWeb.Controllers.Api.v1
         //[Authorize(Roles = "Administrator")] - ToDo: Zakomentovane pokia¾ sa nespraví autorizácia
         public IActionResult Post([FromBody] EquipmentViewModel equipmentVm)
         {
-            if (!ExistEquipment(equipmentVm.Description))
+            if (!ExistsEquipment(equipmentVm.Description))
             {
                 var equipment = _mapper.Map<Equipment>(equipmentVm);
 
@@ -96,11 +94,11 @@ namespace IntraWeb.Controllers.Api.v1
             else
             {
                 this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
-                return this.Json(new { Message = $"Equipment with description '{equipmentVm.Description}' already exist." });
+                return this.Json(new { Message = $"Equipment with description '{equipmentVm.Description}' already exists." });
             }
         }
 
-        private bool ExistEquipment(string description)
+        private bool ExistsEquipment(string description)
         {
             return _equipmentRepository.GetItem(p => p.Description.Equals(description, StringComparison.CurrentCultureIgnoreCase)) != null;
         }
@@ -131,10 +129,10 @@ namespace IntraWeb.Controllers.Api.v1
                 return this.Json(null);
             }
 
-            if (ExistAnotherEquipmentWithName(equipmentVm.Description, equipmentId))
+            if (ExistsAnotherEquipmentWithName(equipmentVm.Description, equipmentId))
             {
                 this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
-                return this.Json(new { Message = $"Equipment with name '{equipmentVm.Description}' already exist." });
+                return this.Json(new { Message = $"Equipment with name '{equipmentVm.Description}' already exists." });
             }
             else
             {
@@ -184,7 +182,7 @@ namespace IntraWeb.Controllers.Api.v1
             }
         }
 
-        private bool ExistAnotherEquipmentWithName(string equipmentDescription, int equipmentId)
+        private bool ExistsAnotherEquipmentWithName(string equipmentDescription, int equipmentId)
         {
             var equipment = _equipmentRepository.GetItem(p => p.Description.Equals(equipmentDescription, StringComparison.CurrentCultureIgnoreCase));
 
