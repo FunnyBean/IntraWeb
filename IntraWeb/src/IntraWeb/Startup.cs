@@ -1,8 +1,6 @@
 ﻿using IntraWeb.Models;
 using IntraWeb.Services.Email;
 using IntraWeb.Services.Template;
-using IntraWeb.ViewModels.Administration;
-
 using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
@@ -11,10 +9,12 @@ using Microsoft.Data.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
+using IntraWeb.ViewModels.Rooms;
 using System.Net;
+using System;
+using IntraWeb.Models.Rooms;
 using System.Threading.Tasks;
-
+using AutoMapper;
 
 namespace IntraWeb
 {
@@ -91,7 +91,9 @@ namespace IntraWeb
             AddIntraWebServices(services);
 
             //services.AddInstance<IRoomRepository>(new Models.Dummies.RoomDummyRepository()); //Testovacia implementacia
-            services.AddScoped<IRoomRepository, RoomsRepository>();
+            services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddScoped<IEquipmentRepository, EquipmentRepository>();
+            InitializeAutoMapper(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -102,6 +104,7 @@ namespace IntraWeb
 
             if (env.IsDevelopment())
             {
+                //loggerFactory.AddDebug(LogLevel.Verbose); - Log EF7 SQL Queries
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
@@ -120,7 +123,9 @@ namespace IntraWeb
                              .Database.Migrate();
                     }
                 }
-                catch { }
+                catch (Exception e)
+                {
+                }
             }
 
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
@@ -130,10 +135,19 @@ namespace IntraWeb
 
             app.UseIdentity();
 
-            AdministrationModelMapping.ConfigureRoomMapping();
-
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
             app.UseMvc();
+        }
+
+
+        private static void InitializeAutoMapper(IServiceCollection services)
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<RoomsMappingProfile>();
+            });
+
+            services.AddInstance<IMapper>(config.CreateMapper());
         }
 
 

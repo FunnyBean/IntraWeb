@@ -85,6 +85,6 @@ namespace IntraWeb.UnitTests.Filters
 
             // Assert
             Assert.Null(executingContext.Result);
-        }     
+        }
     }
 }

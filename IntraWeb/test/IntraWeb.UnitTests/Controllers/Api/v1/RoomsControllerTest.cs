@@ -1,29 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
-using IntraWeb.Controllers;
-using IntraWeb.Models.Dummies;
 using IntraWeb.UnitTests.Service;
-using IntraWeb.ViewModels.Administration;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Http.Internal;
 using System.Net;
 using IntraWeb.UnitTests.Filters;
 using IntraWeb.Filters;
 using IntraWeb.Controllers.Api.v1;
+using IntraWeb.Models.Rooms;
+using IntraWeb.ViewModels.Rooms;
+using System.Collections.Generic;
+using AutoMapper;
+using IntraWeb.Models.Rooms.Dummies;
 
 namespace IntraWeb.UnitTests.Controllers.Api.v1
 {
     public class RoomsControllerTest
     {
-
-        public RoomsControllerTest()
-        {
-            AdministrationModelMapping.ConfigureRoomMapping();
-        }
-
         #region "Get rooms"
 
         [Fact]
@@ -35,7 +29,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Act
             var roomsCount = target.Get().Count();
 
-            // Assert            
+            // Assert
             Assert.Equal(0, roomsCount);
         }
 
@@ -45,19 +39,19 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
                 });
             });
 
-            // Act 
+            // Act
             var rooms = target.Get().ToList();
 
             // Assert
@@ -79,12 +73,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -114,7 +108,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         }
 
         [Fact]
-        public void GetRoomNoContentStatusCode()
+        public void GetRoomNotFoundStatusCode()
         {
             // Arrange
             var target = CreateRoomsController(null);
@@ -123,7 +117,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var response = target.Get(1) as JsonResult;
 
             // Assert
-            Assert.Equal((int) HttpStatusCode.NoContent, target.Response.StatusCode);
+            Assert.Equal((int) HttpStatusCode.NotFound, target.Response.StatusCode);
         }
 
         #endregion
@@ -132,18 +126,18 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         #region "Post"
 
         [Fact()]
-        public void PostRoomAddRoomToRepository()
+        public void PostRoomAddToRepository()
         {
             // Arrange
             RoomDummyRepository reposiotry = null;
             var target = CreateRoomsController((rep) =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -160,8 +154,8 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             });
 
             // Assert
-            Assert.Equal(3, reposiotry.GetAllRooms().Count());
-            var room = reposiotry.GetAllRooms().Last();
+            Assert.Equal(3, reposiotry.GetAll().Count());
+            var room = reposiotry.GetAll().Last();
             Assert.Equal(2, room.Id);
             Assert.Equal("Third", room.Name);
             Assert.Equal("Third room", room.Description);
@@ -173,12 +167,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -206,12 +200,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -236,12 +230,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -264,7 +258,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PostMethodHasCheckArgumentsForNullAttribute()
         {
             // Arrange
-            var target = new IntraWeb.Controllers.Api.v1.RoomsController(null, null);
+            var target = new RoomsController(null, null, null);
             Func<RoomViewModel, IActionResult> method = target.Post;
 
             // Act
@@ -278,7 +272,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PostMethodHasValidateModelStateAttribute()
         {
             // Arrange
-            var target = new RoomsController(null, null);
+            var target = new RoomsController(null, null, null);
             Func<RoomViewModel, IActionResult> method = target.Post;
 
             // Act
@@ -341,12 +335,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController(rep =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -366,12 +360,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController(rep =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -382,7 +376,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var response = target.Put(4, new RoomViewModel() { Id = 4, Name = "White" });
 
             // Assert
-            Assert.Equal((int) HttpStatusCode.NoContent, target.Response.StatusCode);
+            Assert.Equal((int) HttpStatusCode.NotFound, target.Response.StatusCode);
         }
 
         [Fact]
@@ -392,12 +386,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             RoomDummyRepository repository = null;
             var target = CreateRoomsController(rep =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -407,7 +401,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
 
             // Act
             var response = target.Put(1, new RoomViewModel() { Id = 1, Name = "White", Description = "Room whit white color" });
-            var roomForTest = repository.GetRoom(1);
+            var roomForTest = repository.GetItem(1);
 
             // Assert
             Assert.Equal("White", roomForTest.Name);
@@ -421,12 +415,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             RoomDummyRepository repository = null;
             var target = CreateRoomsController(rep =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -452,7 +446,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
@@ -477,7 +471,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PutMethodHasCheckArgumentsForNullAttribute()
         {
             // Arrange
-            var target = new RoomsController(null, null);
+            var target = new RoomsController(null, null, null);
             Func<int, RoomViewModel, IActionResult> method = target.Put;
 
             // Act
@@ -491,7 +485,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PutMethodHasValidateModelStateAttribute()
         {
             // Arrange
-            var target = new RoomsController(null, null);
+            var target = new RoomsController(null, null, null);
             Func<int, RoomViewModel, IActionResult> method = target.Put;
 
             // Act
@@ -512,12 +506,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController(rep =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -538,12 +532,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             RoomDummyRepository repository = null;
             var target = CreateRoomsController(rep =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -555,7 +549,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             var response = target.Delete(0);
 
             // Assert
-            Assert.Equal(1, repository.GetAllRooms().Count());
+            Assert.Equal(1, repository.GetAll().Count());
         }
 
         [Fact]
@@ -564,7 +558,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController((rep) =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
@@ -586,12 +580,12 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             // Arrange
             var target = CreateRoomsController(rep =>
             {
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "First",
                     Description = "First room"
                 });
-                rep.AddRoom(new Models.Room()
+                rep.Add(new Room()
                 {
                     Name = "Second",
                     Description = "Second room"
@@ -603,6 +597,65 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
 
             // Assert
             Assert.Equal((int) HttpStatusCode.OK, target.Response.StatusCode);
+        }
+
+        #endregion
+
+
+        #region "GetTypes"
+
+        [Fact]
+        public void GetDiscintTypesFromRooms()
+        {
+            // Arrange
+            var target = CreateRoomsController(rep =>
+            {
+                rep.Add(new Room()
+                {
+                    Name = "First",
+                    Type = "Meeting room",
+                    Description = "First room"
+                });
+                rep.Add(new Room()
+                {
+                    Name = "Second",
+                    Type = "Meeting room",
+                    Description = "Second room"
+                });
+                rep.Add(new Room()
+                {
+                    Name = "White training room",
+                    Type = "Training room",
+                });
+                rep.Add(new Room()
+                {
+                    Name = "Big scrum room",
+                    Type = "Scrum room",
+                });
+            });
+            var expected = new List<string>() { "Meeting room", "Training room", "Scrum room" };
+
+            // Act
+            var roomTypes = target.GetTypes().ToList();
+
+            // Assert
+            Assert.Equal(expected, roomTypes);
+        }
+
+        [Fact]
+        public void GetEmptyTypesFromRooms()
+        {
+            // Arrange
+            var target = CreateRoomsController(rep =>
+            {
+            });
+            var expected = new List<string>();
+
+            // Act
+            var roomTypes = target.GetTypes().ToList();
+
+            // Assert
+            Assert.Equal(expected, roomTypes);
         }
 
         #endregion
@@ -621,7 +674,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 initRepository(roomsRepository);
             }
 
-            var target = new RoomsController(roomsRepository, logger)
+            var target = new RoomsController(roomsRepository, logger, CreateMapper())
             {
                 ActionContext = new ActionContext
                 {
@@ -630,6 +683,16 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             };
 
             return target;
+        }
+
+        private IMapper CreateMapper()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<RoomsMappingProfile>();
+            });
+
+            return config.CreateMapper();
         }
 
         #endregion

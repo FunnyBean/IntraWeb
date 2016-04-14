@@ -8,7 +8,7 @@ namespace IntraWeb.Migrations
     public partial class AddRooms : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
-        {           
+        {
             migrationBuilder.CreateTable(
                 name: "Room",
                 columns: table => new
@@ -22,17 +22,17 @@ namespace IntraWeb.Migrations
                 {
                     table.PrimaryKey("PK_Room", x => x.Id);
                 });
-          
+
             migrationBuilder.CreateIndex(
                 name: "IX_Room_Name",
                 table: "Room",
                 column: "Name",
-                unique: true);          
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
-        {          
-            migrationBuilder.DropTable("Room");          
+        {
+            migrationBuilder.DropTable("Room");
         }
     }
 }
