@@ -25,9 +25,9 @@ namespace IntraWeb.Models
         public DbSet<Room> Rooms { get; set; }
 
         /// <summary>
-        /// Gets or sets the equipments.
+        /// Gets or sets the equipment.
         /// </summary>
-        public DbSet<Equipment> Equipments { get; set; }
+        public DbSet<Equipment> Equipment { get; set; }
 
         /// <summary>
         /// DbSet for users.
@@ -69,7 +69,7 @@ namespace IntraWeb.Models
 
             builder.Entity<RoomEquipment>()
                 .HasOne(re => re.Room)
-                .WithMany(r => r.Equipments)
+                .WithMany(r => r.Equipment)
                 .HasForeignKey(re => re.RoomId);
         }
 

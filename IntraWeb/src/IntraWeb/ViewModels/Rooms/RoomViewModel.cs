@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace IntraWeb.ViewModels.Rooms
@@ -47,12 +47,12 @@ namespace IntraWeb.ViewModels.Rooms
         public string Type { get; set; }
 
         /// <summary>
-        /// Gets or sets the equipments.
+        /// Gets or sets the equipment.
         /// </summary>
         /// <value>
-        /// The equipments.
+        /// The equipment.
         /// </value>
-        public ICollection<RoomEquipmentViewModel> Equipments { get; set; }
+        public ICollection<RoomEquipmentViewModel> Equipment { get; set; }
 
         public override string ToString()
         {

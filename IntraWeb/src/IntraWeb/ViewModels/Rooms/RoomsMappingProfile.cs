@@ -15,7 +15,7 @@ namespace IntraWeb.ViewModels.Rooms
             this.CreateMap<Room, RoomViewModel>().ReverseMap().
                 AfterMap((m, vm) =>
                 {
-                    foreach (var equipment in vm.Equipments)
+                    foreach (var equipment in vm.Equipment)
                     {
                         equipment.RoomId = m.Id;
                     }

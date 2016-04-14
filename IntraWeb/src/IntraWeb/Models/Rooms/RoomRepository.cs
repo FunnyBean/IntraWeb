@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using IntraWeb.Models.Base;
@@ -35,16 +35,16 @@ namespace IntraWeb.Models.Rooms
         }
 
         /// <summary>
-        ///  Gets the room by Id with equipments.
+        ///  Gets the room by Id with equipment.
         /// </summary>
         /// <param name="roomId">The room identifier</param>
         /// <returns>
-        /// Return room with equipments; otherwise null.
+        /// Return room with equipment; otherwise null.
         /// </returns>
         public override Room GetItem(int roomId)
         {
             return _dbContext.Set<Room>().
-                Include(r => r.Equipments).
+                Include(r => r.Equipment).
                 ThenInclude(e => e.Equipment).
                 AsNoTracking().
                 FirstOrDefault(r => r.Id == roomId);
@@ -65,34 +65,34 @@ namespace IntraWeb.Models.Rooms
         /// <param name="room">The item.</param>
         public override void Edit(Room room)
         {
-            var roomEquipments = room.Equipments;
+            var roomEquipment = room.Equipment;
 
-            room.Equipments = null;
+            room.Equipment = null;
             base.Edit(room);
 
-            if (roomEquipments != null)
+            if (roomEquipment != null)
             {
-                var oldEquipments = _dbContext.Set<RoomEquipment>().Where(p => p.RoomId == room.Id);
+                var oldEquipment = _dbContext.Set<RoomEquipment>().Where(p => p.RoomId == room.Id);
 
-                SetAddOrModifiedStatesForEquipments(room, roomEquipments);
+                SetAddOrModifiedStatesForEquipment(room, roomEquipment);
 
-                SetDeleteStateForNotUsedEquipments(roomEquipments, oldEquipments);
+                SetDeleteStateForNotUsedEquipment(roomEquipment, oldEquipment);
             }
 
         }
 
-        private void SetAddOrModifiedStatesForEquipments(Room room, ICollection<RoomEquipment> roomEquipments)
+        private void SetAddOrModifiedStatesForEquipment(Room room, ICollection<RoomEquipment> roomEquipment)
         {
-            foreach (var equipment in roomEquipments)
+            foreach (var equipment in roomEquipment)
             {
                 _dbContext.Entry(equipment).State =
                     HasRoomEquipment(room.Id, equipment.EquipmentId) ? EntityState.Modified : EntityState.Added;
             }
         }
 
-        private void SetDeleteStateForNotUsedEquipments(ICollection<RoomEquipment> roomEquipments, IQueryable<RoomEquipment> oldEquipments)
+        private void SetDeleteStateForNotUsedEquipment(ICollection<RoomEquipment> roomEquipment, IQueryable<RoomEquipment> oldEquipment)
         {
-            foreach (var equipment in oldEquipments.Where((r) => !roomEquipments.Any(p => (p.EquipmentId == r.EquipmentId))))
+            foreach (var equipment in oldEquipment.Where((r) => !roomEquipment.Any(p => (p.EquipmentId == r.EquipmentId))))
             {
                 _dbContext.Entry(equipment).State = EntityState.Deleted;
             }

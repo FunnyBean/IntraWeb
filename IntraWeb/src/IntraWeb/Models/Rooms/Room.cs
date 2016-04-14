@@ -1,4 +1,4 @@
-﻿﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IntraWeb.Models.Base;
 
@@ -47,12 +47,12 @@ namespace IntraWeb.Models.Rooms
         public string Type { get; set; }
 
         /// <summary>
-        /// Gets or sets the equipments.
+        /// Gets or sets the equipment.
         /// </summary>
         /// <value>
-        /// The equipments.
+        /// The equipment.
         /// </value>
-        public ICollection<RoomEquipment> Equipments { get; set; }
+        public ICollection<RoomEquipment> Equipment { get; set; }
 
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Net;
 using AutoMapper;
@@ -15,28 +15,28 @@ using Xunit;
 
 namespace IntraWeb.UnitTests.Controllers.Api.v1
 {
-    public class EquipmentsControllerTest
+    public class EquipmentControllerTest
     {
-        #region "Get equipments"
+        #region "Get equipment"
 
         [Fact]
-        public void GetEquipmentsReturnEmptyListWhenEquipmentsDoesNotExist()
+        public void GetEquipmentReturnEmptyListWhenEquipmentDoesNotExist()
         {
             // Arrange
-            var target = CreateEquipmentsController(null);
+            var target = CreateEquipmentController(null);
 
             // Act
-            var equipmentsCount = target.Get().Count();
+            var equipmentCount = target.Get().Count();
 
             // Assert
-            Assert.Equal(0, equipmentsCount);
+            Assert.Equal(0, equipmentCount);
         }
 
         [Fact]
-        public void GetEquipmentsReturnAllEquipmentsFromRepository()
+        public void GetEquipmentReturnAllEquipmentFromRepository()
         {
             // Arrange
-            var target = CreateEquipmentsController((rep) =>
+            var target = CreateEquipmentController((rep) =>
             {
                 rep.Add(new Equipment()
                 {
@@ -49,13 +49,13 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
             });
 
             // Act
-            var equipments = target.Get().ToList();
+            var equipment = target.Get().ToList();
 
             // Assert
-            Assert.Equal(2, equipments.Count);
+            Assert.Equal(2, equipment.Count);
 
-            Assert.Equal(0, equipments[0].Id);
-            Assert.Equal("First equipment", equipments[0].Description);
+            Assert.Equal(0, equipment[0].Id);
+            Assert.Equal("First equipment", equipment[0].Description);
         }
 
         #endregion
@@ -67,7 +67,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void GetEquipmentReturnCorrectEquipment()
         {
             // Arrange
-            var target = CreateEquipmentsController((rep) =>
+            var target = CreateEquipmentController((rep) =>
             {
                 rep.Add(new Equipment()
                 {
@@ -91,7 +91,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void GetEquipmentNullResult()
         {
             // Arrange
-            var target = CreateEquipmentsController(null);
+            var target = CreateEquipmentController(null);
 
             // Act
             var response = target.Get(1) as JsonResult;
@@ -104,7 +104,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void GetEquipmentNotFoundStatusCode()
         {
             // Arrange
-            var target = CreateEquipmentsController(null);
+            var target = CreateEquipmentController(null);
 
             // Act
             var response = target.Get(1) as JsonResult;
@@ -123,7 +123,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         {
             // Arrange
             EquipmentDummyRepository reposiotry = null;
-            var target = CreateEquipmentsController((rep) =>
+            var target = CreateEquipmentController((rep) =>
             {
                 rep.Add(new Equipment()
                 {
@@ -154,7 +154,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PostEquipmentReturnAddedEquipment()
         {
             // Arrange
-            var target = CreateEquipmentsController((rep) =>
+            var target = CreateEquipmentController((rep) =>
             {
                 rep.Add(new Equipment()
                 {
@@ -183,7 +183,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PostEquipmentCreatedStatusCode()
         {
             // Arrange
-            var target = CreateEquipmentsController((rep) =>
+            var target = CreateEquipmentController((rep) =>
             {
                 rep.Add(new Equipment()
                 {
@@ -210,7 +210,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PostEquipmentBadRequestIfEquipmentWithNameExist()
         {
             // Arrange
-            var target = CreateEquipmentsController((rep) =>
+            var target = CreateEquipmentController((rep) =>
             {
                 rep.Add(new Equipment()
                 {
@@ -237,7 +237,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PostMethodHasCheckArgumentsForNullAttribute()
         {
             // Arrange
-            var target = new EquipmentsController(null, null, null);
+            var target = new EquipmentController(null, null, null);
             Func<EquipmentViewModel, IActionResult> method = target.Post;
 
             // Act
@@ -251,7 +251,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PostMethodHasValidateModelStateAttribute()
         {
             // Arrange
-            var target = new EquipmentsController(null, null, null);
+            var target = new EquipmentController(null, null, null);
             Func<EquipmentViewModel, IActionResult> method = target.Post;
 
             // Act
@@ -265,7 +265,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PostInternalServerErrorStatusCode()
         {
             // Arrange
-            var target = CreateEquipmentsController((rep) =>
+            var target = CreateEquipmentController((rep) =>
             {
                 rep.ThrowExceptionWhenSaveData = true;
 
@@ -298,7 +298,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PutIncorrectId()
         {
             // Arrange
-            var target = CreateEquipmentsController(null);
+            var target = CreateEquipmentController(null);
 
             // Act
             var response = target.Put(1, new EquipmentViewModel() { Id = 5, Description = "First" });
@@ -311,7 +311,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PutNameWhichAlreadyExist()
         {
             // Arrange
-            var target = CreateEquipmentsController(rep =>
+            var target = CreateEquipmentController(rep =>
             {
                 rep.Add(new Equipment()
                 {
@@ -334,7 +334,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PutEquipmentDoesntExist()
         {
             // Arrange
-            var target = CreateEquipmentsController(rep =>
+            var target = CreateEquipmentController(rep =>
             {
                 rep.Add(new Equipment()
                 {
@@ -358,7 +358,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         {
             // Arrange
             EquipmentDummyRepository repository = null;
-            var target = CreateEquipmentsController(rep =>
+            var target = CreateEquipmentController(rep =>
             {
                 rep.Add(new Equipment()
                 {
@@ -384,7 +384,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         {
             // Arrange
             EquipmentDummyRepository repository = null;
-            var target = CreateEquipmentsController(rep =>
+            var target = CreateEquipmentController(rep =>
             {
                 rep.Add(new Equipment()
                 {
@@ -412,7 +412,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PutInternalServerErrorStatusCode()
         {
             // Arrange
-            var target = CreateEquipmentsController((rep) =>
+            var target = CreateEquipmentController((rep) =>
             {
                 rep.Add(new Equipment()
                 {
@@ -437,7 +437,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PutMethodHasCheckArgumentsForNullAttribute()
         {
             // Arrange
-            var target = new EquipmentsController(null, null, null);
+            var target = new EquipmentController(null, null, null);
             Func<int, EquipmentViewModel, IActionResult> method = target.Put;
 
             // Act
@@ -451,7 +451,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void PutMethodHasValidateModelStateAttribute()
         {
             // Arrange
-            var target = new EquipmentsController(null, null, null);
+            var target = new EquipmentController(null, null, null);
             Func<int, EquipmentViewModel, IActionResult> method = target.Put;
 
             // Act
@@ -470,7 +470,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void DeleteEquipmentOkResponseStatusCode()
         {
             // Arrange
-            var target = CreateEquipmentsController(rep =>
+            var target = CreateEquipmentController(rep =>
             {
                 rep.Add(new Equipment()
                 {
@@ -494,7 +494,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         {
             // Arrange
             EquipmentDummyRepository repository = null;
-            var target = CreateEquipmentsController(rep =>
+            var target = CreateEquipmentController(rep =>
             {
                 rep.Add(new Equipment()
                 {
@@ -518,7 +518,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void DeleteInternalServerErrorStatusCode()
         {
             // Arrange
-            var target = CreateEquipmentsController((rep) =>
+            var target = CreateEquipmentController((rep) =>
             {
                 rep.Add(new Equipment()
                 {
@@ -539,7 +539,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
         public void DeleteEquipmentWhichDoesntExistIsOk()
         {
             // Arrange
-            var target = CreateEquipmentsController(rep =>
+            var target = CreateEquipmentController(rep =>
             {
                 rep.Add(new Equipment()
                 {
@@ -563,18 +563,18 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
 
         #region "Helpers"
 
-        private IntraWeb.Controllers.Api.v1.EquipmentsController CreateEquipmentsController(Action<EquipmentDummyRepository> initRepository)
+        private IntraWeb.Controllers.Api.v1.EquipmentController CreateEquipmentController(Action<EquipmentDummyRepository> initRepository)
         {
-            var logger = new StubLogger<EquipmentsController>();
-            var equipmentsRepository = new EquipmentDummyRepository();
-            equipmentsRepository.ClearAll();
+            var logger = new StubLogger<EquipmentController>();
+            var equipmentRepository = new EquipmentDummyRepository();
+            equipmentRepository.ClearAll();
 
             if (initRepository != null)
             {
-                initRepository(equipmentsRepository);
+                initRepository(equipmentRepository);
             }
 
-            var target = new EquipmentsController(equipmentsRepository, logger, CreateMapper())
+            var target = new EquipmentController(equipmentRepository, logger, CreateMapper())
             {
                 ActionContext = new ActionContext
                 {
