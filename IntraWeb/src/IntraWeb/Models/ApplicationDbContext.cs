@@ -30,6 +30,11 @@ namespace IntraWeb.Models
         public DbSet<Equipment> Equipment { get; set; }
 
         /// <summary>
+        /// Gets or sets the room equipments.
+        /// </summary>
+        public DbSet<RoomEquipment> RoomEquipments { get; set; }
+
+        /// <summary>
         /// DbSet for users.
         /// </summary>
         public DbSet<User> Users { get; set; }
