@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using AutoMapper;
@@ -58,7 +58,7 @@ namespace IntraWeb.Controllers.Api.v1
 
             if (equipment == null)
             {
-                this.Response.StatusCode = (int) HttpStatusCode.NotFound;
+                this.Response.StatusCode = (int)HttpStatusCode.NotFound;
                 return this.Json(null);
             }
             else
@@ -87,7 +87,7 @@ namespace IntraWeb.Controllers.Api.v1
                 },
                 () =>
                 {
-                    this.Response.StatusCode = (int) HttpStatusCode.Created;
+                    this.Response.StatusCode = (int)HttpStatusCode.Created;
                     return this.Json(_mapper.Map<EquipmentViewModel>(equipment));
                 });
             }
@@ -115,7 +115,7 @@ namespace IntraWeb.Controllers.Api.v1
         {
             if (equipmentVm.Id != equipmentId)
             {
-                this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 var message = $"Invalid argument. Id '{equipmentId}' and equipmentVm.Id '{equipmentVm.Id}' are not equal.";
                 _logger.LogWarning(message);
 
@@ -125,7 +125,7 @@ namespace IntraWeb.Controllers.Api.v1
             var editedEquipment = _equipmentRepository.GetItem(equipmentId);
             if (editedEquipment == null)
             {
-                this.Response.StatusCode = (int) HttpStatusCode.NotFound;
+                this.Response.StatusCode = (int)HttpStatusCode.NotFound;
                 return this.Json(null);
             }
 
@@ -177,7 +177,7 @@ namespace IntraWeb.Controllers.Api.v1
             catch (Exception ex)
             {
                 _logger.LogError("Exception occured when saving data in EquipmentController.", ex);
-                this.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                this.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 return this.Json(new { Message = $"Saving equipment throw Exception '{ex.Message}'" });
             }
         }

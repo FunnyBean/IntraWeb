@@ -1,7 +1,8 @@
-﻿using IntraWeb.Models;
+using IntraWeb.Models;
 using IntraWeb.Services.Email;
 using IntraWeb.Services.Template;
 using Microsoft.AspNet.Authentication.Cookies;
+using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -13,7 +14,8 @@ using IntraWeb.ViewModels.Rooms;
 using System.Net;
 using System;
 using IntraWeb.Models.Rooms;
-using System.Threading.Tasks;
+using IntraWeb.Models.Users;
+using IntraWeb.ViewModels.Users;
 using AutoMapper;
 
 namespace IntraWeb
@@ -91,8 +93,6 @@ namespace IntraWeb
             AddIntraWebServices(services);
 
             //services.AddInstance<IRoomRepository>(new Models.Dummies.RoomDummyRepository()); //Testovacia implementacia
-            services.AddScoped<IRoomRepository, RoomRepository>();
-            services.AddScoped<IEquipmentRepository, EquipmentRepository>();
             InitializeAutoMapper(services);
         }
 
@@ -123,9 +123,9 @@ namespace IntraWeb
                              .Database.Migrate();
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                }
+            }
             }
 
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
@@ -137,19 +137,9 @@ namespace IntraWeb
 
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
             app.UseMvc();
+
+            DbInitializer.Initialize(app.ApplicationServices);
         }
-
-
-        private static void InitializeAutoMapper(IServiceCollection services)
-        {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<RoomsMappingProfile>();
-            });
-
-            services.AddInstance<IMapper>(config.CreateMapper());
-        }
-
 
         private void AddIntraWebServices(IServiceCollection services)
         {
@@ -160,8 +150,24 @@ namespace IntraWeb
             services.AddScoped<ITemplateLoader, FileTemplateLoader>(
                 (provider) => new FileTemplateLoader(System.IO.Path.Combine(_env.WebRootPath, "templates", "email"))
             );
+
+            services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddScoped<IEquipmentRepository, EquipmentRepository>();
+
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
         }
 
+        private static void InitializeAutoMapper(IServiceCollection services)
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<RoomsMappingProfile>();
+                cfg.AddProfile<UsersMappingProfile>();
+            });
+
+            services.AddInstance<IMapper>(config.CreateMapper());
+        }
 
         // Entry point for the application.
         public static void Main(string[] args) => WebApplication.Run<Startup>(args);

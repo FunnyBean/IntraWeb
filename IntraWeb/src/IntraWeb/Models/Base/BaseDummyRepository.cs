@@ -60,7 +60,24 @@ namespace IntraWeb.Models.Base
         /// <param name="item">THe item for delete.</param>
         public virtual void Delete(T item)
         {
-            _data.Remove(item);
+            if (item != null)
+            {
+                _data.Remove(item);
+            }
+        }
+
+        /// <summary>
+        /// Deletes the specified items by predicate.
+        /// </summary>
+        /// <param name="predicate">A function to test each element for a condition.</param>
+        public virtual void Delete(Expression<Func<T, bool>> predicate)
+        {
+            List<T> items = this.Get(predicate).ToList();
+
+            foreach (T item in items)
+            {
+                this.Delete(item);
+            }
         }
 
         /// <summary>

@@ -10,7 +10,7 @@ namespace IntraWeb.Models.Base
     /// <typeparam name="T">
     /// Type of model. <seealso cref="IntraWeb.Models.Base.IModel"/>
     /// </typeparam>
-    public interface IRepository<T> where T:class, IModel, new()
+    public interface IRepository<T> where T : class, IModel, new()
     {
         /// <summary>
         /// Gets all items.
@@ -88,6 +88,12 @@ namespace IntraWeb.Models.Base
         /// </summary>
         /// <param name="itemId">The item identifier for deleting.</param>
         void Delete(int itemId);
+
+        /// <summary>
+        /// Deletes the specified items by predicate.
+        /// </summary>
+        /// <param name="predicate">A function to test each element for a condition.</param>
+        void Delete(Expression<Func<T, bool>> predicate);
 
         /// <summary>
         /// Save changes.

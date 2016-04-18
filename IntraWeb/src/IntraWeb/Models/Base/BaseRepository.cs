@@ -57,6 +57,15 @@ namespace IntraWeb.Models.Base
         }
 
         /// <summary>
+        /// Deletes the specified items by predicate.
+        /// </summary>
+        /// <param name="predicate">A function to test each element for a condition.</param>
+        public virtual void Delete(Expression<Func<T, bool>> predicate)
+        {
+            _dbContext.RemoveRange(this.Get(predicate));
+        }
+
+        /// <summary>
         /// Edits the specified item.
         /// </summary>
         /// <param name="roomitem">The item for edit.</param>

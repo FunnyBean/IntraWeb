@@ -1,15 +1,14 @@
-﻿﻿using System.Collections.Generic;
+﻿using IntraWeb.Models.Base;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using IntraWeb.Models.Base;
 
-namespace IntraWeb.Models.Rooms
+namespace IntraWeb.Models.Users
 {
     /// <summary>
-    /// Model, which represent Equipment.
+    /// Model, which represent Role.
     /// </summary>
-    public class Equipment: IModel
+    public class Role : IModel
     {
-
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>
@@ -19,21 +18,21 @@ namespace IntraWeb.Models.Rooms
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the description.
+        /// Gets or sets the name.
         /// </summary>
         /// <value>
-        /// The description.
+        /// The name.
         /// </value>
-        [MaxLength(100)]
+        [MaxLength(50)]
         [Required()]
-        public string Description { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the rooms.
+        /// Gets or sets the Users.
         /// </summary>
         /// <value>
-        /// The rooms.
+        /// The users.
         /// </value>
-        public ICollection<RoomEquipment> Rooms { get; set; }
+        public ICollection<UserRole> Users { get; set; }
     }
 }
