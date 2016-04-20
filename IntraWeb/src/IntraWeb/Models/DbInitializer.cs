@@ -46,7 +46,7 @@ namespace IntraWeb.Models
                 _context.Users.Add(new User()
                 {
                     Email = "demo@demo.com",
-                    UserName = "demo",
+                    Nickname = "demo",
                     Name = "demo",
                     Surname = "demo",
                     HashedPassword = "",

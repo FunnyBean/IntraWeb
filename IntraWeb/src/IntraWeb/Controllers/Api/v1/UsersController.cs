@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using IntraWeb.Models.Users;
 using IntraWeb.ViewModels.Users;
 using IntraWeb.Models;
-using System.Linq;
+using AutoMapper;
 
 namespace IntraWeb.Controllers.Api.v1
 {
@@ -17,8 +17,8 @@ namespace IntraWeb.Controllers.Api.v1
         #region Private Fields
 
         private IUserRepository _userRepository;
-        private IUserRoleRepository _userRoleRepository;
         private ILogger<UsersController> _logger;
+        private IMapper _mapper;
 
         #endregion
 
@@ -27,13 +27,14 @@ namespace IntraWeb.Controllers.Api.v1
         /// </summary>
         /// <param name="userRepository">The user repository.</param>
         /// <param name="logger">Logger.</param>
+        /// <param name="mapper">Mapper for mapping domain classes to model classes and reverse.</param>
         public UsersController(IUserRepository userRepository,
-                           IUserRoleRepository userRoleRepository,
-                      ILogger<UsersController> logger)
+                      ILogger<UsersController> logger,
+                                       IMapper mapper)
         {
             _userRepository = userRepository;
-            _userRoleRepository = userRoleRepository;
             _logger = logger;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace IntraWeb.Controllers.Api.v1
         [HttpGet]
         public IEnumerable<UserViewModel> Get()
         {
-            return AutoMapper.Mapper.Map<IEnumerable<UserViewModel>>(_userRepository.GetAllIncluding(x => x.UserRoles));
+            return _mapper.Map<IEnumerable<UserViewModel>>(_userRepository.GetAll());
         }
 
         /// <summary>
@@ -68,9 +69,16 @@ namespace IntraWeb.Controllers.Api.v1
         {
             if (_userRepository.GetItem(u => u.Email == userVm.Email) == null)
             {
-                User user = AutoMapper.Mapper.Map<User>(userVm);
+                User user = _mapper.Map<User>(userVm);
                 user.DateCreated = DateTime.Now;
-                user.Photo = DbInitializer.GetDefaultAvatar();
+
+                if (userVm.Photo != null)
+                {
+                    user.Photo = userVm.Photo;
+                } else
+                {
+                    user.Photo = DbInitializer.GetDefaultAvatar();
+                }
 
                 return SaveData(() =>
                 {
@@ -79,9 +87,9 @@ namespace IntraWeb.Controllers.Api.v1
                 () =>
                 {
                     this.Response.StatusCode = (int)HttpStatusCode.Created;
-                    return this.Json(new
+
+                    return this.Json(new JsonResult(this.Json(_mapper.Map<UserViewModel>(user)))
                     {
-                        Data = this.Json(AutoMapper.Mapper.Map<UserViewModel>(user)),
                         StatusCode = this.Response.StatusCode
                     });
                 });
@@ -89,8 +97,9 @@ namespace IntraWeb.Controllers.Api.v1
             else
             {
                 this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return this.Json(new {
-                    Message = $"User with email '{userVm.Email}' already exist.",
+
+                return this.Json(new JsonResult($"User with email '{userVm.Email}' already exist.")
+                {
                     StatusCode = this.Response.StatusCode
                 });
             }
@@ -100,7 +109,7 @@ namespace IntraWeb.Controllers.Api.v1
         /// Post new users.
         /// </summary>
         /// <param name="userVms">New users.</param>
-        /// <returns>Added user.</returns>
+        /// <returns>Added users.</returns>
         [HttpPost("BulkInsert")]
         [ValidateModelState, CheckArgumentsForNull]
         //[Authorize(Roles = "Administrator")] - ToDo: Zakomentovane pokiaľ sa nespraví autorizácia
@@ -123,6 +132,7 @@ namespace IntraWeb.Controllers.Api.v1
         /// </summary>
         /// <param name="userId">User id for update.</param>
         /// <param name="userVm">User view model, with new properties.</param>
+        /// <returns>Updated user.</returns>
         [HttpPut("{userId}")]
         [ValidateModelState, CheckArgumentsForNull]
         //[Authorize(Roles = "Administrator")] - ToDo: Zakomentovane pokiaľ sa nespraví autorizácia
@@ -133,17 +143,17 @@ namespace IntraWeb.Controllers.Api.v1
                 var message = $"Invalid argument. Id '{userId}' and userVm.Id '{userVm.Id}' are not equal.";
                 _logger.LogWarning(message);
 
-                this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 return this.Json(new { Message = message });
             }
 
             User oldUser = _userRepository.GetItem(userId);
             if (oldUser == null)
             {
-                this.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                this.Response.StatusCode = (int) HttpStatusCode.NotFound;
                 return this.Json(null);
             }
-            
+
             if (ExistAnotherUserWithEmail(userVm.Email, userId))
             {
                 this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
@@ -152,36 +162,13 @@ namespace IntraWeb.Controllers.Api.v1
             else
             {
                 IActionResult result;
-                IEnumerable<int> newRolesIds = (userVm.UserRoles ?? new List<UserRoleViewModel>()).Select(x => x.RoleId).AsEnumerable();
-
-                // Update user values
-                userVm.UserRoles = null; // It's important for disable duplicating of roles
-                User editedUser = AutoMapper.Mapper.Map(userVm, oldUser);
+                User editedUser = _mapper.Map(userVm, oldUser);
 
                 result = SaveData(() =>
                 {
                     _userRepository.Edit(editedUser);
                 });
 
-                // Update roles
-                IEnumerable<int> oldRolesIds = _userRepository.GetItemIncluding(userId, true, x => x.UserRoles).UserRoles.Select(x => x.RoleId).AsEnumerable();
-
-                if (!Enumerable.SequenceEqual(oldRolesIds, newRolesIds)) // Are role Ids the same?
-                {
-                    _userRoleRepository.Delete(x => x.UserId == oldUser.Id); // Remove old roles (new roles will be added later)
-                    _userRoleRepository.Save();
-
-                    foreach (int roleId in newRolesIds)
-                    {
-                        _userRoleRepository.Add(new UserRole()
-                        {
-                            RoleId = roleId,
-                            UserId = oldUser.Id
-                        });
-                    }
-
-                    _userRoleRepository.Save();
-                }
 
                 return result;
             }

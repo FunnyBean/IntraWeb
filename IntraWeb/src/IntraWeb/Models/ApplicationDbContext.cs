@@ -25,9 +25,14 @@ namespace IntraWeb.Models
         public DbSet<Room> Rooms { get; set; }
 
         /// <summary>
-        /// Gets or sets the equipments.
+        /// Gets or sets the equipment.
         /// </summary>
-        public DbSet<Equipment> Equipments { get; set; }
+        public DbSet<Equipment> Equipment { get; set; }
+
+        /// <summary>
+        /// Gets or sets the room equipments.
+        /// </summary>
+        public DbSet<RoomEquipment> RoomEquipments { get; set; }
 
         /// <summary>
         /// DbSet for users.
@@ -60,6 +65,8 @@ namespace IntraWeb.Models
             builder.Entity<Room>().HasIndex(r => r.Name).IsUnique();
             builder.Entity<Equipment>().HasIndex(e => e.Description).IsUnique();
 
+            builder.Entity<RoomEquipment>().HasKey(re => new { re.EquipmentId, re.RoomId });
+
             builder.Entity<RoomEquipment>()
                 .HasOne(re => re.Equipment)
                 .WithMany(e => e.Rooms)
@@ -67,27 +74,31 @@ namespace IntraWeb.Models
 
             builder.Entity<RoomEquipment>()
                 .HasOne(re => re.Room)
-                .WithMany(r => r.Equipments)
+                .WithMany(r => r.Equipment)
                 .HasForeignKey(re => re.RoomId);
         }
 
         private void OnUserModelCreating(ModelBuilder builder)
         {
             // User
-            builder.Entity<User>().Property(u => u.UserName).HasMaxLength(100);
+            builder.Entity<User>().Property(u => u.Nickname).HasMaxLength(100);
             builder.Entity<User>().Property(u => u.Email).IsRequired().HasMaxLength(200);
             builder.Entity<User>().Property(u => u.Name).HasMaxLength(100);
             builder.Entity<User>().Property(u => u.Surname).HasMaxLength(100);
             builder.Entity<User>().Property(u => u.HashedPassword).HasMaxLength(200);
             builder.Entity<User>().Property(u => u.Salt).HasMaxLength(50);
 
-            // Role
-            builder.Entity<Role>().Property(r => r.Name).IsRequired().HasMaxLength(50);
-
             // UserRole
-            builder.Entity<UserRole>().Property(ur => ur.UserId).IsRequired();
-            builder.Entity<UserRole>().Property(ur => ur.RoleId).IsRequired();
             builder.Entity<UserRole>().HasKey(x => new { x.UserId, x.RoleId });
+
+            builder.Entity<UserRole>()
+                .HasOne(ur => ur.User)
+                .WithMany(ur => ur.Roles)
+                .HasForeignKey(ur => ur.UserId);
+            builder.Entity<UserRole>()
+                .HasOne(ur => ur.Role)
+                .WithMany(ur => ur.Users)
+                .HasForeignKey(ur => ur.RoleId);
         }
     }
 }

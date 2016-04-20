@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Microsoft.Data.Entity.Migrations;
 using Microsoft.Data.Entity.Metadata;
 
-namespace intraweb.Migrations
+namespace IntraWeb.Migrations
 {
-    public partial class newUsers : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,7 +28,8 @@ namespace intraweb.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: false)
+                    Name = table.Column<string>(nullable: false),
+                    Type = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,10 +58,10 @@ namespace intraweb.Migrations
                     HashedPassword = table.Column<string>(nullable: true),
                     IsLocked = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(nullable: true),
+                    Nickname = table.Column<string>(nullable: true),
                     Photo = table.Column<byte[]>(nullable: true),
                     Salt = table.Column<string>(nullable: true),
-                    Surname = table.Column<string>(nullable: true),
-                    UserName = table.Column<string>(nullable: true)
+                    Surname = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -70,15 +71,13 @@ namespace intraweb.Migrations
                 name: "RoomEquipment",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Count = table.Column<int>(nullable: false),
                     EquipmentId = table.Column<int>(nullable: false),
-                    RoomId = table.Column<int>(nullable: false)
+                    RoomId = table.Column<int>(nullable: false),
+                    Amount = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoomEquipment", x => x.Id);
+                    table.PrimaryKey("PK_RoomEquipment", x => new { x.EquipmentId, x.RoomId });
                     table.ForeignKey(
                         name: "FK_RoomEquipment_Equipment_EquipmentId",
                         column: x => x.EquipmentId,
@@ -97,9 +96,7 @@ namespace intraweb.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<int>(nullable: false),
-                    RoleId = table.Column<int>(nullable: false),
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                    RoleId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

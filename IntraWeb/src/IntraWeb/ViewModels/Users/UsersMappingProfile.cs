@@ -12,7 +12,14 @@ namespace IntraWeb.ViewModels.Users
 
         protected override void Configure()
         {
-            this.CreateMap<User, UserViewModel>().ReverseMap();
+            this.CreateMap<User, UserViewModel>().ReverseMap().
+                AfterMap((m, vm) =>
+                {
+                    foreach (var role in vm.Roles)
+                    {
+                        role.UserId = m.Id;
+                    }
+                });
             this.CreateMap<Role, RoleViewModel>().ReverseMap();
             this.CreateMap<UserRole, UserRoleViewModel>().ReverseMap();
         }

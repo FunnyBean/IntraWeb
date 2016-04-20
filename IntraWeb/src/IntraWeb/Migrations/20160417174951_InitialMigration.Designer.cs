@@ -5,11 +5,11 @@ using Microsoft.Data.Entity.Metadata;
 using Microsoft.Data.Entity.Migrations;
 using IntraWeb.Models;
 
-namespace intraweb.Migrations
+namespace IntraWeb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20160305095122_newUsers")]
-    partial class newUsers
+    [Migration("20160417174951_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,6 +44,10 @@ namespace intraweb.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 50);
 
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 25);
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
@@ -52,16 +56,13 @@ namespace intraweb.Migrations
 
             modelBuilder.Entity("IntraWeb.Models.Rooms.RoomEquipment", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("Count");
-
                     b.Property<int>("EquipmentId");
 
                     b.Property<int>("RoomId");
 
-                    b.HasKey("Id");
+                    b.Property<decimal>("Amount");
+
+                    b.HasKey("EquipmentId", "RoomId");
                 });
 
             modelBuilder.Entity("IntraWeb.Models.Users.Role", b =>
@@ -95,15 +96,15 @@ namespace intraweb.Migrations
                     b.Property<string>("Name")
                         .HasAnnotation("MaxLength", 100);
 
+                    b.Property<string>("Nickname")
+                        .HasAnnotation("MaxLength", 100);
+
                     b.Property<byte[]>("Photo");
 
                     b.Property<string>("Salt")
                         .HasAnnotation("MaxLength", 50);
 
                     b.Property<string>("Surname")
-                        .HasAnnotation("MaxLength", 100);
-
-                    b.Property<string>("UserName")
                         .HasAnnotation("MaxLength", 100);
 
                     b.HasKey("Id");
@@ -114,9 +115,6 @@ namespace intraweb.Migrations
                     b.Property<int>("UserId");
 
                     b.Property<int>("RoleId");
-
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
 
                     b.HasKey("UserId", "RoleId");
                 });

@@ -5,7 +5,7 @@ using Microsoft.Data.Entity.Metadata;
 using Microsoft.Data.Entity.Migrations;
 using IntraWeb.Models;
 
-namespace intraweb.Migrations
+namespace IntraWeb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -43,6 +43,10 @@ namespace intraweb.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 50);
 
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 25);
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
@@ -51,16 +55,13 @@ namespace intraweb.Migrations
 
             modelBuilder.Entity("IntraWeb.Models.Rooms.RoomEquipment", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("Count");
-
                     b.Property<int>("EquipmentId");
 
                     b.Property<int>("RoomId");
 
-                    b.HasKey("Id");
+                    b.Property<decimal>("Amount");
+
+                    b.HasKey("EquipmentId", "RoomId");
                 });
 
             modelBuilder.Entity("IntraWeb.Models.Users.Role", b =>
@@ -94,15 +95,15 @@ namespace intraweb.Migrations
                     b.Property<string>("Name")
                         .HasAnnotation("MaxLength", 100);
 
+                    b.Property<string>("Nickname")
+                        .HasAnnotation("MaxLength", 100);
+
                     b.Property<byte[]>("Photo");
 
                     b.Property<string>("Salt")
                         .HasAnnotation("MaxLength", 50);
 
                     b.Property<string>("Surname")
-                        .HasAnnotation("MaxLength", 100);
-
-                    b.Property<string>("UserName")
                         .HasAnnotation("MaxLength", 100);
 
                     b.HasKey("Id");
@@ -113,9 +114,6 @@ namespace intraweb.Migrations
                     b.Property<int>("UserId");
 
                     b.Property<int>("RoleId");
-
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
 
                     b.HasKey("UserId", "RoleId");
                 });

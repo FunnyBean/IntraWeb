@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace IntraWeb.ViewModels.Rooms
@@ -37,11 +37,26 @@ namespace IntraWeb.ViewModels.Rooms
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the equipments.
+        /// Gets or sets the type of room.
         /// </summary>
         /// <value>
-        /// The equipments.
+        /// The room type.
         /// </value>
-        public ICollection<EquipmentViewModel> Equipments { get; set; }
+        [MaxLength(25)]
+        [Required()]
+        public string Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets the equipment.
+        /// </summary>
+        /// <value>
+        /// The equipment.
+        /// </value>
+        public ICollection<RoomEquipmentViewModel> Equipment { get; set; }
+
+        public override string ToString()
+        {
+            return $"{this.Id} - {this.Name}";
+        }
     }
 }

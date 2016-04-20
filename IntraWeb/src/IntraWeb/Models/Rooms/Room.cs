@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IntraWeb.Models.Base;
 
@@ -7,7 +7,7 @@ namespace IntraWeb.Models.Rooms
     /// <summary>
     /// Model, which represent Room.
     /// </summary>
-    public class Room: IModel
+    public class Room : IModel
     {
         /// <summary>
         /// Gets or sets the identifier.
@@ -36,13 +36,23 @@ namespace IntraWeb.Models.Rooms
         [MaxLength(255)]
         public string Description { get; set; }
 
-
         /// <summary>
-        /// Gets or sets the equipments.
+        /// Gets or sets the type of room.
         /// </summary>
         /// <value>
-        /// The equipments.
+        /// The room type.
         /// </value>
-        public ICollection<RoomEquipment> Equipments { get; set; }
+        [MaxLength(25)]
+        [Required()]
+        public string Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets the equipment.
+        /// </summary>
+        /// <value>
+        /// The equipment.
+        /// </value>
+        public ICollection<RoomEquipment> Equipment { get; set; }
+
     }
 }

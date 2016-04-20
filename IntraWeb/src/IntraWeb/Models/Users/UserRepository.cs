@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Data.Entity;
 
 namespace IntraWeb.Models.Users
 {
@@ -27,7 +28,7 @@ namespace IntraWeb.Models.Users
 
         public User GetSingleByUsername(string username)
         {
-            return this.GetSingle(x => x.UserName == username);
+            return this.GetSingle(x => x.Name == username);
         }
 
 
@@ -35,15 +36,76 @@ namespace IntraWeb.Models.Users
         {
             List<Role> _roles = null;
 
-            User _user = this.GetSingle(u => u.UserName == username, u => u.UserRoles);
+            User _user = this.GetSingle(u => u.Name == username, u => u.Roles);
             if (_user != null)
             {
                 _roles = new List<Role>();
-                foreach (var _userRole in _user.UserRoles)
+                foreach (var _userRole in _user.Roles)
                     _roles.Add(_roleReposistory.GetItem(_userRole.RoleId));
             }
 
             return _roles;
+        }
+
+        /// <summary>
+        /// Gets the user by Id with roles.
+        /// </summary>
+        /// <param name="userId">The user identifier</param>
+        /// <returns>
+        /// Return user with roles; otherwise null.
+        /// </returns>
+        public override User GetItem(int userId)
+        {
+            return _dbContext.Set<User>().
+                Include(r => r.Roles).
+                AsNoTracking().
+                FirstOrDefault(r => r.Id == userId);
+        }
+
+        /// <summary>
+        /// Gets all users with roles.
+        /// </summary>
+        /// <returns>
+        /// Return all users with roles; otherwise null.
+        /// </returns>
+        public override IQueryable<User> GetAll()
+        {
+            return _dbContext.Set<User>().
+                Include(r => r.Roles).
+                AsNoTracking();
+        }
+
+        /// <summary>
+        /// Edits the specified item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        public override void Edit(User item)
+        {
+            var userRoles = item.Roles;
+
+            item.Roles = null;
+            base.Edit(item);
+
+            if (userRoles != null)
+            {
+                var oldRoles = _dbContext.Set<UserRole>().Where(p => p.UserId == item.Id);
+
+                foreach (var role in userRoles.Where(p => !HasUserRole(item.Id, p.RoleId)))
+                {
+                    _dbContext.Entry(role).State = EntityState.Added;
+                }
+
+                foreach (var role in oldRoles.Where((r) => !userRoles.Any(p => (p.RoleId == r.RoleId))))
+                {
+                    _dbContext.Entry(role).State = EntityState.Deleted;
+                }
+            }
+
+        }
+
+        private bool HasUserRole(int userId, int roleId)
+        {
+            return _dbContext.Set<UserRole>().Any(p => p.UserId == userId && p.RoleId == roleId);
         }
     }
 }

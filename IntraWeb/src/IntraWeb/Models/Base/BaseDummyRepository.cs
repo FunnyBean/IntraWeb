@@ -39,7 +39,7 @@ namespace IntraWeb.Models.Base
         /// </summary>
         /// <param name="item">The item for add.</param>
         public virtual void Add(T item)
-        {          
+        {
             item.Id = _data?.Count > 0 ? _data.Max(p => p.Id) + 1 : 0;
 
             _data.Add(item);
@@ -72,7 +72,9 @@ namespace IntraWeb.Models.Base
         /// <param name="predicate">A function to test each element for a condition.</param>
         public virtual void Delete(Expression<Func<T, bool>> predicate)
         {
-            foreach (T item in this.Get(predicate))
+            List<T> items = this.Get(predicate).ToList();
+
+            foreach (T item in items)
             {
                 this.Delete(item);
             }
@@ -101,20 +103,6 @@ namespace IntraWeb.Models.Base
         }
 
         /// <summary>
-        /// Gets the item by Id with includings.
-        /// </summary>
-        /// <param name="itemId">The item identifier.</param>
-        /// <param name="asNoTracking">The returned entities will not be cached in the DbContext.</param>
-        /// <param name="includeProperties">A function for all includes.</param>
-        /// <returns>
-        /// Return item with specific id; otherwise null.
-        /// </returns>
-        public virtual T GetItemIncluding(int itemId, bool asNoTracking = false, params Expression<Func<T, object>>[] includeProperties)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         /// Gets the item by predicate.
         /// </summary>
         /// <param name="predicate">The predicate.</param>
@@ -127,6 +115,32 @@ namespace IntraWeb.Models.Base
         }
 
         /// <summary>
+        /// Gets the item by Id.
+        /// </summary>
+        /// <param name="itemId">The item identifier.</param>
+        /// <param name="includeProperties">The include properties.</param>
+        /// <returns>
+        /// Return item with specific id; otherwise null.
+        /// </returns>
+        public T GetItem(int itemId, params Expression<Func<T, object>>[] includeProperties)
+        {
+            return this.GetItem(itemId);
+        }
+
+        /// <summary>
+        /// Gets the item by predicate.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <param name="includeProperties">The include properties.</param>
+        /// <returns>
+        /// Return item, which match the predicate; otherwise null.
+        /// </returns>
+        public T GetItem(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        {
+            return this.GetItem(predicate);
+        }
+
+        /// <summary>
         /// Gets all items.
         /// </summary>
         /// <returns>
@@ -135,17 +149,6 @@ namespace IntraWeb.Models.Base
         public virtual IQueryable<T> GetAll()
         {
             return _data.AsQueryable();
-        }
-
-        /// <summary>
-        /// Gets all items with includings.
-        /// </summary>
-        /// <returns>
-        /// Queryalble for obtain all items.
-        /// </returns>
-        public virtual IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>

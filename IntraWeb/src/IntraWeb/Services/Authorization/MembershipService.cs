@@ -13,11 +13,13 @@ namespace IntraWeb.Services.Authorization
         #region Variables
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
-        private readonly IUserRoleRepository _userRoleRepository;
+        private readonly IRoleRepository _userRoleRepository;
         private readonly IEncryptionService _encryptionService;
         #endregion
-        public MembershipService(IUserRepository userRepository, IRoleRepository roleRepository,
-        IUserRoleRepository userRoleRepository, IEncryptionService encryptionService)
+        public MembershipService(IUserRepository userRepository,
+                                 IRoleRepository roleRepository,
+                                 IRoleRepository userRoleRepository,
+                                 IEncryptionService encryptionService)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
@@ -34,10 +36,10 @@ namespace IntraWeb.Services.Authorization
             var user = _userRepository.GetSingleByUsername(username);
             if (user != null && isUserValid(user, password))
             {
-                var userRoles = GetUserRoles(user.UserName);
+                var userRoles = GetUserRoles(user.Name);
                 membershipCtx.User = user;
 
-                var identity = new GenericIdentity(user.UserName);
+                var identity = new GenericIdentity(user.Name);
                 membershipCtx.Principal = new GenericPrincipal(
                     identity,
                     userRoles.Select(x => x.Name).ToArray());
@@ -60,7 +62,7 @@ namespace IntraWeb.Services.Authorization
 
             if (existingUser != null)
             {
-                foreach (var userRole in existingUser.UserRoles)
+                foreach (var userRole in existingUser.Roles)
                 {
                     _result.Add(userRole.Role);
                 }
@@ -71,21 +73,6 @@ namespace IntraWeb.Services.Authorization
         #endregion
 
         #region Helper methods
-        private void addUserToRole(User user, int roleId)
-        {
-            var role = _roleRepository.GetItem(roleId);
-            if (role == null)
-                throw new Exception("Role doesn't exist.");
-
-            var userRole = new UserRole()
-            {
-                RoleId = role.Id,
-                UserId = user.Id
-            };
-            _userRoleRepository.Add(userRole);
-
-            _userRepository.Save();
-        }
 
         private bool isPasswordValid(User user, string password)
         {

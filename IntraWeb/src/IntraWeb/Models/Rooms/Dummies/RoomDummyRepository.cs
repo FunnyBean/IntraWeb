@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using IntraWeb.Models.Base;
 
-namespace IntraWeb.Models.Rooms
+namespace IntraWeb.Models.Rooms.Dummies
 {
     /// <summary>
     /// Room dummy repository for testing
@@ -48,6 +48,15 @@ namespace IntraWeb.Models.Rooms
             dummyData.Add(new Room() { Id = 0, Name = "Žltá školiaca", Description = "Pekná veľká" });
             dummyData.Add(new Room() { Id = 1, Name = "Modrá školiaca", Description = "Nádherná" });
             dummyData.Add(new Room() { Id = 2, Name = "Malá zasadačka", Description = "Nádherná zasadačka" });
+        }
+
+        /// <summary>
+        /// Get types of rooms.
+        /// </summary>
+        /// <returns>Types of rooms.</returns>
+        public IEnumerable<string> GetTypes()
+        {
+            return _data.Select(p => p.Type).Distinct();
         }
     }
 }
