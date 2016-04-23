@@ -1,16 +1,18 @@
-﻿using System;
-using System.Linq;
-using Xunit;
-using IntraWeb.UnitTests.Service;
+﻿using Microsoft.AspNet.Http.Internal;
 using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Http.Internal;
+using System;
+using System.Linq;
 using System.Net;
-using IntraWeb.UnitTests.Filters;
-using IntraWeb.Filters;
-using IntraWeb.Controllers.Api.v1;
-using IntraWeb.ViewModels.Users;
-using IntraWeb.Models.Users;
+
 using AutoMapper;
+using Xunit;
+
+using IntraWeb.Controllers.Api.v1;
+using IntraWeb.Filters;
+using IntraWeb.Models.Users;
+using IntraWeb.UnitTests.Filters;
+using IntraWeb.UnitTests.Service;
+using IntraWeb.ViewModels.Users;
 
 namespace IntraWeb.UnitTests.Controllers.Api.v1
 {
@@ -59,7 +61,7 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
                 });
             });
 
-            // Act 
+            // Act
             var roles = target.Get().ToList();
 
             // Assert
@@ -580,12 +582,10 @@ namespace IntraWeb.UnitTests.Controllers.Api.v1
 
         private IMapper CreateMapper()
         {
-            var config = new MapperConfiguration(cfg =>
+            return TestHelper.CreateMapper(cfg =>
             {
                 cfg.AddProfile<UsersMappingProfile>();
             });
-
-            return config.CreateMapper();
         }
 
         #endregion
