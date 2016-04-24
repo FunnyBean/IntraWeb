@@ -19,8 +19,8 @@ namespace IntraWeb.Models.Users
         {
             base.InitDummyData(dummyData);
 
-            dummyData.Add(new Role() { Id = 0, Name = "Admin" });
-            dummyData.Add(new Role() { Id = 1, Name = "User" });
+            dummyData.Add(new Role() { Id = 1, Name = "Admin" });
+            dummyData.Add(new Role() { Id = 2, Name = "User" });
         }
     }
 }

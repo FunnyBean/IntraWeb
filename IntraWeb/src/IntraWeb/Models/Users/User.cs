@@ -55,6 +55,8 @@ namespace IntraWeb.Models.Users
         [MaxLength(100)]
         public string Surname { get; set; }
 
+        public string Password { set { HashedPassword = BCrypt.Net.BCrypt.HashPassword(value, 13); } }
+
         /// <summary>
         /// Gets or sets the hashed password.
         /// </summary>

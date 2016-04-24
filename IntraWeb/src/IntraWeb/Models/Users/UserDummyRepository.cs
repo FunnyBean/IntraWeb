@@ -1,7 +1,7 @@
-﻿using System;
+﻿using IntraWeb.Models.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using IntraWeb.Models.Base;
 
 namespace IntraWeb.Models.Users
 {
@@ -12,6 +12,34 @@ namespace IntraWeb.Models.Users
     /// <seealso cref="IntraWeb.Models.Base.BaseDummyRepository{T}" />
     public class UserDummyRepository : BaseDummyRepository<User>, IUserRepository
     {
+
+        protected override void InitDummyData(IList<User> dummyData)
+        {
+            base.InitDummyData(dummyData);
+
+            dummyData.Add(CreateUser("gabo", "Gabriel", "Archanjel", "stano@tanopetko.eu", "21gabo12"));
+            dummyData.Add(CreateUser("jankohrasko", "Janko", "Hraško", "janko.hrasko@example.com", "21hrasko12"));
+            dummyData.Add(CreateUser("dlhy", "Juraj", "Dlhý", "dlhy@example.com", "21dlhy12"));
+            dummyData.Add(CreateUser("siroky", "Ďurko", "Široký", "siroky@example.com", "21siroky12"));
+            dummyData.Add(CreateUser("bystrozraky", "Jožko", "Bystrozraký", "bystrozraky@example.com", "21bystrozraky12"));
+        }
+
+        private int idGenerator = 0;
+
+        private User CreateUser(string userName, string name, string surname, string email, string password)
+        {
+            idGenerator++;
+            return new User()
+            {
+                Id = idGenerator,
+                Nickname = userName,
+                Name = name,
+                Surname = surname,
+                Email = email,
+                Password = password,
+            };
+        }
+
 
         /// <summary>
         /// Gets user with specific email.
@@ -37,23 +65,9 @@ namespace IntraWeb.Models.Users
             base.Add(user);
         }
 
-        /// <summary>
-        /// Initializes the dummy data.
-        /// </summary>
-        /// <param name="dummyData">The dummy data.</param>
-        protected override void InitDummyData(IList<User> dummyData)
+        public User GetSingleByUsername(string userName)
         {
-            base.InitDummyData(dummyData);
-
-            dummyData.Add(new User() { Id = 0, Nickname = "Janko", Surname = "Hraško", Email = "janko.hrasko@gmail.com" });
-            dummyData.Add(new User() { Id = 1, Nickname = "Juraj", Surname = "Dlhý", Email = "dlhy@gmail.com" });
-            dummyData.Add(new User() { Id = 2, Nickname = "Ďurko", Surname = "Široký", Email = "sikory@gmail.com" });
-            dummyData.Add(new User() { Id = 3, Nickname = "Jožko", Surname = "Bistrozraký", Email = "bistrozraky@gmail.com" });
-        }
-
-        public User GetSingleByUsername(string username)
-        {
-            throw new NotImplementedException();
+            return _data.FirstOrDefault(u => u.Nickname.Equals(userName, StringComparison.CurrentCultureIgnoreCase));
         }
 
         public IEnumerable<Role> GetUserRoles(string username)
