@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace IntraWeb.ViewModels.Users
 {
@@ -10,7 +6,7 @@ namespace IntraWeb.ViewModels.Users
     {
         [Required()]
         [MaxLength(100)]
-        public string Username { get; set; }
+        public string UserName { get; set; }
 
         [Required()]
         [MaxLength(100)]

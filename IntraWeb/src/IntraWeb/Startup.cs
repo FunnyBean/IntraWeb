@@ -1,29 +1,25 @@
-﻿using IntraWeb.Models;
+﻿using AutoMapper;
+using IntraWeb.Models;
+using IntraWeb.Models.Rooms;
+using IntraWeb.Models.Users;
 using IntraWeb.Services.Email;
 using IntraWeb.Services.Template;
-using Microsoft.AspNet.Authentication.Cookies;
-using System.Threading.Tasks;
+using IntraWeb.ViewModels.Rooms;
+using IntraWeb.ViewModels.Users;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using IntraWeb.ViewModels.Rooms;
-using System.Net;
 using System;
-using IntraWeb.Models.Rooms;
-using IntraWeb.Models.Users;
-using IntraWeb.ViewModels.Users;
-using AutoMapper;
-using IntraWeb.Models.Authorization;
-using IntraWeb.Services.Authorization;
 
 namespace IntraWeb
 {
     public class Startup
     {
+
+        public const string AuthenticationScheme = "IntrawebAuthentication";
 
         IHostingEnvironment _env;
 
@@ -61,41 +57,11 @@ namespace IntraWeb
                 .AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(conf =>
-            {
-                //ToDo: Refaktorovat. Extrahovat do zvlast triedy, ked bude jasne ako ideme riesit autorizaciu.
-                conf.Password.RequiredLength = 8;
-                conf.Password.RequireNonLetterOrDigit = false;
-                conf.Password.RequireLowercase = false;
-                conf.Password.RequireUppercase = false;
-                conf.Cookies.ApplicationCookie.Events = new CookieAuthenticationEvents()
-                {
-                    OnRedirectToLogin = ctx =>
-                    {
-                        if (ctx.Request.Path.StartsWithSegments("/api") &&
-                            ctx.Response.StatusCode == (int) HttpStatusCode.OK)
-                        {
-                            ctx.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
-                        }
-                        else
-                        {
-                            ctx.Response.Redirect(ctx.RedirectUri);
-                        }
-
-                        return Task.FromResult(0);
-                    }
-                };
-            })
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
-            services.AddAuthentication();
 
             services.AddMvc(); // ToDo: Replace with Web API when it will be done in ASP.NET Core 1.0
 
             // Add application services
             AddIntraWebServices(services);
-
-            //services.AddInstance<IRoomRepository>(new Models.Dummies.RoomDummyRepository()); //Testovacia implementacia
             InitializeAutoMapper(services);
         }
 
@@ -133,6 +99,12 @@ namespace IntraWeb
 
             app.UseCookieAuthentication(options =>
             {
+                options.AuthenticationScheme = AuthenticationScheme;
+                options.CookieName = "IntraWebAuth";
+                options.ReturnUrlParameter = "returnUrl";
+                options.SlidingExpiration = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                options.LoginPath = "/login";
                 options.AutomaticAuthenticate = true;
                 options.AutomaticChallenge = false;
             });
@@ -143,8 +115,6 @@ namespace IntraWeb
             app.UseStaticFiles();
 
             //app.UseIdentity();
-
-            // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
             app.UseMvc();
 
             DbInitializer.Initialize(app.ApplicationServices);
@@ -162,11 +132,9 @@ namespace IntraWeb
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<IEquipmentRepository, EquipmentRepository>();
 
-            services.AddScoped<IUserRepository, UserRepository>();
+            //services.AddScoped<IUserRepository, UserRepository>();
+            services.AddSingleton<IUserRepository, UserDummyRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
-
-            services.AddScoped<IMembershipService, MembershipService>();
-            services.AddScoped<IEncryptionService, EncryptionService>();
         }
 
         private static void InitializeAutoMapper(IServiceCollection services)

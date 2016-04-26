@@ -1,106 +1,131 @@
-﻿using IntraWeb.Models.Authorization;
-using IntraWeb.Models.Users;
-using IntraWeb.Services.Authorization;
+﻿using IntraWeb.Models.Users;
 using IntraWeb.ViewModels.Users;
-using Microsoft.AspNet.Authentication.Cookies;
+using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace IntraWeb.Controllers.Api.v1
 {
-    [Route("api/[controller]")]
+
+    [Route("api/authentication")]
     public class AuthenticationController : BaseController
     {
-        private readonly IMembershipService _membershipService;
+
+        #region Constants
+
+        public const string ClaimTypeId = "Id";
+
+        private const string AuthenticationScheme = "IntrawebAuthentication";
+
+        #endregion
+
+
+        #region Fields
+
         private readonly IUserRepository _userRepository;
         private ILogger<AuthenticationController> _logger;
 
-        public AuthenticationController(IMembershipService membershipService, IUserRepository userRepository,
-            ILogger<AuthenticationController> logger)
+        #endregion
+
+
+        #region Constructors
+
+        public AuthenticationController(IUserRepository userRepository, ILogger<AuthenticationController> logger)
         {
-            _membershipService = membershipService;
             _userRepository = userRepository;
             _logger = logger;
         }
 
+        #endregion
 
-        [HttpPost("authenticate")]
+
+        #region Api
+
+        [HttpGet]
+        [Route("test")]
+        public IActionResult Test()
+        {
+            return new ObjectResult("Lorem ipsum");
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("test2")]
+        public IActionResult Test2()
+        {
+            return new ObjectResult("Huraaa");
+        }
+
+        [HttpGet]
+        [Route("login")]
+        public async Task<IActionResult> Login(string userName, string password)
+        {
+            return await SignInCore(userName, password);
+        }
+
+
+        [HttpPost]
+        [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel user)
         {
-            IActionResult _result = new ObjectResult(false);
-            GenericResult _authenticationResult = null;
-
-            try
-            {
-                MembershipContext _userContext = _membershipService.ValidateUser(user.Username, user.Password);
-
-                if (_userContext.User != null)
-                {
-                    IEnumerable<Role> _roles = _userRepository.GetUserRoles(user.Username);
-                    List<Claim> _claims = new List<Claim>();
-                    foreach (Role role in _roles)
-                    {
-                        Claim _claim = new Claim(ClaimTypes.Role, "Admin", ClaimValueTypes.String, user.Username);
-                        _claims.Add(_claim);
-                    }
-                    await HttpContext.Authentication.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                        new ClaimsPrincipal(new ClaimsIdentity(_claims, CookieAuthenticationDefaults.AuthenticationScheme)),
-                        new Microsoft.AspNet.Http.Authentication.AuthenticationProperties { IsPersistent = user.RememberMe });
-
-
-                    _authenticationResult = new GenericResult()
-                    {
-                        Succeeded = true,
-                        Message = "Authentication succeeded"
-                    };
-                }
-                else
-                {
-                    _authenticationResult = new GenericResult()
-                    {
-                        Succeeded = false,
-                        Message = "Authentication failed"
-                    };
-                }
-            }
-            catch (Exception ex)
-            {
-                _authenticationResult = new GenericResult()
-                {
-                    Succeeded = false,
-                    Message = ex.Message
-                };
-
-                _logger.LogError("Exception occured when Login.", ex);
-                this.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                return this.Json(new { Message = $"Login throw Exception '{ex.Message}'" });
-            }
-
-            _result = new ObjectResult(_authenticationResult);
-            return _result;
+            return await SignInCore(user.UserName, user.Password);
         }
 
-        [HttpPost("logout")]
+
+        [HttpGet("logout")]
         public async Task<IActionResult> Logout()
         {
-            try
+            await HttpContext.Authentication.SignOutAsync(Startup.AuthenticationScheme);
+            return Ok();
+        }
+
+        #endregion
+
+
+        #region Helpers
+
+        private async Task<IActionResult> SignInCore(string userName, string password)
+        {
+            User user = null;
+            var resultSignIn = PasswordSignIn(userName, password, out user);
+            if (resultSignIn.Succeeded)
             {
-                await HttpContext.Authentication.SignOutAsync("Cookies");
+                await HttpContext.Authentication.SignInAsync(Startup.AuthenticationScheme, CreatePrincipal(user));
                 return Ok();
             }
-            catch (Exception ex)
-            {
-                _logger.LogError("Exception occured when Logout.", ex);
-                return HttpBadRequest();
-            }
-
+            return HttpUnauthorized();
         }
+
+
+        private SignInResult PasswordSignIn(string userName, string password, out User user)
+        {
+            user = _userRepository.GetSingleByUsername(userName);
+            if (user != null)
+            {
+                if (BCrypt.Net.BCrypt.Verify(password, user.HashedPassword))
+                {
+                    return SignInResult.Success;
+                }
+            }
+            return SignInResult.Failed;
+        }
+
+
+        private ClaimsPrincipal CreatePrincipal(User user)
+        {
+            var claims = new List<Claim>();
+            claims.Add(new Claim(ClaimTypeId, user.Id.ToString(), ClaimValueTypes.Integer32));
+            return new ClaimsPrincipal(new ClaimsIdentity(claims, Startup.AuthenticationScheme));
+        }
+
+
+        #endregion
+
 
 
     }
