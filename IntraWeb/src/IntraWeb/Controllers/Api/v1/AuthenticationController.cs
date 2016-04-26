@@ -5,7 +5,6 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
-using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -107,7 +106,7 @@ namespace IntraWeb.Controllers.Api.v1
             user = _userRepository.GetSingleByUsername(userName);
             if (user != null)
             {
-                if (BCrypt.Net.BCrypt.Verify(password, user.HashedPassword))
+                if (BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
                 {
                     return SignInResult.Success;
                 }

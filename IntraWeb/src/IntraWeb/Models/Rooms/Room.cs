@@ -1,6 +1,6 @@
+using IntraWeb.Models.Base;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using IntraWeb.Models.Base;
 
 namespace IntraWeb.Models.Rooms
 {
@@ -9,12 +9,23 @@ namespace IntraWeb.Models.Rooms
     /// </summary>
     public class Room : IModel
     {
+
+        #region Constants
+
+        public const int NameMaxLength = 100;
+        public const int TypeMaxLength = 100;
+        public const int DescriptionMaxLength = 255;
+
+        #endregion
+
+
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>
         /// <value>
         /// The identifier.
         /// </value>
+        [Required]
         public int Id { get; set; }
 
         /// <summary>
@@ -23,8 +34,8 @@ namespace IntraWeb.Models.Rooms
         /// <value>
         /// The name.
         /// </value>
-        [MaxLength(50)]
         [Required()]
+        [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
         /// <summary>
@@ -33,7 +44,7 @@ namespace IntraWeb.Models.Rooms
         /// <value>
         /// The description.
         /// </value>
-        [MaxLength(255)]
+        [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
 
         /// <summary>
@@ -42,8 +53,8 @@ namespace IntraWeb.Models.Rooms
         /// <value>
         /// The room type.
         /// </value>
-        [MaxLength(25)]
-        [Required()]
+        [Required]
+        [MaxLength(TypeMaxLength)]
         public string Type { get; set; }
 
         /// <summary>

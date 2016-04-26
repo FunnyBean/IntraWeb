@@ -1,5 +1,4 @@
-﻿using IntraWeb.Models.Users;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,7 +18,7 @@ namespace IntraWeb.ViewModels.Users
         public string Email { get; set; }
 
         [MaxLength(100)]
-        public string Nickname { get; set; }
+        public string UserName { get; set; }
 
         [MaxLength(100)]
         public string Name { get; set; }
@@ -38,7 +37,6 @@ namespace IntraWeb.ViewModels.Users
                 {
                     return Convert.ToBase64String(this.Photo);
                 }
-
                 return null;
             }
             set

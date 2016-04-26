@@ -13,6 +13,7 @@ namespace IntraWeb.Models.Rooms
         /// <value>
         /// The room identifier.
         /// </value>
+        [Required]
         public int RoomId { get; set; }
 
         /// <summary>
@@ -31,6 +32,7 @@ namespace IntraWeb.Models.Rooms
         /// <value>
         /// The equipment identifier.
         /// </value>
+        [Required]
         public int EquipmentId { get; set; }
 
         /// <summary>

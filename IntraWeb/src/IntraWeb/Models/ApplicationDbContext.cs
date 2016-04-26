@@ -80,15 +80,11 @@ namespace IntraWeb.Models
 
         private void OnUserModelCreating(ModelBuilder builder)
         {
-            // User
-            builder.Entity<User>().Property(u => u.Nickname).HasMaxLength(100);
-            builder.Entity<User>().Property(u => u.Email).IsRequired().HasMaxLength(200);
-            builder.Entity<User>().Property(u => u.Name).HasMaxLength(100);
-            builder.Entity<User>().Property(u => u.Surname).HasMaxLength(100);
-            builder.Entity<User>().Property(u => u.HashedPassword).HasMaxLength(200);
-            builder.Entity<User>().Property(u => u.Salt).HasMaxLength(50);
+            builder.Entity<User>().HasIndex(u => u.UserName).IsUnique();
+            builder.Entity<User>().HasIndex(u => u.Email).IsUnique();
 
-            // UserRole
+            builder.Entity<Role>().HasIndex(r => r.Name).IsUnique();
+
             builder.Entity<UserRole>().HasKey(x => new { x.UserId, x.RoleId });
 
             builder.Entity<UserRole>()
@@ -101,4 +97,5 @@ namespace IntraWeb.Models
                 .HasForeignKey(ur => ur.RoleId);
         }
     }
+
 }

@@ -10,12 +10,32 @@ namespace IntraWeb.Models.Users
     /// </summary>
     public class User : IModel
     {
+
+        #region Static helpers
+
+        public static int BCryptWorkFactor { get; set; } = 10;
+
+        #endregion
+
+
+        #region Constants
+
+        public const int EmailMaxLength = 100;
+        public const int UserNameMaxLength = 100;
+        public const int NameMaxLength = 100;
+        public const int SurnameMaxLength = 100;
+        public const int PasswordHashMaxLength = 100;
+
+        #endregion
+
+
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>
         /// <value>
         /// The identifier.
         /// </value>
+        [Required]
         public int Id { get; set; }
 
         /// <summary>
@@ -24,8 +44,8 @@ namespace IntraWeb.Models.Users
         /// <value>
         /// The email.
         /// </value>
-        [MaxLength(100)]
         [Required()]
+        [MaxLength(EmailMaxLength)]
         public string Email { get; set; }
 
         /// <summary>
@@ -34,8 +54,9 @@ namespace IntraWeb.Models.Users
         /// <value>
         /// The nickname.
         /// </value>
-        [MaxLength(100)]
-        public string Nickname { get; set; }
+        [Required()]
+        [MaxLength(UserNameMaxLength)]
+        public string UserName { get; set; }
 
         /// <summary>
         /// Gets or sets the name.
@@ -43,7 +64,8 @@ namespace IntraWeb.Models.Users
         /// <value>
         /// The user name.
         /// </value>
-        [MaxLength(100)]
+        [Required]
+        [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
         /// <summary>
@@ -52,10 +74,11 @@ namespace IntraWeb.Models.Users
         /// <value>
         /// The user surname.
         /// </value>
-        [MaxLength(100)]
+        [Required]
+        [MaxLength(SurnameMaxLength)]
         public string Surname { get; set; }
 
-        public string Password { set { HashedPassword = BCrypt.Net.BCrypt.HashPassword(value, 4); } }
+        public string Password { set { PasswordHash = BCrypt.Net.BCrypt.HashPassword(value, BCryptWorkFactor); } }
 
         /// <summary>
         /// Gets or sets the hashed password.
@@ -63,10 +86,16 @@ namespace IntraWeb.Models.Users
         /// <value>
         /// The hashed password.
         /// </value>
-        public string HashedPassword { get; set; }
-        public string Salt { get; set; }
+        [Required]
+        [MaxLength(PasswordHashMaxLength)]
+        public string PasswordHash { get; set; }
+
+        [Required]
         public bool IsLocked { get; set; }
+
+        [Required]
         public DateTime DateCreated { get; set; }
+
         public byte[] Photo { get; set; }
 
         /// <summary>

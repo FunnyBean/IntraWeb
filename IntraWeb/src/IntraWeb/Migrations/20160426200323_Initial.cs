@@ -5,7 +5,7 @@ using Microsoft.Data.Entity.Metadata;
 
 namespace IntraWeb.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -55,13 +55,12 @@ namespace IntraWeb.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     DateCreated = table.Column<DateTime>(nullable: false),
                     Email = table.Column<string>(nullable: false),
-                    HashedPassword = table.Column<string>(nullable: true),
                     IsLocked = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Nickname = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
+                    PasswordHash = table.Column<string>(nullable: false),
                     Photo = table.Column<byte[]>(nullable: true),
-                    Salt = table.Column<string>(nullable: true),
-                    Surname = table.Column<string>(nullable: true)
+                    Surname = table.Column<string>(nullable: false),
+                    UserName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -123,6 +122,21 @@ namespace IntraWeb.Migrations
                 name: "IX_Room_Name",
                 table: "Room",
                 column: "Name",
+                unique: true);
+            migrationBuilder.CreateIndex(
+                name: "IX_Role_Name",
+                table: "Role",
+                column: "Name",
+                unique: true);
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Email",
+                table: "User",
+                column: "Email",
+                unique: true);
+            migrationBuilder.CreateIndex(
+                name: "IX_User_UserName",
+                table: "User",
+                column: "UserName",
                 unique: true);
         }
 

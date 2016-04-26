@@ -1,4 +1,6 @@
-﻿namespace IntraWeb.Models.Users
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace IntraWeb.Models.Users
 {
     /// <summary>
     /// Model, which represent join table between User and Role.
@@ -11,6 +13,7 @@
         /// <value>
         /// The user identifier.
         /// </value>
+        [Required]
         public int UserId { get; set; }
 
         /// <summary>
@@ -28,6 +31,7 @@
         /// <value>
         /// The role identifier.
         /// </value>
+        [Required]
         public int RoleId { get; set; }
 
         /// <summary>

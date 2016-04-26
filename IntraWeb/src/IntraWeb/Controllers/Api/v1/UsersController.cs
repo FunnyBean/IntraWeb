@@ -71,14 +71,7 @@ namespace IntraWeb.Controllers.Api.v1
             {
                 User user = _mapper.Map<User>(userVm);
                 user.DateCreated = DateTime.Now;
-
-                if (userVm.Photo != null)
-                {
-                    user.Photo = userVm.Photo;
-                } else
-                {
-                    user.Photo = DbInitializer.GetDefaultAvatar();
-                }
+                user.Photo = userVm.Photo;
 
                 return SaveData(() =>
                 {

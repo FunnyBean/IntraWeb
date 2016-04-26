@@ -41,11 +41,11 @@ namespace IntraWeb.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 50);
+                        .HasAnnotation("MaxLength", 100);
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 25);
+                        .HasAnnotation("MaxLength", 100);
 
                     b.HasKey("Id");
 
@@ -74,6 +74,9 @@ namespace IntraWeb.Migrations
                         .HasAnnotation("MaxLength", 50);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
                 });
 
             modelBuilder.Entity("IntraWeb.Models.Users.User", b =>
@@ -85,28 +88,35 @@ namespace IntraWeb.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 200);
-
-                    b.Property<string>("HashedPassword")
-                        .HasAnnotation("MaxLength", 200);
+                        .HasAnnotation("MaxLength", 100);
 
                     b.Property<bool>("IsLocked");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasAnnotation("MaxLength", 100);
 
-                    b.Property<string>("Nickname")
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
                         .HasAnnotation("MaxLength", 100);
 
                     b.Property<byte[]>("Photo");
 
-                    b.Property<string>("Salt")
-                        .HasAnnotation("MaxLength", 50);
-
                     b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 100);
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
                         .HasAnnotation("MaxLength", 100);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("UserName")
+                        .IsUnique();
                 });
 
             modelBuilder.Entity("IntraWeb.Models.Users.UserRole", b =>

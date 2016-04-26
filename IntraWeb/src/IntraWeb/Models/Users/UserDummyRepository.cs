@@ -32,7 +32,7 @@ namespace IntraWeb.Models.Users
             return new User()
             {
                 Id = idGenerator,
-                Nickname = userName,
+                UserName = userName,
                 Name = name,
                 Surname = surname,
                 Email = email,
@@ -67,7 +67,7 @@ namespace IntraWeb.Models.Users
 
         public User GetSingleByUsername(string userName)
         {
-            return _data.FirstOrDefault(u => u.Nickname.Equals(userName, StringComparison.CurrentCultureIgnoreCase));
+            return _data.FirstOrDefault(u => u.UserName.Equals(userName, StringComparison.CurrentCultureIgnoreCase));
         }
 
         public IEnumerable<Role> GetUserRoles(string username)

@@ -9,6 +9,14 @@ namespace IntraWeb.Models.Users
     /// </summary>
     public class Role : IModel
     {
+
+        #region Constants
+
+        public const int NameMaxLength = 50;
+
+        #endregion
+
+
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>
@@ -23,8 +31,8 @@ namespace IntraWeb.Models.Users
         /// <value>
         /// The name.
         /// </value>
-        [MaxLength(50)]
-        [Required()]
+        [Required]
+        [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
         /// <summary>

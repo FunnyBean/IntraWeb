@@ -10,6 +10,13 @@ namespace IntraWeb.Models.Rooms
     public class Equipment: IModel
     {
 
+        #region Constants
+
+        public const int DescriptionMaxLength = 100;
+
+        #endregion
+
+
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>
@@ -24,8 +31,8 @@ namespace IntraWeb.Models.Rooms
         /// <value>
         /// The description.
         /// </value>
-        [MaxLength(100)]
-        [Required()]
+        [Required]
+        [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
 
         /// <summary>
