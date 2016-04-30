@@ -1,4 +1,8 @@
-﻿using System.Threading.Tasks;
+using IntraWeb.Models;
+using IntraWeb.Services.Email;
+using IntraWeb.Services.Template;
+using Microsoft.AspNet.Authentication.Cookies;
+using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -6,19 +10,26 @@ using Microsoft.Data.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using IntraWeb.Models;
-using IntraWeb.ViewModels.Administration;
-using Microsoft.AspNet.Authentication.Cookies;
+using IntraWeb.ViewModels.Rooms;
 using System.Net;
-using IntraWeb.Services.Emails;
+using System;
+using IntraWeb.Models.Rooms;
+using IntraWeb.Models.Users;
+using IntraWeb.ViewModels.Users;
+using AutoMapper;
 
 namespace IntraWeb
 {
     public class Startup
     {
 
+        IHostingEnvironment _env;
+
+
         public Startup(IHostingEnvironment env)
         {
+            _env = env;
+
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
@@ -39,6 +50,9 @@ namespace IntraWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
+            services.Configure<EmailOptions>(Configuration.GetSection("Email"));
+
             // Add framework services.
             services.AddEntityFramework()
                 .AddSqlServer()
@@ -76,11 +90,10 @@ namespace IntraWeb
             services.AddMvc(); // ToDo: Replace with Web API when it will be done in ASP.NET Core 1.0
 
             // Add application services
-            services.AddTransient<IEmailService, EmailService>();
-            services.AddTransient<IEmailFormatter, EmailFormatter>();
+            AddIntraWebServices(services);
 
             //services.AddInstance<IRoomRepository>(new Models.Dummies.RoomDummyRepository()); //Testovacia implementacia
-            services.AddScoped<IRoomRepository, RoomsRepository>();
+            InitializeAutoMapper(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -91,6 +104,7 @@ namespace IntraWeb
 
             if (env.IsDevelopment())
             {
+                //loggerFactory.AddDebug(LogLevel.Verbose); - Log EF7 SQL Queries
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
@@ -109,7 +123,9 @@ namespace IntraWeb
                              .Database.Migrate();
                     }
                 }
-                catch { }
+                catch (Exception)
+                {
+            }
             }
 
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
@@ -119,10 +135,38 @@ namespace IntraWeb
 
             app.UseIdentity();
 
-            AdministrationModelMapping.ConfigureRoomMapping();
-
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
             app.UseMvc();
+
+            DbInitializer.Initialize(app.ApplicationServices);
+        }
+
+        private void AddIntraWebServices(IServiceCollection services)
+        {
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IEmailSender, SmtpEmailSender>();
+            services.AddScoped<IEmailCreator, HtmlEmailCreator>();
+            services.AddScoped<ITemplateFormatter, TemplateFormatter>();
+            services.AddScoped<ITemplateLoader, FileTemplateLoader>(
+                (provider) => new FileTemplateLoader(System.IO.Path.Combine(_env.WebRootPath, "templates", "email"))
+            );
+
+            services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddScoped<IEquipmentRepository, EquipmentRepository>();
+
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+        }
+
+        private static void InitializeAutoMapper(IServiceCollection services)
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<RoomsMappingProfile>();
+                cfg.AddProfile<UsersMappingProfile>();
+            });
+
+            services.AddInstance<IMapper>(config.CreateMapper());
         }
 
         // Entry point for the application.

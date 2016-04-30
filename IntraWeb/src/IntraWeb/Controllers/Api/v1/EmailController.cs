@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Authorization;
-using IntraWeb.Services.Emails;
-using IntraWeb.Resources.Email;
+using IntraWeb.Services.Email;
+using System.Collections.Generic;
 
 namespace IntraWeb.Controllers.Api.v1
 {
-    /// <summary>
-    /// Class only for testing sending emails.
-    /// </summary>
+
     [Route("api/email")]
     [AllowAnonymous]
     public class EmailController : BaseController
@@ -15,27 +13,50 @@ namespace IntraWeb.Controllers.Api.v1
 
         #region Private members
 
-        private IEmailService _EmailService;
+        private IEmailService _emailService;
+        private IEmailCreator _creator;
+        private IEmailSender _sender;
 
         #endregion
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EmailController"/> class.
-        /// </summary>
-        /// <param name="emailService">The email service</param>
-        public EmailController(IEmailService emailService)
+
+        public EmailController(IEmailService emailService, IEmailCreator creator, IEmailSender sender)
         {
-            _EmailService = emailService;
-            
+            _emailService = emailService;
+            _creator = creator;
+            _sender = sender;
         }
 
-        /// <summary>
-        /// Test sending email.
-        /// </summary>
-        [HttpGet("{email}")]
-        public void TestSendingEmail(string email)
+
+        [HttpGet]
+        [Route("send/{emailType}")]
+        public void Send(string emailType, string to)
         {
-            _EmailService.SendEmail(email, "FunnyBean Subject TEST", EmailStringTable.TemplateBodyText, EmailStringTable.TemplateBodySalutation);
+            var data = new BaseEmailData(emailType);
+            data.From = Resources.Resources.EmailFrom;
+            data.To.Add(to);
+
+            var msg = _creator.CreateEmail(data);
+            _sender.SendEmail(msg);
+        }
+
+        [HttpGet]
+        [Route("PasswordReset")]
+        public void PasswordReset(string to)
+        {
+            var data = new PasswordResetData(@"http://example.com");
+            data.From = Resources.Resources.EmailFrom;
+            data.To.Add(to);
+
+            var msg = _creator.CreateEmail(data);
+            _sender.SendEmail(msg);
+        }
+
+        [HttpGet]
+        [Route("PasswordReset2")]
+        public void PasswordReset2(string to)
+        {
+            _emailService.SendPasswordReset(to, @"http://example.com");
         }
 
     }

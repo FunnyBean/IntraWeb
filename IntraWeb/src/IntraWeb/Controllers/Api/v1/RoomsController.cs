@@ -1,12 +1,12 @@
-using System.Collections.Generic;
-using Microsoft.AspNet.Mvc;
-using IntraWeb.Models;
-using IntraWeb.ViewModels.Administration;
-using System.Net;
 using System;
+using System.Collections.Generic;
+using System.Net;
+using AutoMapper;
 using IntraWeb.Filters;
+using IntraWeb.Models.Rooms;
+using IntraWeb.ViewModels.Rooms;
+using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNet.Authorization;
 
 namespace IntraWeb.Controllers.Api.v1
 {
@@ -17,6 +17,7 @@ namespace IntraWeb.Controllers.Api.v1
 
         private IRoomRepository _roomRepository;
         private ILogger<RoomsController> _logger;
+        private IMapper _mapper;
 
         #endregion
 
@@ -25,11 +26,14 @@ namespace IntraWeb.Controllers.Api.v1
         /// </summary>
         /// <param name="roomRepository">The room repository.</param>
         /// <param name="logger">Logger.</param>
+        /// <param name="mapper">Mapper for mapping domain classes to model classes and reverse.</param>
         public RoomsController(IRoomRepository roomRepository,
-                      ILogger<RoomsController> logger)
+                      ILogger<RoomsController> logger,
+                                       IMapper mapper)
         {
             _roomRepository = roomRepository;
             _logger = logger;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -39,7 +43,7 @@ namespace IntraWeb.Controllers.Api.v1
         [HttpGet]
         public IEnumerable<RoomViewModel> Get()
         {
-            var rooms = AutoMapper.Mapper.Map<IEnumerable<RoomViewModel>>(_roomRepository.GetAllRooms());
+            var rooms = _mapper.Map<IEnumerable<RoomViewModel>>(_roomRepository.GetAll());
             return rooms;
         }
 
@@ -51,17 +55,27 @@ namespace IntraWeb.Controllers.Api.v1
         [HttpGet("{roomId}", Name = "GetRoom")]
         public IActionResult Get(int roomId)
         {
-            var room = _roomRepository.GetRoom(roomId);
+            var room = _roomRepository.GetItem(roomId);
 
             if (room == null)
             {
-                this.Response.StatusCode = (int) HttpStatusCode.NoContent;
+                this.Response.StatusCode = (int) HttpStatusCode.NotFound;
                 return this.Json(null);
             }
             else
             {
-                return this.Json(AutoMapper.Mapper.Map<RoomViewModel>(room));
+                return this.Json(_mapper.Map<RoomViewModel>(room));
             }
+        }
+
+        /// <summary>
+        /// Get types of rooms.
+        /// </summary>
+        /// <returns>Types of rooms.</returns>
+        [HttpGet("GetTypes")]
+        public IEnumerable<string> GetTypes()
+        {
+            return _roomRepository.GetTypes();
         }
 
         /// <summary>
@@ -75,18 +89,18 @@ namespace IntraWeb.Controllers.Api.v1
         public IActionResult Post([FromBody] RoomViewModel roomVm)
         {
 
-            if (_roomRepository.GetRoom(roomVm.Name) == null)
+            if (_roomRepository.GetItem(roomVm.Name) == null)
             {
-                var room = AutoMapper.Mapper.Map<Room>(roomVm);
+                var room = _mapper.Map<Room>(roomVm);
 
                 return SaveData(() =>
                 {
-                    _roomRepository.AddRoom(room);
+                    _roomRepository.Add(room);
                 },
                 () =>
                 {
                     this.Response.StatusCode = (int) HttpStatusCode.Created;
-                    return this.Json(AutoMapper.Mapper.Map<RoomViewModel>(room));
+                    return this.Json(_mapper.Map<RoomViewModel>(room));
                 });
             }
             else
@@ -94,8 +108,6 @@ namespace IntraWeb.Controllers.Api.v1
                 this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 return this.Json(new { Message = $"Room with name '{roomVm.Name}' already exist." });
             }
-
-
         }
 
         /// <summary>
@@ -117,21 +129,21 @@ namespace IntraWeb.Controllers.Api.v1
                 return this.Json(new { Message = message });
             }
 
-            var editedRoom = _roomRepository.GetRoom(roomId);
+            var editedRoom = _roomRepository.GetItem(roomId);
             if (editedRoom == null)
             {
-                this.Response.StatusCode = (int) HttpStatusCode.NoContent;
+                this.Response.StatusCode = (int) HttpStatusCode.NotFound;
                 return this.Json(null);
             }
-            
+
             if (ExistAnotherRoomWithName(roomVm.Name, roomId))
             {
                 this.Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 return this.Json(new { Message = $"Room with name '{roomVm.Name}' already exist." });
             }
             else
-            {               
-                editedRoom = AutoMapper.Mapper.Map(roomVm, editedRoom);
+            {
+                editedRoom = _mapper.Map(roomVm, editedRoom);
 
                 return SaveData(() =>
                 {
@@ -156,7 +168,7 @@ namespace IntraWeb.Controllers.Api.v1
 
         private bool ExistAnotherRoomWithName(string roomName, int roomId)
         {
-            var room = _roomRepository.GetRoom(roomName);
+            var room = _roomRepository.GetItem(roomName);
 
             return room != null && room.Id != roomId;
         }

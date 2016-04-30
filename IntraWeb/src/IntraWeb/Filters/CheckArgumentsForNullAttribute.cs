@@ -15,7 +15,7 @@ namespace IntraWeb.Filters
     /// </remarks>
     [AttributeUsage(AttributeTargets.Method, Inherited = true)]
     public class CheckArgumentsForNullAttribute : ActionFilterAttribute
-    { 
+    {
 
         /// <summary>
         /// Called when [action executing].
@@ -27,7 +27,7 @@ namespace IntraWeb.Filters
             {
                 actionContext.Result = new BadRequestObjectResult("Arguments cannot be null.");
             }
-            
+
         }
     }
 }

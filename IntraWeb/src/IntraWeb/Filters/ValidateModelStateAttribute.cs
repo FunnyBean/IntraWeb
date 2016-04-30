@@ -20,7 +20,7 @@ namespace IntraWeb.Filters
         /// </summary>
         /// <param name="actionContext">The action context.</param>
         public override void OnActionExecuting(ActionExecutingContext actionContext)
-        {            
+        {
             if (!actionContext.ModelState.IsValid)
             {
                 actionContext.Result = new BadRequestObjectResult(actionContext.ModelState);
