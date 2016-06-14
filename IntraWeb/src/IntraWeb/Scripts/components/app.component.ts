@@ -2,6 +2,7 @@
 import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 
 import {LoginComponent} from './login/login.component';
+import {DummyComponent} from './dummy/dummy.component';
 
 @Component({
     selector: 'app',
@@ -10,7 +11,8 @@ import {LoginComponent} from './login/login.component';
     directives: [ROUTER_DIRECTIVES]
 })
 @RouteConfig([
-    {path: '/login', name: 'Login', component: LoginComponent, useAsDefault: true}
+    { path: '/login', name: 'Login', component: LoginComponent, useAsDefault: true },
+    { path: '/dummy', name: 'Dummy', component: DummyComponent }
 ])
 export class AppComponent { }
 
