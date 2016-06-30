@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System;
 using IntraWeb.Filters;

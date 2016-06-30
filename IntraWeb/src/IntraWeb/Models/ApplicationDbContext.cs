@@ -1,7 +1,6 @@
 using IntraWeb.Models.Rooms;
 using IntraWeb.Models.Users;
-using Microsoft.Data.Entity;
-using Microsoft.Data.Entity.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace IntraWeb.Models
 {

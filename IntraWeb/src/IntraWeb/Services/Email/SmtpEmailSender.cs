@@ -1,6 +1,6 @@
 ﻿using MailKit.Net.Smtp;
 using MailKit.Security;
-using Microsoft.Extensions.OptionsModel;
+using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
 

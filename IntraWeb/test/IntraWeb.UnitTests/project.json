@@ -6,22 +6,19 @@
   "projectUrl": "",
   "licenseUrl": "",
   "frameworks": {
-    "dnx451": {
-      "dependencies": {
-      }
-    }
+    "net452": {}
   },
   "dependencies": {
     "AutoMapper": "4.2.1",
     "IntraWeb": "1.0.0-*",
-    "Microsoft.CSharp": "4.0.1-beta-23516",
+    "Microsoft.CSharp": "4.0.1",
     "NSubstitute": "1.10.0",
-    "System.Collections": "4.0.11-beta-23516",
-    "System.Linq": "4.0.1-beta-23516",
-    "System.Runtime": "4.0.21-beta-23516",
-    "System.Threading": "4.0.11-beta-23516",
+    "System.Collections": "4.0.11",
+    "System.Linq":"4.1.0",
+    "System.Runtime":"4.1.0",
+    "System.Threading":"4.0.11",
     "xunit": "2.1.0",
-    "xunit.runner.dnx": "2.1.0-rc1-build204"
+    "dotnet-test-xunit": "2.2.0-preview2-build1029"
   },
   "commands": {
     "test": "xunit.runner.dnx"

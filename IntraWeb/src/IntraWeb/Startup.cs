@@ -1,22 +1,23 @@
+using AutoMapper;
 using IntraWeb.Models;
+using IntraWeb.Models.Rooms;
+using IntraWeb.Models.Users;
 using IntraWeb.Services.Email;
 using IntraWeb.Services.Template;
-using Microsoft.AspNet.Authentication.Cookies;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Data.Entity;
+using IntraWeb.ViewModels.Rooms;
+using IntraWeb.ViewModels.Users;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using IntraWeb.ViewModels.Rooms;
-using System.Net;
 using System;
-using IntraWeb.Models.Rooms;
-using IntraWeb.Models.Users;
-using IntraWeb.ViewModels.Users;
-using AutoMapper;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace IntraWeb
 {
@@ -50,12 +51,10 @@ namespace IntraWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddOptions();
             services.Configure<EmailOptions>(Configuration.GetSection("Email"));
 
             // Add framework services.
-            services.AddEntityFramework()
-                .AddSqlServer()
+            services.AddEntityFrameworkSqlServer()
                 .AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
@@ -63,7 +62,6 @@ namespace IntraWeb
             {
                 //ToDo: Refaktorovat. Extrahovat do zvlast triedy, ked bude jasne ako ideme riesit autorizaciu.
                 conf.Password.RequiredLength = 8;
-                conf.Password.RequireNonLetterOrDigit = false;
                 conf.Password.RequireLowercase = false;
                 conf.Password.RequireUppercase = false;
                 conf.Cookies.ApplicationCookie.Events = new CookieAuthenticationEvents()
@@ -119,16 +117,13 @@ namespace IntraWeb
                     using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
                         .CreateScope())
                     {
-                        serviceScope.ServiceProvider.GetService<ApplicationDbContext>()
-                             .Database.Migrate();
+                        
                     }
                 }
                 catch (Exception)
                 {
             }
             }
-
-            app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
@@ -166,11 +161,14 @@ namespace IntraWeb
                 cfg.AddProfile<UsersMappingProfile>();
             });
 
-            services.AddInstance<IMapper>(config.CreateMapper());
+            services.AddTransient<IMapper>(x => config.CreateMapper());
         }
 
         // Entry point for the application.
-        public static void Main(string[] args) => WebApplication.Run<Startup>(args);
+        public static void Main(string[] args)
+        {
+
+        }
 
     }
 }

@@ -5,7 +5,7 @@ using AutoMapper;
 using IntraWeb.Filters;
 using IntraWeb.Models.Rooms;
 using IntraWeb.ViewModels.Rooms;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace IntraWeb.Controllers.Api.v1

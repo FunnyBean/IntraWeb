@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using Microsoft.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace IntraWeb.Models.Base
 {

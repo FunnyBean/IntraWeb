@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using IntraWeb.Models.Base;
-using Microsoft.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace IntraWeb.Models.Rooms
 {

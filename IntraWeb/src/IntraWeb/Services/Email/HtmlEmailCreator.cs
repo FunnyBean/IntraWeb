@@ -1,5 +1,5 @@
 ﻿using IntraWeb.Services.Template;
-using Microsoft.AspNet.Hosting;
+using Microsoft.AspNetCore.Hosting;
 using MimeKit;
 using System.Collections.Generic;
 using System.IO;
