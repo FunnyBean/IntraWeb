@@ -1,23 +1,23 @@
-using AutoMapper;
-using IntraWeb.Models;
-using IntraWeb.Models.Rooms;
-using IntraWeb.Models.Users;
+﻿using IntraWeb.Models;
 using IntraWeb.Services.Email;
 using IntraWeb.Services.Template;
-using IntraWeb.ViewModels.Rooms;
-using IntraWeb.ViewModels.Users;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
+using IntraWeb.ViewModels.Rooms;
 using System.Net;
-using System.Threading.Tasks;
+using System;
+using IntraWeb.Models.Rooms;
+using IntraWeb.Models.Users;
+using IntraWeb.ViewModels.Users;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace IntraWeb
 {
@@ -33,6 +33,7 @@ namespace IntraWeb
 
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
@@ -51,11 +52,11 @@ namespace IntraWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
             services.Configure<EmailOptions>(Configuration.GetSection("Email"));
 
             // Add framework services.
-            services.AddEntityFrameworkSqlServer()
-                .AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
             services.AddIdentity<ApplicationUser, IdentityRole>(conf =>
@@ -69,9 +70,9 @@ namespace IntraWeb
                     OnRedirectToLogin = ctx =>
                     {
                         if (ctx.Request.Path.StartsWithSegments("/api") &&
-                            ctx.Response.StatusCode == (int) HttpStatusCode.OK)
+                            ctx.Response.StatusCode == (int)HttpStatusCode.OK)
                         {
-                            ctx.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+                            ctx.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                         }
                         else
                         {
@@ -117,12 +118,13 @@ namespace IntraWeb
                     using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
                         .CreateScope())
                     {
-                        
+                        serviceScope.ServiceProvider.GetService<ApplicationDbContext>()
+                             .Database.Migrate();
                     }
                 }
                 catch (Exception)
                 {
-            }
+                }
             }
 
             app.UseDefaultFiles();
@@ -163,12 +165,5 @@ namespace IntraWeb
 
             services.AddTransient<IMapper>(x => config.CreateMapper());
         }
-
-        // Entry point for the application.
-        public static void Main(string[] args)
-        {
-
-        }
-
     }
 }

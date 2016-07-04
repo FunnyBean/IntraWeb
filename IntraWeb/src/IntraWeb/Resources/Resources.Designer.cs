@@ -22,7 +22,7 @@ namespace IntraWeb.Resources {
     // with the /str option, or rebuild your VS project.
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -35,7 +35,7 @@ namespace IntraWeb.Resources {
         ///    Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("IntraWeb.Resources.Resources", typeof(Resources).GetTypeInfo().Assembly);
@@ -50,7 +50,7 @@ namespace IntraWeb.Resources {
         ///    resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -62,7 +62,7 @@ namespace IntraWeb.Resources {
         /// <summary>
         ///    Looks up a localized string similar to IntraWeb &lt;funnybean@kros.sk&gt;.
         /// </summary>
-        internal static string EmailFrom {
+        public static string EmailFrom {
             get {
                 return ResourceManager.GetString("EmailFrom", resourceCulture);
             }
@@ -71,7 +71,7 @@ namespace IntraWeb.Resources {
         /// <summary>
         ///    Looks up a localized string similar to Emailová šablóna &quot;{0}&quot; neexistuje..
         /// </summary>
-        internal static string UnknownEmailTemplateException_Message {
+        public static string UnknownEmailTemplateException_Message {
             get {
                 return ResourceManager.GetString("UnknownEmailTemplateException_Message", resourceCulture);
             }
