@@ -1,0 +1,58 @@
+<div id="reservationDetail" [ngStyle]="{'top': reservationDetailId[2], 'left': reservationDetailId[1]}">
+  <div id="notEditable" *ngIf="!canEdit">
+      <button type="button" class="close" (click)="closeWindow()" style="font-size: 25px; margin-top: -5px"><span aria-hidden="true">×</span></button>
+      <h3>
+        {{ data.name }}
+      </h3>
+      <p>vytvoril: <strong>{{ usersList[data.userId] }}</strong></p>
+      <p>začiatok: <strong>{{ dateTime }}</strong></p>
+      <p>koniec: <strong>{{ endDateTime }}</strong></p>
+      <p>trvanie: <strong>{{ data.length }} hod.</strong></p>
+  </div>
+
+  <div id="editable" *ngIf="canEdit">
+    <button *ngIf="reservationDetailId[3]" type="button" class="close" (click)="closeWindow()" style="font-size: 25px; margin-top: -5px"><span aria-hidden="true">×</span></button>
+    <form class="form" #reservationForm="ngForm">
+      <p class="col-md-11 remove-padding">
+        <input type="text" name="reservationName" class="form-control" #reservationName="ngModel" [(ngModel)]="data.name" required>
+      </p>
+
+      <div class="form-group">
+        <label for="reservationDate" class="control-label">začiatok: </label>
+        <input type="datetime-local" name="reservationDate" id="reservationDate" #reservationDate="ngModel" [(ngModel)]="data.dateTime" (change)="updateMaxTime(); updateEndTime()" class="form-control" step="1800" aria-describedby="helpBlockDate" validateDate required>
+        <div id="helpBlockDate" *ngIf="reservationDate.dirty && !reservationDate.valid && reservationDate.errors.validateDate" class="help-block"><strong>Chybný dátum a čas začiatku rezervácie.</strong></div>
+      </div>
+
+      <div class="form-group">
+        <label for="reservationEndDate" class="control-label">koniec: </label>
+        <input type="datetime-local" name="reservationEndDate" id="reservationEndDate" #reservationEndDate="ngModel" [(ngModel)]="endDateTime" (change)="updateLength()" class="form-control" step="1800" aria-describedby="helpBlockDate" validateDate required>
+        <div id="helpBlockDate" *ngIf="reservationEndDate.dirty && !reservationEndDate.valid && reservationEndDate.errors.validateDate" class="help-block"><strong>Chybný dátum a čas skončenia rezervácie.</strong></div>
+      </div>
+
+      <div class="form-group">
+        <label for="reservationLength" class="control-label">trvanie: </label>
+        <div class="input-group">
+          <input type="number" min="0.5" [max]="maxTime" step="0.5" id="reservationLength" name="reservationLength" class="form-control" #reservationLength="ngModel" [(ngModel)]="data.length" (change)="updateEndTime()" aria-describedby="helpBlockTime" validateTime>
+          <span class="input-group-addon">hod.</span>
+        </div>
+        <div id="helpBlockTime" *ngIf="reservationLength.dirty && !reservationLength.valid && reservationLength.errors.validateTime" class="help-block"><strong>Nesprávna dĺžka rezervácie.</strong> Zmeňte ju pomocou šípok.</div>
+      </div>
+
+      <div class="form-group checkbox">
+        <label>
+          <input type="checkbox" name="emailInvitaion" (change)="emailInvitation = $event.target.checked"> Poslať pozvánku mailom
+        </label>
+        <label>
+          <input type="checkbox" name="reserveGoToMeeting" (change)="reserveGoToMeeting = $event.target.checked" [checked]="data.g2MeetingID != 0"> Rezervovať GoToMeeting
+        </label>
+      </div>
+
+      <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+
+      <button (click)="editReservation(reservationForm)" class="text-right btn btn-success" [disabled]="!reservationForm.valid">Uložiť zmeny
+        <i *ngIf="saving" class="fa fa-circle-o-notch fa-spin" style="font-size:15px; margin-left: 5px"></i>
+      </button>
+      <button (click)="deleteReservation()" class="btn btn-danger">Odstrániť</button>
+    </form>
+  </div>
+</div>

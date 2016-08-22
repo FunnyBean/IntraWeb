@@ -1,0 +1,90 @@
+<div id="mainApp">
+    <!-- HORNY pas -->
+    <div id="header">
+        <div class="col-md-2 col-xs-2 text-center">
+            <img src="../images/logo_small.png" alt="logo_small"/>
+        </div>
+
+        <div class="col-md-8 col-sm-8 col-xs-8">
+            <input type="text" name="search" placeholder="Vyhľadať.." class="form-control" id="searchInput" [style.display]="'none'"/>
+        </div>
+
+        <div class="col-md-2 col-sm-2 col-xs-2 text-center">
+            <p class="glyphicon glyphicon-envelope col-md-6" aria-hidden="true" id="envelope_ico" [style.display]="'none'">
+                <span class="badge">5</span>
+            </p>
+            <img *ngIf="userData.photoBase64" [src]="'data:image/jpeg;base64,'+userData.photoBase64" class="avatarImg" id="avatarImg" (click)="showUserInfo()">
+          
+        </div>
+    </div>
+
+    <!-- MENU - lava strana -->
+    <div class="row row-eq-height col-md-12" id="contentWindow">
+
+        <div class="col-md-2 col-xs-2 col-xs-center" id="left_menu">
+            <a class="col-md-12 col-xs-12 hvr-bounce-to-right">
+                <img src="../images/icon_news.png" class="menu_icon">
+                <span>Novinky</span>
+            </a>
+            <a class="col-md-12 col-xs-12 hvr-bounce-to-right">
+                <img src="../images/icon_kalendar.png " class="menu_icon">
+                <span>Kalendár</span>
+            </a>
+            <!--<a class="col-md-12 col-xs-12 hvr-bounce-to-right" (click)="openReservations = !openReservations">
+              <img src="../images/icon_reservation.png" class="menu_icon">
+              <span>Rezervácie</span>
+            </a>-->
+            <a [routerLink]="['reservations', 'rooms']" class="col-md-12 col-xs-12 hvr-bounce-to-right">
+                <img src="../images/icon_reservation.png" class="menu_icon">
+                <span>Rezervácia miestností</span>
+            </a>
+            <a [routerLink]="['reservations', 'cars']" class="col-md-12 col-xs-12 hvr-bounce-to-right">
+                <img src="../images/icon_reservation.png" class="menu_icon">
+                <span>Rezervácia áut</span>
+            </a>
+            <a class="col-md-12 col-xs-12 hvr-bounce-to-right">
+                <img src="../images/icon_zabava.png" class="menu_icon">
+                <span>Zábava</span>
+            </a>
+            <a class="col-md-12 col-xs-12 hvr-bounce-to-right">
+                <img src="../images/icon_kros.png" class="menu_icon">
+                <span>KROS</span>
+            </a>
+            <a *ngIf="isAdmin" [routerLink]="['/admin']" class="col-md-12 col-xs-12 hvr-bounce-to-right">
+              <img src="../images/icon_kros.png" class="menu_icon">
+              <span>Administrácia</span>
+            </a>
+        </div>
+
+        <!-- OBSAH -->
+        <div class="col-md-8" id="content" [style.height]="height+'px'">
+            <user_info *ngIf="userData.id" [userData]="userData" [isAdmin]="isAdmin"></user_info>
+            <router-outlet></router-outlet>
+        </div>
+        
+      
+        <div class="col-md-2 text-center" id="right_menu" [ngStyle]="{'display': 'none'}">
+            <a href="#">
+                <img src="../images/car.png" class="col-md-6"
+                     onmouseover="this.src = '../images/car_hover.png'"
+                     onmouseout="this.src = '../images/car.png'" />
+            </a>
+            <a href="#">
+                <img src="../images/car.png" class="col-md-6"
+                     onmouseover="this.src = '../images/car_hover.png'"
+                     onmouseout="this.src = '../images/car.png'" />
+            </a>
+            <a href="#">
+                <img src="../images/car.png" class="col-md-6"
+                     onmouseover="this.src = '../images/car_hover.png'"
+                     onmouseout="this.src = '../images/car.png'" />
+            </a>
+            <a href="#">
+                <img src="../images/car.png" class="col-md-6"
+                     onmouseover="this.src = '../images/car_hover.png'"
+                     onmouseout="this.src = '../images/car.png'" />
+            </a>
+            <a href="#" style="text-align: center"> Rezervovať služobné auto</a>
+        </div>
+    </div>
+</div>
