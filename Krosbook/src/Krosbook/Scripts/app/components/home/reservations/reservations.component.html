@@ -1,70 +1,72 @@
 <div id="reservations">
-    <h3>Rezervácia {{ name }}</h3>
+  <h3>Rezervácia {{ name }}</h3>
 
-    <div class="col-md-12 remove-padding" style="margin-bottom: 15px">
-        <button type="button" class="btn btn-default" (click)="showFilterInput()" id='filterButton'><span class="glyphicon glyphicon-filter"></span> Zobraziť filter</button>
-        <div *ngIf="isShowedFilterInput" id="filter" class="col-md-12 remove-padding">
-            <div class="form-group col-xs-3">
-                <label for="reservationDate" class="control-label">Dátum začiatku: </label>
-                <input type="datetime-local" name="reservationDate" id="reservationDate" #reservationDate="ngModel" [(ngModel)]="dateTime" step="1800" class="form-control" validateDate>
-            </div>
-            <div class="form-group col-xs-3">
-                <label for="filterLength" class="control-label">Dĺžka trvania: </label>
-                <div class="input-group">
-                    <input type="number" min="0.5" [max]="maxTime" step="0.5" (change)="updateMaxTime()" id="filterLength" name="filterLength" class="form-control" #filterLength="ngModel" [(ngModel)]="length" aria-describedby="helpBlockTime" validateTime required>
-                    <span class="input-group-addon">hod.</span>
-                </div>
-            </div>
-            <div class="form-group col-xs-3">
-                <label for="officeType" class="control-label">Typ miesnotsti: </label>
-                <div>
-                    <select class="form-control" name="officeType" id="officeType" [(ngModel)]="filterOfficeTypes">
-                        <option value=""></option>
-                        <option *ngFor="let officeType of officeTypes">{{ officeType }}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group col-xs-2">
-                <button (click)="filterReservation()" class="btn btn-success" style="margin-top: 25px;" type="button" [disabled]="!filterLength.valid || !reservationDate.valid">Filtrovať</button>
-            </div>
+  <div class="col-md-12 remove-padding" style="margin-bottom: 15px">
+    <button type="button" class="btn btn-default" (click)="showFilterInput()" id='filterButton'><span class="glyphicon glyphicon-filter"></span> Zobraziť filter</button>
+    <div *ngIf="isShowedFilterInput" id="filter" class="col-md-12 remove-padding">
+      <div class="form-group col-xs-3">
+        <label for="reservationDate" class="control-label">Dátum začiatku: </label>
+        <input type="datetime-local" name="reservationDate" id="reservationDate" #reservationDate="ngModel" [(ngModel)]="dateTime" step="1800" class="form-control" validateDate>
+      </div>
+      <div class="form-group col-xs-3">
+        <label for="filterLength" class="control-label">Dĺžka trvania: </label>
+        <div class="input-group">
+          <input type="number" min="0.5" [max]="maxTime" step="0.5" (change)="updateMaxTime()" id="filterLength" name="filterLength" class="form-control" #filterLength="ngModel" [(ngModel)]="length" aria-describedby="helpBlockTime" validateTime required>
+          <span class="input-group-addon">hod.</span>
         </div>
+      </div>
+      <div class="form-group col-xs-3">
+        <label for="officeType" class="control-label">Typ miesnotsti: </label>
+        <div>
+          <select class="form-control" name="officeType" id="officeType" [(ngModel)]="filterOfficeTypes">
+            <option value=""></option>
+            <option *ngFor="let officeType of officeTypes">{{ officeType }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group col-xs-2">
+        <button (click)="filterReservation()" class="btn btn-success" style="margin-top: 25px;" type="button" [disabled]="!filterLength.valid || !reservationDate.valid">Filtrovať</button>
+      </div>
     </div>
+  </div>
 
-    <table cellpadding="0" cellspacing="0" id="reservationTable" class="table table-bordered table-condensed table-responsive">
-        <!-- class="table table-responsive table-hover"-->
-        <thead [ngStyle]="{'width': tableWidth+'px'}" id="reservationHead">
-            <tr>
-                <td colspan="3">
-                    <button class="btn btn-default" (click)="moveToday()" [disabled]="week == 0">Dnes</button>
-                    <div class="btn-group" role="group" aria-label="...">
-                        <button class="btn btn-default glyphicon table-arrow glyphicon-triangle-left" (click)="moveBack()"></button>
-                        <button class="btn btn-default glyphicon table-arrow glyphicon-triangle-right" (click)="moveFor()"></button>
-                    </div>
-                </td>
-                <td colspan="3">
-                    <div style="float: right;">
-                        <button type="button" class="btn btn-default glyphicon glyphicon-refresh" (click)="ngAfterViewInit()" id="refreshButton" style="margin-left:10px"></button>
-                    </div>
-                    <div class="input-group col-md-2" style="float: right;">
-                        <input type="date" class="form-control" #dateToMoveOn="ngModel" name="dateToMoveOn" [(ngModel)]="moveDate" validateDate>
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button" (click)="moveToDate()" [disabled]="!dateToMoveOn.valid">Choď!</button>
-                        </span>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <th colspan="6" class="text-center col-md-11" id="month" [ngStyle]="{'width': tableWidth+'px', 'font-size': '1.6em'}">{{ month }}</th>
-            <tr>
-                <th class="col-md-1"></th>
-                <th *ngFor="let day of days" class="text-center col-md-2" id="{{day == now.format('dd DD.MM.YY') ? 'currentDate' : ''}}">
-                    {{ day }}
-                </th>
-            </tr>
-        </thead>
-        <div id="contentHolder" style="display: none"></div> <!--tbody stays on the same position when thead is changes to fixed -->
-        <tbody *ngIf="!data && isShowedFilterInput"><tr class="warning"><td colspan="6">Neboli nájdené žiadne {{ name }} vyhivujúce zadaniu filtra.</td></tr></tbody>
-        <tbody *ngFor="let row of data" #TableReservationComponent class="records{{row.id}} reservation" [data]="row" [reservationType]="reservationType" [times]="times" [usersList]="usersList" [loggedUser]="loggedUser" [week]="week" [filterActive]="isShowedFilterInput" [filterDateTime]="dateTime" [filterTimeLength]="length"></tbody>
-    </table>
+  <table cellpadding="0" cellspacing="0" id="reservationTable" class="table table-bordered table-condensed table-responsive"> <!-- class="table table-responsive table-hover"-->
+      <thead  [ngStyle]="{'width': tableWidth+'px'}" id="reservationHead">
+        <tr>
+          <td colspan="2">
+            <button class="btn btn-default" (click)="moveToday()" [disabled]="week == 0">Dnes</button>
+            <div class="btn-group" role="group" aria-label="...">
+              <button class="btn btn-default glyphicon table-arrow glyphicon-triangle-left" (click)="moveBack()"></button>
+              <button  class="btn btn-default glyphicon table-arrow glyphicon-triangle-right" (click)="moveFor()"></button>
+            </div>
+          </td>
+          <th colspan="2" class="text-center col-md-11" id="month" [ngStyle]="{'width': tableWidth+'px', 'font-size': '1.6em'}">{{ month }}</th>
+          <td colspan="2">
+            <div style="float: right;">
+              <button type="button" class="btn btn-default glyphicon glyphicon-refresh" (click)="ngAfterViewInit()" id="refreshButton" style="margin-left:10px"></button>
+            </div>
+            <div class="input-group col-md-2" style="float: right;">
+              <input type="date" class="form-control" #dateToMoveOn="ngModel" name="dateToMoveOn" [(ngModel)]="moveDate" validateDate>
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" (click)="moveToDate()" [disabled]="!dateToMoveOn.valid">Choď!</button>       
+              </span>      
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th class="col-md-1"></th>
+          <th *ngFor="let day of days" class="text-center col-md-2" id="{{day == now.format('dd DD.MM.YY') ? 'currentDate' : ''}}">
+            {{ day }}
+          </th>
+        </tr>
+        <tr *ngIf="!data">
+          <td colspan="6" class="text-center col-md-12"><i class="fa fa-circle-o-notch fa-spin" style="font-size:24px; margin: 5px"></i> Načítavam dáta</td>
+        </tr>
+      </thead>
+      <div id="contentHolder" style="display: none"></div> <!--tbody stays on the same position when thead is changes to fixed -->
+      <tbody *ngIf="!data && isShowedFilterInput"><tr class="warning"><td colspan="6">Neboli nájdené žiadne {{ name }} vyhivujúce zadaniu filtra.</td></tr></tbody>
+      <tbody *ngFor="let row of data" #TableReservationComponent class="records{{row.id}} reservation" [data]="row" [reservationType]="reservationType" [times]="times" [usersList]="usersList" [loggedUser]="loggedUser" [week]="week" [filterActive]="isShowedFilterInput" [filterDateTime]="dateTime" [filterTimeLength]="length">
+      </tbody>
+  </table>
 </div>
 

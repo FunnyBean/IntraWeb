@@ -1,6 +1,3 @@
-/**
- * Created by Ondrej on 01.08.2016.
- */
 import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
 import {ReservationService} from '../../../../../services/reservation.service';
 import {UserService} from '../../../../../services/user.service';
@@ -78,7 +75,11 @@ export class DetailReservationComponent implements OnInit {
         }
     }
 
-    editReservation() {
+    editReservation(form) {
+        if(form.pristine && !this.emailInvitation && !this.reserveGoToMeeting){
+            this.windowClose.emit(true);
+            return false;
+        }
         this.saving = true;
         var elementId = (this.reservationType == "rooms") ? this.data.roomId : this.data.carId, dayData;
         this.reservationService.getReservations(this.reservationType, elementId, moment(this.data.dateTime).format("DD.MM.YYYY"), moment(this.data.dateTime).add(1, 'days').format("DD.MM.YYYY")).subscribe(
@@ -92,13 +93,14 @@ export class DetailReservationComponent implements OnInit {
                     console.log(reservationTime + ' ' + time + ' ' + reservationTimeEnd);
                     if ((reservationTime >= time && reservationTime < endTime) || (time >= reservationTime && time < reservationTimeEnd)) {
                         this.error = "Zvolený čas zasahuje do rezervácie iného používateľa.";
+                        this.saving = false;
                         return false;
                     }
                 }
                 this.reservationService.editReservation(this.reservationType, this.data.id, this.data.name, elementId, this.data.userId, this.data.dateTime, this.data.length * 60, this.emailInvitation, this.reserveGoToMeeting).subscribe(
                     data => { },
                     error => {
-                        this.error = 'Na daný termín je v GoToMeeting naplánovaná už iná rezervácia';
+                        this.error = 'Na daný termín je v GoToMeeting naplánovaná už iná rezervácia.';
                         console.log("error " + error);
                         this.saving = false;
                     },

@@ -1,5 +1,6 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild, Inject} from '@angular/core';
 import {ReservationService} from '../../../../services/reservation.service';
+import {HolidayService} from '../../../../services/holiday.service';
 import {DetailReservationComponent} from './detail/detail.reservation.component';
 import * as moment from 'moment';
 
@@ -10,7 +11,7 @@ declare var $:any;
   selector: 'tbody',
   templateUrl: 'app/components/home/reservations/table/table.reservations.component.html',
   directives: [DetailReservationComponent],
-  providers: [ReservationService]
+  providers: [ReservationService, HolidayService]
 })
 
 export class TableReservationComponent implements OnInit {
@@ -29,10 +30,12 @@ export class TableReservationComponent implements OnInit {
   public detailReset:boolean = false;
   public reservationDetailId:Array<any> = [0, 0, 0, 0];
 
-  constructor(private reservationService:ReservationService) {
-   }
+  private reservationInProgress:boolean = false;
+
+  constructor(private reservationService:ReservationService, private holidayService:HolidayService) { }
 
   ngOnInit() {
+    
     this.updateData();
     this.data.color = (this.data.color === undefined) ? '#337ab7' : this.data.color;
     var thisDocument = this;
@@ -52,11 +55,17 @@ export class TableReservationComponent implements OnInit {
       table += '<td class="col-md-1">' + this.times[i].time + '</td>';
       for (var j = 0; j < this.tableData[this.times[i].time].length; j++) {
         let cell = this.tableData[this.times[i].time][j];
+        let holiday:string = this.holidayService.isHoliday(moment().add(this.week, 'weeks').weekday(j + 1).format("DD/MM"), moment().add(this.week, 'weeks').format("YYYY"));
         if (cell.long == null) {
-          var filter:string = '';
+          var filter:string = 'empty';
           if(this.filterActive && moment(this.filterDateTime).format("DD.MM.YYYY") == moment().add(this.week, 'weeks').weekday(j + 1).format("DD.MM.YYYY") && moment(this.filterDateTime).format("HH:mm") <= this.times[i].time && this.times[i].time < moment(this.filterDateTime).add(this.filterTimeLength*60, 'minutes').format("HH:mm"))
-            filter = 'filterSelected';
-          table += '<td class="col-md-2 empty '+filter+'"></td>';
+            filter += 'filterSelected';
+          if(holiday){
+            if(i == 0)
+              table += '<td class="col-md-2 holiday">'+holiday+'</td>';
+            else table += '<td class="col-md-2 holiday"></td>';
+          }
+          else table += '<td class="col-md-2 empty '+filter+'"></td>';
         } else {
           if (cell.reservationName == null) {
             table += '<td reservationId="'+ cell.reservationId +'" class="col-md-2 bg-primary full"></td>';
@@ -94,7 +103,7 @@ export class TableReservationComponent implements OnInit {
 
     $(".records"+this.data.id+" td.empty")
       .on("mousedown", function (event) {
-        if (event.which != 1 || thisDocument.reservationDetailId[0] != 0) return false; //does not work for other than left button
+        if (event.which != 1 || thisDocument.reservationDetailId[0] != 0 || thisDocument.reservationInProgress) return false; //does not work for other than left button
         var element = $(this);
         isMouseDown = true;
         $(this).addClass("selected");
@@ -123,6 +132,7 @@ export class TableReservationComponent implements OnInit {
   }
 
   makeReservation(fromRow:number, fromCol:number, length:number) {
+    this.reservationInProgress = true;
     var date, hours = 7, minutes = 0;
     if(fromRow % 2 != 0){
       fromRow -= 1;
@@ -156,6 +166,7 @@ export class TableReservationComponent implements OnInit {
       error => { alert(error); },
       () => { 
         this.updateData(); 
+        this.reservationInProgress = false;
         $(".filterSelected").removeClass("filterSelected");
       }
     );
@@ -198,4 +209,10 @@ export class TableReservationComponent implements OnInit {
     if($event)
       this.updateData();
   }  
+
+
+
+
+
+
 }

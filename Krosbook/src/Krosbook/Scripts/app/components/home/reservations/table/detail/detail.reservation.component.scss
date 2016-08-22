@@ -1,21 +1,24 @@
-#reservationDetail {
+#reservationDetail{
   position: absolute;
-  z-index: 100;
+  z-index: 1000;
   border: 1px black solid;
   min-height: 200px;
   width: 300px;
   background-color: white;
-  padding: 10px; }
-
-.glyphicon {
+  padding: 10px;
+}
+.glyphicon{
   float: right;
-  cursor: pointer; }
+  cursor: pointer;
+}
+.btn-danger{
+  float: right;
+}
 
-.btn-danger {
-  float: right; }
+.ng-valid[required]{
+  border-right: 5px solid #42a948
+}
 
-.ng-valid[required] {
-  border-right: 5px solid #42a948; }
-
-.ng-invalid {
-  border-right: 5px solid #a94442; }
+.ng-invalid{
+  border-right: 5px solid #a94442;
+}

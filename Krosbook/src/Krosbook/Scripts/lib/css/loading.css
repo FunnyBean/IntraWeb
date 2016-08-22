@@ -40,7 +40,6 @@ body {
 /*administration tables*/
 td {
   vertical-align: middle !important;
-  text-align: justify;
 }
 .buttonsRight{
   text-align: right;
@@ -61,6 +60,11 @@ td {
 }
 .reservation td.full{
   cursor: pointer;
+  border-bottom: none;
+  border-top: none;
+}
+.reservation td.holiday {
+  background-color: #C36F6B;
   border-bottom: none;
   border-top: none;
 }
