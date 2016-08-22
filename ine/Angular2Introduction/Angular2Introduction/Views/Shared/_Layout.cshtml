@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <base href="@Url.Content("~")" />
+    @Styles.Render("~/Content/css")
+
+    <!-- Polyfill(s) for older browsers like IE -->
+    <script src="~/Scripts/shim.min.js"></script>
+    <!-- 1. Load libraries -->
+    <script src="~/Scripts/zone.js"></script>
+    <script src="~/Scripts/Reflect.js"></script>
+    <script src="~/Scripts/system.src.js"></script>
+    <script src="~/Scripts/systemjs.config.js"></script>
+
+    <script>
+        System.import('ScriptsApp/boot').catch(console.error.bind(console));
+    </script>
+
+</head>
+<body>
+    @RenderBody()
+</body>
+</html>

@@ -1,0 +1,18 @@
+
+<div id="userInfo" class="col-md-2" on-mouseleave="hideUserInfo()">
+  <div class="navbar navbar-default" role="navigation">
+    <ul class="nav">
+      <li>
+        <p>
+          <strong>{{userData.name + ' ' + userData.surname}}</strong>
+          <br>
+          <small>{{userData.email}}</small>
+        </p>
+      </li>          
+      <li><a [routerLink]="['/home/profile']">Upraviť profil</a></li>
+      <li *ngIf="isAdmin"><a [routerLink]="['/admin']">Administracia</a></li>
+      <li><a><button type="submit" id="logout_button"  class="logout_button" (click)="logout()">Odhlásiť</button></a></li>
+    </ul>
+
+  </div>
+</div>

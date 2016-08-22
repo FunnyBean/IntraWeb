@@ -1,0 +1,103 @@
+html, body {
+  min-height: 100%;
+  font-family: "Ubuntu", sans-serif !important;
+}
+
+body {
+  background-image: url("../../images/bcg.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.remove-padding {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+#loading_view {
+  min-height: 100%;
+  margin: 0em;
+  padding-top: 50px;
+}
+
+#loading_center{
+  float: none;
+  min-height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px 0px 20px 0px;
+  z-index: 3;
+}
+#logo {
+  margin-bottom: 50px;
+}
+#loading_center h2{
+  color: white;
+  font-size: 1.5em;
+}
+
+
+/*administration tables*/
+td {
+  vertical-align: middle !important;
+  text-align: justify;
+}
+.buttonsRight{
+  text-align: right;
+  padding-right: 25px !important;
+}
+.checkbox {
+  margin-top: 0px;
+}
+
+
+/*reservation tables */
+#reservationHead th, #reservationHead td {
+  border: none;
+}
+.reservation td {
+  padding: 2px !important;
+  text-align: center;
+}
+.reservation td.full{
+  cursor: pointer;
+  border-bottom: none;
+  border-top: none;
+}
+.reservation td.full.text-center{
+  border-top: 1px #ddd solid;
+}
+.reservation td.selected {
+  background-color: #5cb85c;
+  border: none;
+}
+#currentDate {
+  background-color: #f2f2f2;
+  color: #337ab7;
+  border: 2px #337ab7 solid !important;
+}
+.filterSelected {
+  background-color: #b3b3b3
+}
+.headFixed{
+  position: fixed;
+  background-color: white;
+  z-index: 150;
+}
+.officeName h4 {
+  color: white;
+  font-size: 1.4em;
+}
+
+/*removing scrollbar from page*/
+::-webkit-scrollbar { 
+    display: none; 
+}
+
+
+/*visibility input spinner */
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button,
+input[type=date]::-webkit-inner-spin-button,input[type=date]::-webkit-outer-spin-button,
+input[type=datetime-local]::-webkit-inner-spin-button,input[type=datetime-local]::-webkit-outer-spin-button {   
+    opacity: 1;
+    }

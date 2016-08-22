@@ -1,0 +1,42 @@
+<div class="col-md-8 col-md-offset-2">
+
+  <h3>Zmena profilového obrázku</h3>
+
+  <form role="form" class="form-horuzontal" #userForm="ngForm">
+
+    <!--AVATAR STARE-->
+    <div class="form-group">
+      <label class="col-sm-3 control-label">Aktuálny obrázok:</label>
+      <div class="col-sm-9">
+        <div *ngIf="!userData.photoBase64" class="panel  panel-default text-center">
+          <i class="fa fa-circle-o-notch fa-spin" style="font-size:24px; margin: 5px"></i> Načítavam obrázok
+        </div>
+        <img *ngIf="userData.photoBase64" [src]="'data:image/png;base64,' + userData.photoBase64" class="avatarImg" id="profilePicture">
+      </div>
+    </div>
+
+    <!--NACITANIE AVATAR NOVY-->
+    <div class="form-group">
+      <label class="col-sm-3 control-label">Nový obrázok:</label>
+      <div class="col-sm-9">
+        <input type="file" class="form-control" name="newImage" (change)="onChange($event)" id="newImage" accept="image/*">
+        <div class="alert alert-danger alert-dismissible" *ngIf="error">
+          <button type="button" class="close" (click)="dismiss()"><span aria-hidden="true">×</span></button>
+          <strong>{{ error }}</strong>
+        </div>
+        <div class="panel  panel-default text-center" *ngIf="progress == 1">
+          <i class="fa fa-circle-o-notch fa-spin" style="font-size:24px; margin: 5px"></i> Načítavam obrázok
+        </div>
+        <img id="result" class="avatarImg">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-9 col-sm-offset-3">
+        <button type="submit" id="edit_button" class="btn btn-success btn-block" [disabled]="newImage == ''" (click)="editAvatar()">Zmeniť profilový obrázok</button>
+      </div>
+    </div>
+
+  </form>
+
+</div>

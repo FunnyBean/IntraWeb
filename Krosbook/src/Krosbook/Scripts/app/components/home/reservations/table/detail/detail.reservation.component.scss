@@ -1,0 +1,21 @@
+#reservationDetail {
+  position: absolute;
+  z-index: 100;
+  border: 1px black solid;
+  min-height: 200px;
+  width: 300px;
+  background-color: white;
+  padding: 10px; }
+
+.glyphicon {
+  float: right;
+  cursor: pointer; }
+
+.btn-danger {
+  float: right; }
+
+.ng-valid[required] {
+  border-right: 5px solid #42a948; }
+
+.ng-invalid {
+  border-right: 5px solid #a94442; }

@@ -1,0 +1,61 @@
+<div id="darkBackground" (click)="closeWindow()" ></div>
+<div id="window" class="col-md-8 col-md-offset-2">
+
+  <button type="button" class="close" (click)="closeWindow()" style="font-size: 25px"><span aria-hidden="true">×</span></button>
+
+  <h3 *ngIf="!userData.id">Vytvorenie nového používateľa</h3>
+  <h3 *ngIf="userData.id">Editovanie existujúceho používateľa</h3>
+
+  <div *ngIf="error" class="alert alert-danger col-md-12">
+    <strong>{{ error }}</strong>
+  </div>
+
+  <div *ngIf="success" class="alert alert-success col-md-12">
+    <strong>{{ success }}</strong>
+  </div>
+  <form role="form" *ngIf="formReset" #userForm="ngForm">
+
+    <!--MENO-->
+    <div class="form-group">
+      <label for="name">Meno:</label>
+      <input type="text"  class="form-control" id="name" name="name" #name="ngModel" [(ngModel)]="userData.name" required>
+      <div *ngIf="name.dirty && !name.valid && name.errors.required" class="alert alert-danger"><strong>Meno je povinná položka.</strong></div>
+    </div>
+
+    <!--PRIEZVISKO-->
+    <div class="form-group">
+      <label for="surname">Priezvisko:</label>
+      <input type="text" class="form-control" id="surname"  name="surname" #surname="ngModel" [(ngModel)]="userData.surname" required>
+      <div *ngIf="surname.dirty && !surname.valid && surname.errors.required" class="alert alert-danger"><strong>Priezvisko je povinná položka.</strong></div>
+    </div>
+
+    <!--EMAIL-->
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" class="form-control" id="email" name="email" #email="ngModel" [(ngModel)]="userData.email" required validateEmail>
+      <div *ngIf="email.dirty && !email.valid && email.errors.required" class="alert alert-danger"><strong>Email je povinná položka.</strong></div>
+      <div *ngIf="email.dirty && !email.valid && email.errors.validateEmail" class="alert alert-danger"><strong>Toto nie je správny tvar emailu.</strong></div>
+    </div>
+
+    <!--FOTKA-->
+    <img *ngIf="userData.id" alt="Embedded Image" src="data:image/png;base64,{{userData.photoBase64}}" width="50" height="50">
+
+    <!--ROLE POUZÍVATEĽA-->
+    <div class="form-group">
+      <label>Role používateľa: </label>
+      <div class="checkbox" *ngFor="let role of allRoles; let i = index">
+        <label>
+          <input type="checkbox" name="role" [checked]="checkedRoles[i]" (change)="checkedRoles[i] = $event.target.checked">{{role.name}}
+        </label>
+      </div>
+    </div>
+
+    <!--SUBMIT BUTTON-->
+    <div *ngIf="!userData.id">
+      <button type="submit" id="add_button" class="btn btn-success  btn-block" [disabled]="!userForm.form.valid" (click)="newUser()">Vytvoriť používateľa</button>
+    </div>
+    <div *ngIf="userData.id">
+      <button type="submit" id="edit_button" class="btn btn-success  btn-block" [disabled]="!userForm.form.valid" (click)="editUser()">Editovať používateľa</button>
+    </div>
+  </form>
+ </div>

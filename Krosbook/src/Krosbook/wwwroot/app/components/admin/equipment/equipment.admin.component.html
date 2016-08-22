@@ -1,0 +1,20 @@
+<h2>Vybavenie miestností</h2>
+<button type="button" class="btn btn-success" (click)="newEquimpent()"><span class="glyphicon glyphicon-plus"></span>  Nové vybavenie</button>
+<equipment *ngIf="showEquipmentWindow" (windowClose)="windowClose($event)" (updateList)="getEquipments()" [equipmentId]="equipmentId"></equipment>
+<table class="table table-hover col-md-12">
+  <thead>
+  <tr>
+    <th>Typ vybavenia</th>
+    <th class="buttonsRight">Akcie</th>
+  </tr>
+  </thead>
+  <tr *ngFor="let equipment of equipments">
+    <td>{{equipment.description}}</td>
+    <td class="buttonsRight">
+      <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-warning glyphicon glyphicon-edit" (click)="editEquimpent(equipment.id)"></button>
+        <button type="button" class="btn btn-danger glyphicon glyphicon-trash" (click)="deleteEquimpment(equipment.id)"></button>
+      </div>
+    </td>
+  </tr>
+</table>

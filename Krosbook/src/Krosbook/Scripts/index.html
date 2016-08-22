@@ -1,0 +1,46 @@
+﻿<html>
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <meta charset="utf-8" />
+  <title>KrosBook</title>
+  <base href="/">
+
+  <!-- 1. Load libraries -->
+  <!-- Polyfill(s) for older browsers -->
+  <script src="lib/jquery/jquery.js"></script>
+  <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css">
+  <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="lib/css/loading.css" />
+
+    <!-- 1. Load libraries -->
+    <!-- Polyfill(s) for older browsers -->
+    <script src="lib/core-js/client/shim.js"></script>
+    <script src="lib/zone.js/dist/zone.js"></script>
+    <script src="lib/reflect-metadata/Reflect.js"></script>
+    <script src="lib/systemjs/dist/system.src.js"></script>
+</head>
+
+<body>
+  <app-root>
+    <div id="loading_view" class="col-md-12 col-xs-12">
+      <div id="loading_center" class="col-lg-3 col-md-3 col-sm-4 col-xs-12 text-center">
+        <img src="../images/logo_big.png" alt="logo" id="logo" class="col-md-8 col-xs-6 col-md-offset-2 col-xs-offset-3" />
+        <h2 class="col-xs-12">Načítava sa...</h2>
+      </div>
+    </div>
+  </app-root>
+
+    <script>
+      System.import('system-config.js').then(function () {
+        System.import('main');
+      }).catch(console.error.bind(console));
+    </script>
+
+</body>
+</html>

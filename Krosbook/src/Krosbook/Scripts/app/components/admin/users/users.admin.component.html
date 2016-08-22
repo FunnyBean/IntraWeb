@@ -1,0 +1,27 @@
+<h2>Používatelia</h2>
+<button type="button" class="btn btn-success" (click)="newUser()"><span class="glyphicon glyphicon-plus"></span>  Nový používateľ</button>
+<user *ngIf="showOfficeWindow" (windowClose)="windowClose($event)" (updateList)="GetUsers()" [userId]="userId"></user>
+<table class="table">
+  <thead>
+  <tr>
+    <th>Obrázok</th>
+    <th>Meno</th>
+    <th>Priezvisko</th>
+    <th>Email</th>
+    <th class="buttonsRight">Akcie</th>
+  </tr>
+  </thead>
+  <tr *ngFor="let user of users">
+    <td><img alt="Embedded Image" [src]="'data:image/png;base64,'+user.photoBase64" width="50" height="50"></td>
+    <td>{{user.name}}</td>
+    <td>{{user.surname}}</td>
+    <td>{{user.email}}</td>
+    <td class="buttonsRight">
+      <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-warning glyphicon glyphicon-edit" (click)="editUser(user.id)"></button>
+        <button type="button" class="btn btn-danger glyphicon glyphicon-trash" (click)="removeUser(user.id)"></button>
+      </div>
+    </td>
+  </tr>
+</table>
+

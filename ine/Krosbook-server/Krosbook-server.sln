@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{26F2387E-51BF-4CC5-BD68-95E0D5C27321}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A6B69C0D-802A-4057-93E3-0DA83F19720B}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Krosbook-server", "src\Krosbook-server\Krosbook-server.xproj", "{2ECDB9D1-A3C9-40FB-B946-3BAD4AA6A8F9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2ECDB9D1-A3C9-40FB-B946-3BAD4AA6A8F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ECDB9D1-A3C9-40FB-B946-3BAD4AA6A8F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ECDB9D1-A3C9-40FB-B946-3BAD4AA6A8F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ECDB9D1-A3C9-40FB-B946-3BAD4AA6A8F9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2ECDB9D1-A3C9-40FB-B946-3BAD4AA6A8F9} = {26F2387E-51BF-4CC5-BD68-95E0D5C27321}
+	EndGlobalSection
+EndGlobal

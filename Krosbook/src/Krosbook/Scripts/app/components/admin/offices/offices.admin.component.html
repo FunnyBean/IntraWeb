@@ -1,0 +1,26 @@
+<h2>Miestnosti</h2>
+<button type="button" class="btn btn-success" (click)="newOffice()"><span class="glyphicon glyphicon-plus"></span>  Nová miestnosť</button>
+<office *ngIf="showOfficeWindow" (windowClose)="windowClose()" (updateList)="getOffices()" [officeId]="officeId"></office>
+<table class="table table-hover col-md-12">
+  <thead>
+    <tr>
+      <th>Názov miestnosti</th>
+      <th>Typ miestnosti</th>
+      <th>Farba miestnosti</th>
+      <th style="width: 45%;">Popis miestnosti</th>
+      <th class="buttonsRight">Akcie</th>
+    </tr>
+  </thead>
+  <tr *ngFor="let office of offices">
+    <td><strong>{{office.name}}</strong></td>
+    <td>{{office.type}}</td>
+    <td [style.background-color]="office.color">&nbsp;</td>
+    <td>{{office.description}}</td>
+    <td class="buttonsRight">
+      <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-warning glyphicon glyphicon-edit" (click)="editOffice(office.id)"></button>
+        <button type="button" class="btn btn-danger glyphicon glyphicon-trash" (click)="deleteOffice(office.id)"></button>
+      </div>
+    </td>
+  </tr>
+</table>

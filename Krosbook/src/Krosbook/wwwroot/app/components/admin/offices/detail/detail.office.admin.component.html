@@ -1,0 +1,66 @@
+<div id="darkBackground" (click)="closeWindow()" ></div>
+
+<div id="window" class="col-md-8 col-md-offset-2">
+
+  <button type="button" class="close" (click)="closeWindow()" style="font-size: 25px"><span aria-hidden="true">×</span></button>
+
+  <h3 *ngIf="!officeData.id">Vytvorenie novej miestnosti</h3>
+  <h3 *ngIf="officeData.id">Editovanie existujúcej miestnosti</h3>
+
+  <div *ngIf="error" class="alert alert-danger col-md-12">
+    <strong>{{ error }}</strong>
+  </div>
+
+  <div *ngIf="success" class="alert alert-success col-md-12">
+    <strong>{{ success }}</strong>
+  </div>
+
+  <form role="form" *ngIf="formReset" #officeForm="ngForm">
+
+    <!--NAZOV MIESTNOSTI-->
+    <div class="form-group">
+      <label>Názov:</label>
+      <input type="text"  class="form-control" name="name" #name="ngModel" [(ngModel)]="officeData.name" maxlength="50" autocomplete="off" required validateOfficeName>
+      <div *ngIf="name.dirty && !name.valid && name.errors.validateOfficeName" class="alert alert-danger"><strong>Miestnosť s týmto názvom už existuje.</strong> Zvoľte iný názov.</div>
+      <div *ngIf="name.dirty && !name.valid && name.errors.required" class="alert alert-danger"><strong>Názov miestnosti je povinná položka.</strong></div>
+    </div>
+
+
+    <!--TYP MIESTNOSTI-->
+    <div class="form-group">
+      <label for="type">Typ:</label>
+      <input type="text" id="type" class="form-control"  name="type" #type="ngModel" [(ngModel)]="officeData.type" maxlength="25" required>
+      <div *ngIf="type.dirty && !type.valid && type.errors.required" class="alert alert-danger"><strong>Typ miestnosti je povinná položka.</strong></div>
+      <div *ngIf="type.dirty && !type.valid && type.errors.maxLength" class="alert alert-danger"><strong>Maximálny počet znakov je 25.</strong></div>
+    </div>
+
+    <!-- FARBA MIESTNOSTI -->
+    <div class="form-group">
+      <label for="color">Farba:</label>
+      <input type="text" id="color" class="form-control" name="color" #color="ngModel" [(ngModel)]="officeData.color" placeholder="#FF00FF" maxlength="7" minlength="7" required>
+      <div *ngIf="color.dirty && !color.valid && color.errors.required" class="alert alert-danger"><strong>Farba miestnosti je povinná položka.</strong></div>
+      <div *ngIf="color.dirty && !color.valid && color.errors.minLength" class="alert alert-danger"><strong># a 6 znakov hexadecimálneho kódu.</strong></div>
+    </div>
+
+    <!--POPIS-->
+    <div class="form-group">
+      <label for="description">Popis:</label>
+      <textarea id="description" class="form-control" rows="3"  name="description" #description="ngModel" [(ngModel)]="officeData.description" maxlength="255"></textarea>
+      <div *ngIf="description.dirty && !description.valid && description.errors.maxLength" class="alert alert-danger"><strong>Maximálny počet znakov je 255.</strong></div>
+    </div>
+
+    <!--ZARIADENIE MIESTNOSTI-->
+    <equipment [equipment]="equipment">Načítavanie dát...</equipment>
+
+    <!--SUBMIT BUTTON-->
+    <div *ngIf="!officeData.id">
+      <button type="submit" id="add_button" class="btn btn-success  btn-block" (click)="newOffice()" [disabled]="!officeForm.form.valid">Vytvoriť miestnosť</button>
+    </div>
+    <div *ngIf="officeData.id">
+      <button type="submit" id="edit_button" class="btn btn-success  btn-block" (click)="editOffice()" [disabled]="!officeForm.form.valid">Editovať miestnosť</button>
+    </div>
+
+  </form>
+
+</div>
+

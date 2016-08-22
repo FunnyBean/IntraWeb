@@ -1,0 +1,23 @@
+<div id="administration" class="col-md-12">
+    <div id="upperBar" class="col-md-12">
+        <div class="col-md-2 col-sm-2 col-xs-4 text-center">
+            <img src="../../images/logo_small.png">
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-8">
+            <h2>Administrácia</h2>
+        </div>
+    </div>
+    <div class="row row-eq-height col-md-12" id="contentWindow">
+      <div id="leftMenu" class="col-md-2 col-xs-2">
+          <a [routerLink]="['/admin/users']" class="col-md-12 col-xs-12 hvr-bounce-to-right">Používatelia</a>
+          <a [routerLink]="['/admin/offices']" class="col-md-12 col-xs-12 hvr-bounce-to-right">Miestnosti</a>
+          <a [routerLink]="['/admin/cars']" class="col-md-12 col-xs-12 hvr-bounce-to-right">Autá</a>
+          <a [routerLink]="['/admin/roles']" class="col-md-12 col-xs-12 hvr-bounce-to-right">Role používateľov</a>
+          <a [routerLink]="['/admin/equipment']" class="col-md-12 col-xs-12 hvr-bounce-to-right">Vybavenie</a>
+          <a [routerLink]="['/home']" class="col-md-12 col-xs-12 hvr-bounce-to-right homeButton"><< Späť na hlavnú stránku</a>
+      </div>
+      <div id="content" [ngStyle]="{'min-height': contentHeight}" class="col-md-12 col-xs-12">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+</div>

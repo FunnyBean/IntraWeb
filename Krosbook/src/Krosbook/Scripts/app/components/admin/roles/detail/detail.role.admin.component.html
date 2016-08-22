@@ -1,0 +1,39 @@
+<div id="darkBackground" (click)="closeWindow()" ></div>
+
+<div id="window" class="col-md-8 col-md-offset-2">
+
+  <button type="button" class="close" (click)="closeWindow()" style="font-size: 25px"><span aria-hidden="true">×</span></button>
+
+  <h3 *ngIf="!roleData.id">Pridať novú rolu</h3>
+  <h3 *ngIf="roleData.id">Editovanie existujúcu rolu</h3>
+
+  <div *ngIf="error" class="alert alert-danger col-md-12">
+    <strong>{{ error }}</strong>
+  </div>
+
+  <div *ngIf="success" class="alert alert-success col-md-12">
+    <strong>{{ success }}</strong>
+  </div>
+
+  <form role="form" *ngIf="formReset" #roleForm="ngForm">
+
+    <!--TYP VYBAVENIA-->
+    <div class="form-group">
+      <label for="name">Názov:</label>
+      <input type="text"  class="form-control" id="name" name="name" #name="ngModel" [(ngModel)]="roleData.name" required>
+      <div *ngIf="name.dirty && !name.valid && name.errors.required" class="alert alert-danger"><strong>Názov roly je povinná položka.</strong></div>
+    </div>
+
+
+    <!--SUBMIT BUTTON-->
+    <div *ngIf="!roleData.id">
+      <button type="submit" id="add_button" class="btn btn-success  btn-block" (click)="newRole()" [disabled]="!roleForm.form.valid">Pridať rolu</button>
+    </div>
+    <div *ngIf="roleData.id">
+      <button type="submit" id="edit_button" class="btn btn-success  btn-block" (click)="editRole()" [disabled]="!roleForm.form.valid">Editovať rolu</button>
+    </div>
+
+  </form>
+
+</div>
+

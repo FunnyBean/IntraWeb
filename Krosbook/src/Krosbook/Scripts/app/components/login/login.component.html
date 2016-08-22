@@ -1,0 +1,36 @@
+<div id="form_background" class="col-md-12 col-xs-12">
+    <div id="form_login" class="ui form col-md-3 col-sm-4 col-xs-12">
+        <img src="../images/logo_big.png" alt="logo" id="logo" class="col-md-8 col-xs-4 col-md-offset-2 col-xs-offset-4" />
+
+        <form class="form-horizontal col-md-10 col-md-offset-1" (submit)="onSubmit()">
+
+            <div *ngIf="error" class="alert alert-danger col-md-12">
+                <strong>{{ error }}</strong>
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="email" class="" placeholder="priezvisko@kros.sk" name="email" [(ngModel)]="email">
+            </div>
+
+            <div class="form-group">
+                <input type="password" id="password" class="" placeholder="heslo" name="password" (keyup)="password = $event.target.value">
+            </div>
+
+            <div class="form-group checkbox">
+                <label>
+                    <input type="checkbox" id="remember" name="remember" (change)="rememberActive = $event.target.checked"> Zapamätať prihlásenie
+                </label>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" id="login_button" class="ui button" >Prihlásiť</button>
+            </div>
+        
+        </form>
+
+    </div>
+
+    <div id="footer" class="col-md-12 col-xs-12 text-center">
+        &#169; {{ year }} KROS a.s
+    </div>
+</div>

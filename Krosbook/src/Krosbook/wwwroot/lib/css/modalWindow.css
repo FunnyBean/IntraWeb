@@ -1,0 +1,28 @@
+#darkBackground {
+  min-height: 120vh;
+  width: 120vw;
+  background-color: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  /*absolute;*/
+  top: -78px;
+  left: -16.6vw;
+  z-index: 100; }
+
+#window {
+  background-color: white;
+  padding: 30px;
+  position: absolute;
+  top: 0px;
+  z-index: 200;
+  margin-bottom: 20px; }
+
+.control-label {
+  padding-top: 7px; }
+
+.ng-valid[required] {
+  border-right: 5px solid #42a948; }
+
+.ng-invalid {
+  border-right: 5px solid #a94442; }
+
+/*# sourceMappingURL=modalWindow.css.map */

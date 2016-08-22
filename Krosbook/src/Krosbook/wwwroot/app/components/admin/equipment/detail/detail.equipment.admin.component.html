@@ -1,0 +1,39 @@
+<div id="darkBackground" (click)="closeWindow()" ></div>
+
+<div id="window" class="col-md-8 col-md-offset-2">
+
+  <button type="button" class="close" (click)="closeWindow()" style="font-size: 25px"><span aria-hidden="true">×</span></button>
+
+  <h3 *ngIf="!equipmentData.id">Pridať nové vybavenie</h3>
+  <h3 *ngIf="equipmentData.id">Editovanie existujúce vybavenie</h3>
+
+  <div *ngIf="error" class="alert alert-danger col-md-12">
+    <strong>{{ error }}</strong>
+  </div>
+
+  <div *ngIf="success" class="alert alert-success col-md-12">
+    <strong>{{ success }}</strong>
+  </div>
+
+  <form role="form" *ngIf="formReset" #equipmentForm="ngForm">
+
+    <!--TYP VYBAVENIA-->
+    <div class="form-group">
+      <label for="name">Typ:</label>
+      <input type="text"  class="form-control" id="name" name="name" #name="ngModel" [(ngModel)]="equipmentData.description" required>
+      <div *ngIf="name.dirty && !name.valid && name.errors.required" class="alert alert-danger"><strong>Typ vybavenia je povinná položka.</strong></div>
+    </div>
+
+
+    <!--SUBMIT BUTTON-->
+    <div *ngIf="!equipmentData.id">
+      <button type="submit" id="add_button" class="btn btn-success  btn-block" (click)="newEquipment()" [disabled]="!equipmentForm.form.valid">Pridať vybavenie</button>
+    </div>
+    <div *ngIf="equipmentData.id">
+      <button type="submit" id="edit_button" class="btn btn-success  btn-block" (click)="editEquipment()" [disabled]="!equipmentForm.form.valid">Editovať vybavenie</button>
+    </div>
+
+  </form>
+
+</div>
+

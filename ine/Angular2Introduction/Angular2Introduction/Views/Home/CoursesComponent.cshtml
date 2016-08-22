@@ -1,0 +1,15 @@
+﻿
+@{
+    Layout = null;
+}
+
+<h2>Courses for {{name}} - {{eingabeText}}</h2>
+{{title}}
+<input type="text" [(ngModel)]="eingabeText" autoGrow />
+<ul> <li *ngFor="let course of courses">{{course}}</li></ul>
+
+<br />
+<br />
+<br />
+
+<person-list></person-list>
